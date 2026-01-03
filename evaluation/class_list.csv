@@ -1,0 +1,4 @@
+﻿project,class,complexity
+Csv-16f,CSVParser,11
+Csv-16f,CSVFormat,25
+Csv-16f,Lexer,14
