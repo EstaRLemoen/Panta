@@ -164,9 +164,10 @@ if __name__ == '__main__':
               "mistral_line", "mistral_branch"]
     create_csv_file(subjects_file, header)
     if __name__ == '__main__':
-        defects4j_subjects = ["JacksonXml-5f", "Csv-16f", "Collections-28f", "Gson-16f", "Cli-40f", "JacksonCore-26f",
-                              "JxPath-22f", "Jsoup-93f", "Codec-18f", "Compress-47f", "JacksonDatabind-112f",
-                              "Time-13f", "Lang-4f", "Math-2f"]
+        # defects4j_subjects = ["JacksonXml-5f", "Csv-16f", "Collections-28f", "Gson-16f", "Cli-40f", "JacksonCore-26f",
+        #                       "JxPath-22f", "Jsoup-93f", "Codec-18f", "Compress-47f", "JacksonDatabind-112f",
+        #                       "Time-13f", "Lang-4f", "Math-2f"]        
+        defects4j_subjects = ["Csv-16f"]
         defects4j_subject_classes = get_d4j_subject_classes()
         for p_name in defects4j_subjects:
             print(p_name)
