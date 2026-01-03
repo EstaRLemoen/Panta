@@ -134,7 +134,9 @@ if __name__ == '__main__':
     create_csv_file(subjects_file, header)
 
     count = 0
-    for p_name in defects4j_subjects[:1]:
+    #for p_name in defects4j_subjects[:1]:      # original, just analyze the first one
+    #for p_name in defects4j_subjects:          # my first modify, but hit to 15,16,17 that do not exist
+    for p_name in defects4j_subjects[:14]:      # do not make Error, but some result is not the same (small different)
         print(p_name)
         proj_dir = os.path.join("../defects4j-subjects-notests", p_name)
         files_object, cyc_complexity, num_of_testable = analyze_code_files_at_project_level(proj_dir, language)
