@@ -26,7 +26,8 @@ class PromptBuilder:
                  lines_missed=None,
                  branch_missed=None,
                  path_history=None,
-                 test_dependencies=""):
+                 test_dependencies="",
+                 snapshotter=None):
         if lines_missed is None:
             lines_missed = []
         if branch_missed is None:
@@ -41,8 +42,16 @@ class PromptBuilder:
         self.test_file = read_file(test_code_file)
         self.code_coverage_report = code_coverage_report
         self.language = language
+        self.snapshotter = snapshotter
 
         cfg_driver = CombinedDriver(src_language=self.language, src_code=self.source_file)
+        # Semantic change: capture CFG state before prompt construction.
+        if self.snapshotter:
+            self.snapshotter.capture(
+                stage="prompt_builder_cfg",
+                source_code_file=source_code_file,
+                language=self.language,
+                cfg_driver=cfg_driver)
         self.processed_source_code = cfg_driver.preprocessed_src_code
         self.cfg_obj = cfg_driver.file_obj
         self.cfg_node_to_line = cfg_driver.node_id_to_line_number

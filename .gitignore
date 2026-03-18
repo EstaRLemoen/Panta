@@ -34,3 +34,4 @@ poetry.lock
 
 # Ignore Excel temporary files
 ~$*.xlsx
+evaluation/debug.txt

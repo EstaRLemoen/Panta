@@ -56,7 +56,8 @@ class UnitTestGenerator:
                  coverage_type="jacoco",
                  target_coverage: int = 100,
                  prompt_type: str = "baseline",
-                 additional_instructions: str = ""):
+                 additional_instructions: str = "",
+                 snapshotter=None):
 
         self.relevant_line_number_to_insert_tests_after = None
         self.relevant_line_number_to_insert_imports_after = None
@@ -78,6 +79,8 @@ class UnitTestGenerator:
         self.target_coverage = target_coverage
         self.additional_instructions = additional_instructions
         self.language = get_code_language(source_code_file)
+        # Semantic change: optional snapshotter for sidecar CFG recording.
+        self.snapshotter = snapshotter
 
         self.llm_invoker = LLMInvocation(model=llm_model)
 
@@ -220,7 +223,8 @@ class UnitTestGenerator:
             lines_missed=self.lines_missed,
             branch_missed=self.branch_missed,
             path_history=self.path_history,
-            test_dependencies=self.test_dependencies
+            test_dependencies=self.test_dependencies,
+            snapshotter=self.snapshotter
         )
         if prompt_type == "control":
             prompt = self.prompt_builder.build_prompt_cfa_guided(pick_two_paths)
@@ -305,6 +309,13 @@ class UnitTestGenerator:
 
         test_code = read_file(self.test_code_file)
         cfg_driver = CFGDriver(self.language, test_code, {"test_code": True})
+        # Semantic change: record CFG output for test-suite AST analysis stage.
+        if self.snapshotter:
+            self.snapshotter.capture(
+                stage="initial_test_suite_analysis_ast_cfg",
+                source_code_file=self.test_code_file,
+                language=self.language,
+                cfg_driver=cfg_driver)
         _, node_id_to_line_numbers_mapping = line_number_to_node_id_mapping(test_code, cfg_driver.CFG_nodes)
         last_import_id = cfg_driver.file_obj["imports"][-1]["id"]
         last_line_for_imports = node_id_to_line_numbers_mapping[last_import_id][-1]

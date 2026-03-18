@@ -1,0 +1,5 @@
+# Local secrets
+local.secrets.env
+
+# Generated intermediate snapshots
+intermediate/

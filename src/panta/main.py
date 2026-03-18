@@ -33,7 +33,12 @@ def config_to_namespace(config):
         run_symprompt=config.getboolean("run_symprompt"),
         prompt_type=config.get('prompt_type'),
         pick_two_paths=config.getboolean("pick_two_paths"),
-        additional_instructions=config.get('additional_instructions')
+        additional_instructions=config.get('additional_instructions'),
+        # Semantic change: optional CFG snapshot controls.
+        dump_cfg_intermediate=config.getboolean('dump_cfg_intermediate', fallback=False),
+        cfg_dump_dir=config.get('cfg_dump_dir', fallback='cfg_snapshot_test/intermediate/cfg'),
+        cfg_dump_level=config.get('cfg_dump_level', fallback='full'),
+        cfg_dump_prompt_mode=config.get('cfg_dump_prompt_mode', fallback='summary')
     )
 
 

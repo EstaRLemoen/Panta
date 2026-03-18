@@ -13,6 +13,7 @@ from .cfg.src.comex.codeviews.combined_graph.combined_driver import line_number_
 from .cfg.src.comex.codeviews.CFG.CFG_driver import CFGDriver
 from .utils import read_file
 from .utils import get_code_language
+from .cfg_snapshot import CFGSnapshotter, generate_run_id
 
 
 def get_class_name(file_path):
@@ -25,6 +26,15 @@ class Panta:
     def __init__(self, args):
         self.args = args
         self.logger = pantaLogger.initialize_logger(__name__)
+        # Semantic change: initialize optional, non-blocking CFG snapshotter.
+        self.run_id = generate_run_id(args.source_code_file)
+        self.snapshotter = CFGSnapshotter(
+            enabled=args.dump_cfg_intermediate,
+            dump_dir=args.cfg_dump_dir,
+            dump_level=args.cfg_dump_level,
+            prompt_mode=args.cfg_dump_prompt_mode,
+            run_id=self.run_id,
+            logger=self.logger)
         if args.run_symprompt:
             self.report_label = "_".join(['symprompt', args.model])
         else:
@@ -55,7 +65,8 @@ class Panta:
             target_coverage=args.target_coverage,
             prompt_type=args.prompt_type,
             additional_instructions=args.additional_instructions,
-            llm_model=args.model)
+            llm_model=args.model,
+            snapshotter=self.snapshotter)
 
     def extract_test_dependency(self):
         try:
@@ -95,6 +106,12 @@ class Panta:
         language = get_code_language(self.args.source_code_file)
         src_code = read_file(self.args.source_code_file)
         cfg_driver = CFGDriver(language, src_code)
+        # Semantic change: capture CFG snapshot for skeleton initialization stage.
+        self.snapshotter.capture(
+            stage="initial_test_class_skeleton_cfg",
+            source_code_file=self.args.source_code_file,
+            language=language,
+            cfg_driver=cfg_driver)
         _, node_id_to_line_numbers_mapping = line_number_to_node_id_mapping(src_code, cfg_driver.CFG_nodes)
         imports_lines = cfg_driver.file_obj["imports"]
         src_code_lines = src_code.split('\n')
@@ -258,7 +275,8 @@ class Panta:
         self.test_gen.initial_test_suite_analysis_AST()
 
         symprompt = SymPrompt(project_dir=self.args.project_directory, source_code_file=self.args.source_code_file,
-                              llm_model=self.args.model, junit_version=self.args.junit_version)
+                              llm_model=self.args.model, junit_version=self.args.junit_version,
+                              snapshotter=self.snapshotter)
         symprompt.generate_test()
         generated_tests = symprompt.generated_tests
 
