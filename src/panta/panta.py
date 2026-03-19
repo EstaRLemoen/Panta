@@ -9,8 +9,7 @@ from .report_generator import ReportGenerator
 from .unit_test_generator import UnitTestGenerator
 from .symprompt import SymPrompt
 from .templates import TEST_CLASS_JUNIT_3, TEST_CLASS_JUNIT_4, TEST_CLASS_JUNIT_5
-from .cfg.src.comex.codeviews.combined_graph.combined_driver import line_number_to_node_id_mapping
-from .cfg.src.comex.codeviews.CFG.CFG_driver import CFGDriver
+from .cfg_access import get_structural_cfg
 from .utils import read_file
 from .utils import get_code_language
 from .cfg_snapshot import CFGSnapshotter, generate_run_id
@@ -105,14 +104,14 @@ class Panta:
         """
         language = get_code_language(self.args.source_code_file)
         src_code = read_file(self.args.source_code_file)
-        cfg_driver = CFGDriver(language, src_code)
+        cfg_driver = get_structural_cfg(language, src_code)
         # Semantic change: capture CFG snapshot for skeleton initialization stage.
         self.snapshotter.capture(
             stage="initial_test_class_skeleton_cfg",
             source_code_file=self.args.source_code_file,
             language=language,
             cfg_driver=cfg_driver)
-        _, node_id_to_line_numbers_mapping = line_number_to_node_id_mapping(src_code, cfg_driver.CFG_nodes)
+        node_id_to_line_numbers_mapping = cfg_driver.node_id_to_line_number
         imports_lines = cfg_driver.file_obj["imports"]
         src_code_lines = src_code.split('\n')
         f = open(self.args.test_code_file, 'a')
@@ -229,7 +228,7 @@ class Panta:
 
                 iteration_count += 1
         except Exception as e:
-            self.logger.error("iteration stops due to error: ", e)
+            self.logger.error("iteration stops due to error: %s", e)
 
         if self.test_gen.current_coverage[0] >= (self.test_gen.target_coverage / 100):
             self.logger.info(

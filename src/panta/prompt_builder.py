@@ -3,7 +3,7 @@ from .panta_logger import pantaLogger
 from .config_loader import get_settings
 from .templates import ADDITIONAL_INCLUDES_TEXT, ADDITIONAL_INSTRUCTIONS_TEXT, FAILED_TESTS_TEXT
 from jinja2 import Environment, StrictUndefined
-from .cfg.src.comex.codeviews.combined_graph.combined_driver import CombinedDriver
+from .cfg_access import get_path_cfg
 import random
 
 from .utils import read_file
@@ -44,7 +44,7 @@ class PromptBuilder:
         self.language = language
         self.snapshotter = snapshotter
 
-        cfg_driver = CombinedDriver(src_language=self.language, src_code=self.source_file)
+        cfg_driver = get_path_cfg(self.language, self.source_file)
         # Semantic change: capture CFG state before prompt construction.
         if self.snapshotter:
             self.snapshotter.capture(

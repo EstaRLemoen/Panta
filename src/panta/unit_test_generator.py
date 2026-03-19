@@ -12,8 +12,7 @@ from .model_invocation.llm_invocation import LLMInvocation
 from .prompt_builder import PromptBuilder
 from .utils import get_code_language
 from .yaml_parser_utils import load_yaml
-from .cfg.src.comex.codeviews.combined_graph.combined_driver import line_number_to_node_id_mapping
-from .cfg.src.comex.codeviews.CFG.CFG_driver import CFGDriver
+from .cfg_access import get_structural_cfg
 from .utils import read_file
 
 
@@ -308,7 +307,7 @@ class UnitTestGenerator:
         """
 
         test_code = read_file(self.test_code_file)
-        cfg_driver = CFGDriver(self.language, test_code, {"test_code": True})
+        cfg_driver = get_structural_cfg(self.language, test_code, {"test_code": True})
         # Semantic change: record CFG output for test-suite AST analysis stage.
         if self.snapshotter:
             self.snapshotter.capture(
@@ -316,7 +315,7 @@ class UnitTestGenerator:
                 source_code_file=self.test_code_file,
                 language=self.language,
                 cfg_driver=cfg_driver)
-        _, node_id_to_line_numbers_mapping = line_number_to_node_id_mapping(test_code, cfg_driver.CFG_nodes)
+        node_id_to_line_numbers_mapping = cfg_driver.node_id_to_line_number
         last_import_id = cfg_driver.file_obj["imports"][-1]["id"]
         last_line_for_imports = node_id_to_line_numbers_mapping[last_import_id][-1]
 
