@@ -27,6 +27,8 @@ class PromptBuilder:
                  branch_missed=None,
                  path_history=None,
                  test_dependencies="",
+                 llm_model="",
+                 path_cfg_backend="comex",
                  snapshotter=None):
         if lines_missed is None:
             lines_missed = []
@@ -42,9 +44,15 @@ class PromptBuilder:
         self.test_file = read_file(test_code_file)
         self.code_coverage_report = code_coverage_report
         self.language = language
+        self.llm_model = llm_model
+        self.path_cfg_backend = path_cfg_backend
         self.snapshotter = snapshotter
 
-        cfg_driver = get_path_cfg(self.language, self.source_file)
+        cfg_driver = get_path_cfg(
+            self.language,
+            self.source_file,
+            {"backend": self.path_cfg_backend, "llm_model": self.llm_model},
+        )
         # Semantic change: capture CFG state before prompt construction.
         if self.snapshotter:
             self.snapshotter.capture(
@@ -121,14 +129,17 @@ class PromptBuilder:
             path_nodes = [(self.cfg_node_to_line[node['id']], node['statement'], node['conditional']) for node in
                           path["path"]]
             if len(path_covered_missed_lines) or len(path_covered_missed_branches):
-                path_conditions_str = ""
+                path_conditions_str = path.get("_llm_precomputed_path_str", "")
 
-                for node in path_nodes:
-                    node_lines = node[1].split("\n")
-                    for i, line in enumerate(node[0]):
-                        path_conditions_str += f"\n{line}: {node_lines[i]}"
-                    if node[2] is not None:
-                        path_conditions_str += f" is {node[2]}"
+                if not path_conditions_str:
+                    for node in path_nodes:
+                        node_lines = node[1].split("\n")
+                        for i, line in enumerate(node[0]):
+                            if i >= len(node_lines):
+                                break
+                            path_conditions_str += f"\n{line}: {node_lines[i]}"
+                        if node[2] is not None:
+                            path_conditions_str += f" is {node[2]}"
                 missed_value = len(path_covered_missed_lines) + len(path_covered_missed_branches)
                 candidate_paths.append((missed_value, path_lines, path_nodes, path_conditions_str, path_label))
                 random.shuffle(candidate_paths)

@@ -49,6 +49,7 @@ class UnitTestGenerator:
                  code_coverage_report_path: str,
                  test_execution_command: str,
                  llm_model: str,
+                 path_cfg_backend: str = "comex",
                  test_code_command_dir: str = os.getcwd(),
                  test_dependencies: str = "",
                  included_files: list = None,
@@ -78,6 +79,7 @@ class UnitTestGenerator:
         self.target_coverage = target_coverage
         self.additional_instructions = additional_instructions
         self.language = get_code_language(source_code_file)
+        self.path_cfg_backend = path_cfg_backend
         # Semantic change: optional snapshotter for sidecar CFG recording.
         self.snapshotter = snapshotter
 
@@ -223,6 +225,8 @@ class UnitTestGenerator:
             branch_missed=self.branch_missed,
             path_history=self.path_history,
             test_dependencies=self.test_dependencies,
+            llm_model=self.llm_invoker.model,
+            path_cfg_backend=self.path_cfg_backend,
             snapshotter=self.snapshotter
         )
         if prompt_type == "control":

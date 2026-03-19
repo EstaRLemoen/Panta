@@ -3,6 +3,7 @@ from .cfg.src.comex.codeviews.combined_graph.combined_driver import (
     CombinedDriver,
     line_number_to_node_id_mapping,
 )
+from .llm_cfg_analyzer.llm_analyzer import LLMCFGAnalyzer
 
 
 def has_line_mappings(cfg_obj):
@@ -33,6 +34,16 @@ def get_structural_cfg(language, src_code, properties=None):
 
 
 def get_path_cfg(language, src_code, properties=None):
-    cfg_obj = CombinedDriver(src_language=language, src_code=src_code)
+    properties = properties or {}
+    backend = properties.get("backend", "comex")
+    if backend == "llm":
+        llm_model = properties.get("llm_model")
+        if not llm_model:
+            raise ValueError("llm_model is required when path CFG backend is 'llm'")
+        cfg_obj = LLMCFGAnalyzer(
+            src_language=language, src_code=src_code, llm_model=llm_model
+        ).run()
+    else:
+        cfg_obj = CombinedDriver(src_language=language, src_code=src_code)
     ensure_line_mappings(src_code, cfg_obj)
     return cfg_obj

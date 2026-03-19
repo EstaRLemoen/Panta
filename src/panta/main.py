@@ -33,6 +33,7 @@ def config_to_namespace(config):
         run_symprompt=config.getboolean("run_symprompt"),
         prompt_type=config.get('prompt_type'),
         pick_two_paths=config.getboolean("pick_two_paths"),
+        path_cfg_backend=config.get('path_cfg_backend', fallback='comex'),
         additional_instructions=config.get('additional_instructions'),
         # Semantic change: optional CFG snapshot controls.
         dump_cfg_intermediate=config.getboolean('dump_cfg_intermediate', fallback=False),
