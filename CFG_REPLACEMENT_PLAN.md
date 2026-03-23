@@ -660,3 +660,4 @@
 - 验证流程与运行记录应继续放在 `cfg_snapshot_test/` 中
 - 当前阶段的重点不是“替换一切”，而是“优先让新模块在路径选择链路中发挥价值”
 - `llm` 路径后端的阶段性对照验证材料已归档到 `cfg_snapshot_test/llm_path_backend_validation/`，当前 `ver0.1` 的首次对照实验见 `cfg_snapshot_test/llm_path_backend_validation/ver0.1_exp0.1/`
+- `ver0.2` 当前的 `WP1 + WP2` smoke 验证材料已归档到 `cfg_snapshot_test/llm_path_backend_validation/ver0.2_exp0.2.1/`
