@@ -38,10 +38,14 @@ def get_path_cfg(language, src_code, properties=None):
     backend = properties.get("backend", "comex")
     if backend == "llm":
         llm_model = properties.get("llm_model")
+        llm_line_mode = properties.get("llm_line_mode", "preprocessed")
         if not llm_model:
             raise ValueError("llm_model is required when path CFG backend is 'llm'")
         cfg_obj = LLMCFGAnalyzer(
-            src_language=language, src_code=src_code, llm_model=llm_model
+            src_language=language,
+            src_code=src_code,
+            llm_model=llm_model,
+            llm_line_mode=llm_line_mode,
         ).run()
     else:
         cfg_obj = CombinedDriver(src_language=language, src_code=src_code)

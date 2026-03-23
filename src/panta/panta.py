@@ -66,6 +66,7 @@ class Panta:
             additional_instructions=args.additional_instructions,
             llm_model=args.model,
             path_cfg_backend=args.path_cfg_backend,
+            llm_line_mode=args.llm_line_mode,
             snapshotter=self.snapshotter)
 
     def extract_test_dependency(self):

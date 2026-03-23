@@ -47,16 +47,11 @@ public class Calculator {
 """
 
     print("1. Initializing Analyzer with Java Code...")
-    analyzer = LLMCFGAnalyzer(src_language="java", src_code=java_code)
+    analyzer = LLMCFGAnalyzer(src_language="java", src_code=java_code, llm_model=f"openai/{MODEL_NAME}")
     analyzer.extract_deterministic_info()
     
     print("2. Generating Prompt...")
-    prompt_text = analyzer.generate_llm_prompt()
-    
-    prompt = {
-        "system": "You are a helpful assistant.",
-        "user": prompt_text
-    }
+    prompt = analyzer.generate_llm_prompt()
     
     # We set litellm env vars directly here to override any local config 
     os.environ["LITELLM_LOG"] = "INFO"

@@ -34,6 +34,7 @@ def config_to_namespace(config):
         prompt_type=config.get('prompt_type'),
         pick_two_paths=config.getboolean("pick_two_paths"),
         path_cfg_backend=config.get('path_cfg_backend', fallback='comex'),
+        llm_line_mode=config.get('llm_line_mode', fallback='preprocessed'),
         additional_instructions=config.get('additional_instructions'),
         # Semantic change: optional CFG snapshot controls.
         dump_cfg_intermediate=config.getboolean('dump_cfg_intermediate', fallback=False),

@@ -2,6 +2,11 @@ from dataclasses import dataclass, field
 
 from ..cfg.src.comex.tree_parser.parser_driver import ParserDriver
 from ..cfg.src.comex.utils.java_nodes import get_signature
+from .line_mapping import (
+    build_line_mappings,
+    remap_line_to_original,
+    slice_source_by_lines,
+)
 
 
 @dataclass
@@ -17,8 +22,12 @@ class MethodSkeleton:
     start_line: int
     end_line: int
     declaration_line: int
+    start_line_preprocessed: int
+    end_line_preprocessed: int
+    declaration_line_preprocessed: int
     declaration_text: str
     method_source: str
+    method_source_original: str
 
 
 @dataclass
@@ -27,6 +36,7 @@ class ClassSkeleton:
     class_kind: str
     parent_class_name: str | None
     declaration_line: int
+    declaration_line_preprocessed: int
     declaration_text: str
     methods: list[MethodSkeleton] = field(default_factory=list)
 
@@ -34,9 +44,13 @@ class ClassSkeleton:
 class MethodSkeletonExtractor:
     def __init__(self, src_language: str, src_code: str):
         self.src_language = src_language
+        self.original_src_code = src_code
         self.parser_driver = ParserDriver(src_language, src_code)
         self.src_code = self.parser_driver.src_code
         self.root_node = self.parser_driver.root_node
+        self.preprocessed_to_original_line, self.original_to_preprocessed_line = (
+            build_line_mappings(src_code, src_language)
+        )
 
     def extract(self):
         if self.src_language != "java":
@@ -75,11 +89,15 @@ class MethodSkeletonExtractor:
 
     def _build_class_skeleton(self, node, parent_class_name):
         class_name = self._node_text(node.child_by_field_name("name"))
+        declaration_line_preprocessed = node.start_point[0] + 1
         return ClassSkeleton(
             class_name=class_name,
             class_kind="inner" if parent_class_name else "outer",
             parent_class_name=parent_class_name,
-            declaration_line=node.start_point[0] + 1,
+            declaration_line=remap_line_to_original(
+                declaration_line_preprocessed, self.preprocessed_to_original_line
+            ),
+            declaration_line_preprocessed=declaration_line_preprocessed,
             declaration_text=self._declaration_text(node, {"class_body"}),
         )
 
@@ -89,6 +107,18 @@ class MethodSkeletonExtractor:
         visibility = self._visibility(node)
         declaration_text = self._declaration_text(node, {"block", "constructor_body"})
         body = node.child_by_field_name("body")
+        start_line_preprocessed = node.start_point[0] + 1
+        end_line_preprocessed = node.end_point[0] + 1
+        declaration_line_preprocessed = node.start_point[0] + 1
+        start_line = remap_line_to_original(
+            start_line_preprocessed, self.preprocessed_to_original_line
+        )
+        end_line = remap_line_to_original(
+            end_line_preprocessed, self.preprocessed_to_original_line
+        )
+        declaration_line = remap_line_to_original(
+            declaration_line_preprocessed, self.preprocessed_to_original_line
+        )
 
         method = MethodSkeleton(
             qualified_method_key=self._qualified_method_key(
@@ -101,11 +131,17 @@ class MethodSkeletonExtractor:
             is_constructor=node.type == "constructor_declaration",
             is_static="static" in declaration_text,
             is_abstract=body is None,
-            start_line=node.start_point[0] + 1,
-            end_line=node.end_point[0] + 1,
-            declaration_line=node.start_point[0] + 1,
+            start_line=start_line,
+            end_line=end_line,
+            declaration_line=declaration_line,
+            start_line_preprocessed=start_line_preprocessed,
+            end_line_preprocessed=end_line_preprocessed,
+            declaration_line_preprocessed=declaration_line_preprocessed,
             declaration_text=declaration_text,
             method_source=self._node_text(node),
+            method_source_original=slice_source_by_lines(
+                self.original_src_code, start_line, end_line
+            ),
         )
 
         if self._include_method(method, body):
@@ -189,6 +225,7 @@ class MethodSkeletonExtractor:
             "class_kind": class_skeleton.class_kind,
             "parent_class_name": class_skeleton.parent_class_name,
             "declaration_line": class_skeleton.declaration_line,
+            "declaration_line_preprocessed": class_skeleton.declaration_line_preprocessed,
             "declaration_text": class_skeleton.declaration_text,
             "methods": [
                 self._method_to_dict(method) for method in class_skeleton.methods
@@ -208,6 +245,10 @@ class MethodSkeletonExtractor:
             "start_line": method.start_line,
             "end_line": method.end_line,
             "declaration_line": method.declaration_line,
+            "start_line_preprocessed": method.start_line_preprocessed,
+            "end_line_preprocessed": method.end_line_preprocessed,
+            "declaration_line_preprocessed": method.declaration_line_preprocessed,
             "declaration_text": method.declaration_text,
             "method_source": method.method_source,
+            "method_source_original": method.method_source_original,
         }

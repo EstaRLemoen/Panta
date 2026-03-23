@@ -50,6 +50,7 @@ class UnitTestGenerator:
                  test_execution_command: str,
                  llm_model: str,
                  path_cfg_backend: str = "comex",
+                 llm_line_mode: str = "preprocessed",
                  test_code_command_dir: str = os.getcwd(),
                  test_dependencies: str = "",
                  included_files: list = None,
@@ -80,6 +81,7 @@ class UnitTestGenerator:
         self.additional_instructions = additional_instructions
         self.language = get_code_language(source_code_file)
         self.path_cfg_backend = path_cfg_backend
+        self.llm_line_mode = llm_line_mode
         # Semantic change: optional snapshotter for sidecar CFG recording.
         self.snapshotter = snapshotter
 
@@ -227,6 +229,7 @@ class UnitTestGenerator:
             test_dependencies=self.test_dependencies,
             llm_model=self.llm_invoker.model,
             path_cfg_backend=self.path_cfg_backend,
+            llm_line_mode=self.llm_line_mode,
             snapshotter=self.snapshotter
         )
         if prompt_type == "control":

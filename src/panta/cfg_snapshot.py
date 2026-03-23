@@ -161,6 +161,10 @@ class CFGSnapshotter:
                     meta["method_label"] = context["method_label"]
                 if "path_index" in context:
                     meta["path_index"] = context["path_index"]
+                if "path_cfg_backend" in context:
+                    meta["path_cfg_backend"] = context["path_cfg_backend"]
+                if "llm_line_mode" in context:
+                    meta["llm_line_mode"] = context["llm_line_mode"]
 
             self._write_json(stage_path, "meta.json", meta)
 
@@ -196,6 +200,26 @@ class CFGSnapshotter:
                 }
                 self._write_json(
                     stage_path, "cfg_line_number_to_node_id.json", serializable
+                )
+
+            if (
+                hasattr(cfg_driver, "preprocessed_to_original_line")
+                and cfg_driver.preprocessed_to_original_line
+            ):
+                self._write_json(
+                    stage_path,
+                    "cfg_preprocessed_to_original_line.json",
+                    cfg_driver.preprocessed_to_original_line,
+                )
+
+            if (
+                hasattr(cfg_driver, "original_to_preprocessed_line")
+                and cfg_driver.original_to_preprocessed_line
+            ):
+                self._write_json(
+                    stage_path,
+                    "cfg_original_to_preprocessed_line.json",
+                    cfg_driver.original_to_preprocessed_line,
                 )
 
             # Write testable methods statistics if available

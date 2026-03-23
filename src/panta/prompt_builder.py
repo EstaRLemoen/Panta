@@ -46,12 +46,17 @@ class PromptBuilder:
         self.language = language
         self.llm_model = llm_model
         self.path_cfg_backend = path_cfg_backend
+        self.llm_line_mode = llm_line_mode
         self.snapshotter = snapshotter
 
         cfg_driver = get_path_cfg(
             self.language,
             self.source_file,
-            {"backend": self.path_cfg_backend, "llm_model": self.llm_model},
+            {
+                "backend": self.path_cfg_backend,
+                "llm_model": self.llm_model,
+                "llm_line_mode": self.llm_line_mode,
+            },
         )
         # Semantic change: capture CFG state before prompt construction.
         if self.snapshotter:
@@ -59,7 +64,11 @@ class PromptBuilder:
                 stage="prompt_builder_cfg",
                 source_code_file=source_code_file,
                 language=self.language,
-                cfg_driver=cfg_driver)
+                cfg_driver=cfg_driver,
+                context={
+                    "path_cfg_backend": self.path_cfg_backend,
+                    "llm_line_mode": self.llm_line_mode,
+                })
         self.processed_source_code = cfg_driver.preprocessed_src_code
         self.cfg_obj = cfg_driver.file_obj
         self.cfg_node_to_line = cfg_driver.node_id_to_line_number
@@ -130,6 +139,13 @@ class PromptBuilder:
                           path["path"]]
             if len(path_covered_missed_lines) or len(path_covered_missed_branches):
                 path_conditions_str = path.get("_llm_precomputed_path_str", "")
+                path_anchor_info = {
+                    "conditions": path.get("_llm_conditions", []),
+                    "effects": path.get("_llm_effects", []),
+                    "coverage_anchors": path.get("_llm_coverage_anchors", []),
+                    "kind": path.get("_llm_path_kind", ""),
+                    "path_id": path.get("_llm_path_id", path_label),
+                }
 
                 if not path_conditions_str:
                     for node in path_nodes:
@@ -141,7 +157,7 @@ class PromptBuilder:
                         if node[2] is not None:
                             path_conditions_str += f" is {node[2]}"
                 missed_value = len(path_covered_missed_lines) + len(path_covered_missed_branches)
-                candidate_paths.append((missed_value, path_lines, path_nodes, path_conditions_str, path_label))
+                candidate_paths.append((missed_value, path_lines, path_nodes, path_conditions_str, path_label, path_anchor_info))
                 random.shuffle(candidate_paths)
         return candidate_paths
 
