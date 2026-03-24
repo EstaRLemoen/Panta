@@ -662,3 +662,6 @@
 - `llm` 路径后端的阶段性对照验证材料已归档到 `cfg_snapshot_test/llm_path_backend_validation/`，当前 `ver0.1` 的首次对照实验见 `cfg_snapshot_test/llm_path_backend_validation/ver0.1_exp0.1/`
 - `ver0.2` 当前的 `WP1 + WP2` smoke 验证材料已归档到 `cfg_snapshot_test/llm_path_backend_validation/ver0.2_exp0.2.1/`
 - `ver0.2` 当前的行号映射与 `llm_line_mode` smoke 验证材料已归档到 `cfg_snapshot_test/llm_path_backend_validation/ver0.2_exp0.2.2/`
+- `ver0.2` 当前的 `WP3.5` 首轮 `segments + transitions` 连通性 smoke 已归档到 `cfg_snapshot_test/llm_path_backend_validation/ver0.2_exp0.2.3/`
+- `ver0.2` 当前在清理旧测试残留后的 `WP3.5` rerun smoke 已归档到 `cfg_snapshot_test/llm_path_backend_validation/ver0.2_exp0.2.4/`
+- `ver0.2` 当前围绕 `direct_path_text`、单路径单 outcome、逐 method 调用与最新 smoke 基线的状态归档见 `cfg_snapshot_test/llm_path_backend_validation/ver0.2_exp0.2.25/`

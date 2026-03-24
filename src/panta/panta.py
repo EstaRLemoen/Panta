@@ -259,7 +259,7 @@ class Panta:
             "reason": "",
             "exit_code": 0,
             "stderr": "",
-            "stdout": self.test_gen.prompt_builder.path_history,
+            "stdout": getattr(getattr(self.test_gen, "prompt_builder", None), "path_history", {}),
             "test": "",
             "line_coverage": round(self.test_gen.current_coverage[0] * 100, 2),
             "branch_coverage": round(self.test_gen.current_coverage[1] * 100, 2)

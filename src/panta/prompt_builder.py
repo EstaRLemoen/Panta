@@ -29,6 +29,7 @@ class PromptBuilder:
                  test_dependencies="",
                  llm_model="",
                  path_cfg_backend="comex",
+                 llm_line_mode="preprocessed",
                  snapshotter=None):
         if lines_missed is None:
             lines_missed = []
@@ -38,6 +39,7 @@ class PromptBuilder:
             path_history = {}
 
         self.project_dir = project_dir
+        self.source_code_file_path = source_code_file
         self.source_file_name = source_code_file.split("/")[-1]
         self.test_file_name = test_code_file.split("/")[-1]
         self.source_file = read_file(source_code_file)
@@ -125,6 +127,27 @@ class PromptBuilder:
                 method_missed_branches.append(branch_line)
         return method_name, cyc_complexity, lines, method_missed_lines, method_missed_branches
 
+    def _collect_llm_membership_lines(self, path):
+        derived_lines = path.get("_llm_membership_lines", [])
+        if derived_lines:
+            return sorted([line for line in derived_lines if isinstance(line, int)])
+
+        membership_lines = []
+        for segment in path.get("_llm_segments", []):
+            if segment.get("segment_type") == "sequential":
+                for statement in segment.get("statements", []):
+                    line = statement.get("line")
+                    if isinstance(line, int) and line not in membership_lines:
+                        membership_lines.append(line)
+            elif segment.get("segment_type") == "transition":
+                source_line = segment.get("source_line")
+                target_line = segment.get("target_line")
+                if isinstance(source_line, int) and source_line not in membership_lines:
+                    membership_lines.append(source_line)
+                if isinstance(target_line, int) and target_line not in membership_lines:
+                    membership_lines.append(target_line)
+        return sorted(membership_lines)
+
     def generate_paths_to_be_covered(self, method, missed_lines, missed_branches):
         paths = method["paths"]
         candidate_paths = []
@@ -133,19 +156,34 @@ class PromptBuilder:
             path_label = f"{method_label}_{index}"
             path_node_ids = [node['id'] for node in path["path"]]
             path_lines = [line for node_id in path_node_ids for line in self.cfg_node_to_line[node_id]]
+            llm_membership_lines = self._collect_llm_membership_lines(path)
+            if llm_membership_lines:
+                path_lines = sorted(set(path_lines + llm_membership_lines))
             path_covered_missed_lines = [value for value in missed_lines if value in path_lines]
             path_covered_missed_branches = [value for value in missed_branches if value in path_lines]
             path_nodes = [(self.cfg_node_to_line[node['id']], node['statement'], node['conditional']) for node in
                           path["path"]]
             if len(path_covered_missed_lines) or len(path_covered_missed_branches):
-                path_conditions_str = path.get("_llm_precomputed_path_str", "")
+                path_conditions_str = ""
                 path_anchor_info = {
                     "conditions": path.get("_llm_conditions", []),
                     "effects": path.get("_llm_effects", []),
                     "coverage_anchors": path.get("_llm_coverage_anchors", []),
+                    "transitions": path.get("_llm_transitions", []),
+                    "segments": path.get("_llm_segments", []),
+                    "membership_lines": llm_membership_lines,
+                    "direct_path_text": path.get("_llm_direct_path_text", ""),
+                    "path_prompt_text": path.get("_llm_path_prompt_text", ""),
                     "kind": path.get("_llm_path_kind", ""),
                     "path_id": path.get("_llm_path_id", path_label),
                 }
+
+                if self.path_cfg_backend == "llm":
+                    path_conditions_str = (
+                        path.get("_llm_direct_path_text")
+                        or path.get("_llm_path_prompt_text")
+                        or path.get("_llm_precomputed_path_str", "")
+                    )
 
                 if not path_conditions_str:
                     for node in path_nodes:
@@ -261,6 +299,7 @@ class PromptBuilder:
             ).render(variables)
 
             rendered_templates = ""
+            selected_paths = []
             for method in self.cfa_guided_methods_under_test:
                 method_name = method[0]
                 method_complexity = method[1]
@@ -282,6 +321,7 @@ class PromptBuilder:
                             least_path_label = least_visited_path[4]
                             self.path_history[highest_path_label] = self.path_history.get(highest_path_label, 0) + 1
                             path_str = highest_missed_path[3]
+                            selected_paths.append({"method_name": method_name, "selection_reason": "highest_missed", "path_label": highest_path_label, "missed_value": highest_missed_path[0], "path_lines": highest_missed_path[1], "path_anchor_info": highest_missed_path[5], "candidate_path_text": path_str, "num_candidate_paths": len(candidate_paths)})
                             rendered_template = environment.from_string(template_str).render(method_name=method_name,
                                                                                              candidate_path=path_str)
                             if least_path_label != highest_path_label:
@@ -289,6 +329,7 @@ class PromptBuilder:
                                     f"select another candidate path with the least time of visits for method {method_name}")
                                 self.path_history[least_path_label] = self.path_history.get(least_path_label, 0) + 1
                                 path_str = least_visited_path[3]
+                                selected_paths.append({"method_name": method_name, "selection_reason": "least_visited", "path_label": least_path_label, "missed_value": least_visited_path[0], "path_lines": least_visited_path[1], "path_anchor_info": least_visited_path[5], "candidate_path_text": path_str, "num_candidate_paths": len(candidate_paths)})
                                 rendered_template += environment.from_string(template_str).render(method_name=method_name,
                                                                                                   candidate_path=path_str)
                     else:
@@ -299,6 +340,7 @@ class PromptBuilder:
                             path_label = prioritized_path[4]
                             self.path_history[path_label] = self.path_history.get(path_label, 0) + 1
                             path_str = prioritized_path[3]
+                            selected_paths.append({"method_name": method_name, "selection_reason": "priority_score", "path_label": path_label, "missed_value": prioritized_path[0], "path_lines": prioritized_path[1], "path_anchor_info": prioritized_path[5], "candidate_path_text": path_str, "num_candidate_paths": len(candidate_paths)})
                             rendered_template = environment.from_string(template_str).render(method_name=method_name,
                                                                                              candidate_path=path_str)
                 else:
@@ -316,6 +358,18 @@ class PromptBuilder:
 
             self.logger.debug(f"system_prompt: {system_prompt}")
             self.logger.debug(f"user_prompt: {user_prompt}")
+            if self.snapshotter:
+                self.snapshotter.capture(stage="prompt_builder_selection",
+                                         source_code_file=self.source_code_file_path,
+                                         language=self.language,
+                                         context={"path_cfg_backend": self.path_cfg_backend,
+                                                  "llm_line_mode": self.llm_line_mode,
+                                                  "path_history": self.path_history,
+                                                  "selected_paths": selected_paths,
+                                                  "prompt_context": {"selected_path_labels": [item["path_label"] for item in selected_paths],
+                                                                     "num_candidate_paths": sum(item["num_candidate_paths"] for item in selected_paths) if selected_paths else 0,
+                                                                     "prompt": user_prompt,
+                                                                     "selected_paths": selected_paths}})
         except Exception as e:
             logging.error(f"Error rendering prompt: {e}")
             return {"system": "", "user": ""}
