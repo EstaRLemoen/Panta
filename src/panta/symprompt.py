@@ -41,7 +41,8 @@ class SymPrompt:
                  project_dir: str,
                  source_code_file: str,
                  llm_model: str,
-                 junit_version: int):
+                 junit_version: int,
+                 snapshotter=None):
 
         self.prompt = {}
         self.project_dir = project_dir
@@ -49,7 +50,15 @@ class SymPrompt:
         self.source_file_name = source_code_file.split("/")[-1]
         self.language = get_code_language(source_code_file)
         self.source_file = read_file(source_code_file)
+        self.snapshotter = snapshotter
         cfg_driver = CombinedDriver(src_language=self.language, src_code=self.source_file)
+        # Semantic change: capture CFG state for symprompt branch.
+        if self.snapshotter:
+            self.snapshotter.capture(
+                stage="symprompt_cfg",
+                source_code_file=source_code_file,
+                language=self.language,
+                cfg_driver=cfg_driver)
         self.cfg_obj = cfg_driver.file_obj
         self.cfg_node_to_line = cfg_driver.node_id_to_line_number
         self.methods_under_test_with_paths = self.extract_paths_for_each_method_under_test()

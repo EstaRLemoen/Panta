@@ -34,3 +34,13 @@ poetry.lock
 
 # Ignore Excel temporary files
 ~$*.xlsx
+
+# Generated CFG snapshot artifacts
+cfg_snapshot_test/intermediate/
+cfg_snapshot_test/validation_runs/
+cfg_snapshot_test/*.env
+
+# Generated evaluation outputs
+evaluation/*.csv
+evaluation/debug.txt
+evaluation/defects4j-codefiles/*.json

@@ -5,20 +5,22 @@ import re
 from .command_executor import CommandExecutor
 from .coverage.jacoco_coverage import JacocoCoverage
 from .coverage.pycov_coverage import PycovCoverage
-from .error_message_parser import extract_error_message, extract_compilation_error_message_java
+from .error_message_parser import (
+    extract_error_message,
+    extract_compilation_error_message_java,
+)
 from .file_preprocessor import FilePreprocessor
 from .panta_logger import pantaLogger
 from .model_invocation.llm_invocation import LLMInvocation
 from .prompt_builder import PromptBuilder
 from .utils import get_code_language
 from .yaml_parser_utils import load_yaml
-from .cfg.src.comex.codeviews.combined_graph.combined_driver import line_number_to_node_id_mapping
-from .cfg.src.comex.codeviews.CFG.CFG_driver import CFGDriver
+from .cfg_access import get_structural_cfg
 from .utils import read_file
 
 
 def count_leading_spaces(text):
-    match = re.match(r'^ +', text)
+    match = re.match(r"^ +", text)
     if match:
         return len(match.group(0))
     return 0
@@ -30,9 +32,13 @@ def failed_test_to_string(failed_test: dict):
     error_message = failed_test.get("error_message", "")
     if failed_test_dict:
         failed_test_code = failed_test_dict.get("test_code", "").rstrip()
-        failed_test_imports = (failed_test_dict.get("new_imports_code", "") or "").strip()
+        failed_test_imports = (
+            failed_test_dict.get("new_imports_code", "") or ""
+        ).strip()
         failed_test_name = failed_test_dict.get("test_name", "").rstrip()
-        failed_test_str += f"=========The failed test case is : {failed_test_name}=======\n"
+        failed_test_str += (
+            f"=========The failed test case is : {failed_test_name}=======\n"
+        )
         failed_test_str += f"{failed_test_code}\n"
         failed_test_str += f"additional imports: {failed_test_imports}\n"
 
@@ -44,20 +50,27 @@ def failed_test_to_string(failed_test: dict):
 
 
 class UnitTestGenerator:
-    def __init__(self, project_dir: str,
-                 source_code_file: str,
-                 test_code_file: str,
-                 code_coverage_report_path: str,
-                 test_execution_command: str,
-                 llm_model: str,
-                 test_code_command_dir: str = os.getcwd(),
-                 test_dependencies: str = "",
-                 included_files: list = None,
-                 coverage_type="jacoco",
-                 target_coverage: int = 100,
-                 prompt_type: str = "baseline",
-                 additional_instructions: str = ""):
-
+    def __init__(
+        self,
+        project_dir: str,
+        source_code_file: str,
+        test_code_file: str,
+        code_coverage_report_path: str,
+        test_execution_command: str,
+        llm_model: str,
+        llm_path_advice_model: str = "",
+        selection_mode: str = "comex",
+        test_code_command_dir: str = os.getcwd(),
+        test_dependencies: str = "",
+        included_files: list = None,
+        coverage_type="jacoco",
+        target_coverage: int = 100,
+        prompt_type: str = "baseline",
+        additional_instructions: str = "",
+        llm_advice_activation_line_coverage: float = 50.0,
+        llm_advice_activation_no_growth: int = 1,
+        snapshotter=None,
+    ):
         self.relevant_line_number_to_insert_tests_after = None
         self.relevant_line_number_to_insert_imports_after = None
         self.relevant_line_number_to_insert_tests_before = None
@@ -77,7 +90,13 @@ class UnitTestGenerator:
         self.coverage_type = coverage_type
         self.target_coverage = target_coverage
         self.additional_instructions = additional_instructions
+        self.llm_advice_activation_line_coverage = llm_advice_activation_line_coverage
+        self.llm_advice_activation_no_growth = llm_advice_activation_no_growth
         self.language = get_code_language(source_code_file)
+        self.selection_mode = selection_mode
+        self.llm_path_advice_model = llm_path_advice_model or llm_model
+        # Semantic change: optional snapshotter for sidecar CFG recording.
+        self.snapshotter = snapshotter
 
         self.llm_invoker = LLMInvocation(model=llm_model)
 
@@ -89,26 +108,38 @@ class UnitTestGenerator:
         self.run_coverage()
         self.prompt_type = prompt_type
         self.path_history = {}
+        self.selection_state = {}
         # self.prompt = self.build_prompt(self.prompt_type)
         self.prompt = ""
+
+    def get_prompt_selection_state(self):
+        return self.selection_state
 
     def run_coverage(self):
         """
         run the build/test command and get the baseline coverage
         """
-        self.logger.info(f'generate baseline coverage report: "{self.test_execution_command}"')
+        self.logger.info(
+            f'generate baseline coverage report: "{self.test_execution_command}"'
+        )
         try:
-            stdout, stderr, exit_code, time_of_test_execution_command, command_duration = CommandExecutor.run_command(
+            (
+                stdout,
+                stderr,
+                exit_code,
+                time_of_test_execution_command,
+                command_duration,
+            ) = CommandExecutor.run_command(
                 command=self.test_execution_command, cwd=self.test_code_command_dir
             )
 
             if exit_code != 0:
                 raise RuntimeError(
-                    f'Fatal: Error running test command. '
+                    f"Fatal: Error running test command. "
                     f'make sure this build command is correct: "{self.test_execution_command}"\n'
-                    f'Exit code: {exit_code}'
-                    f'\nStdout: {stdout}'
-                    f'\nStderr: {stderr}'
+                    f"Exit code: {exit_code}"
+                    f"\nStdout: {stdout}"
+                    f"\nStderr: {stderr}"
                 )
 
             # Instantiate Coverage and process the coverage report
@@ -116,28 +147,35 @@ class UnitTestGenerator:
                 coverage_processor = JacocoCoverage(
                     project_dir=self.project_dir,
                     file_path=self.code_coverage_report_path,
-                    src_file_path=self.source_code_file)
+                    src_file_path=self.source_code_file,
+                )
             elif self.coverage_type == "pycov":
                 coverage_processor = PycovCoverage(
                     file_path=self.code_coverage_report_path,
-                    src_file_path=self.source_code_file)
+                    src_file_path=self.source_code_file,
+                )
             else:
                 raise ValueError(f"Unsupported coverage type: {self.coverage_type}")
 
             # Use the process_coverage_report method of Coverage, passing in the time the test command was executed
             try:
-                self.lines_missed, self.branch_missed, line_percentage, branch_percentage = (
-                    coverage_processor.process_coverage_report(
-                        time_of_test_execution_command=time_of_test_execution_command
-                    )
+                (
+                    self.lines_missed,
+                    self.branch_missed,
+                    line_percentage,
+                    branch_percentage,
+                ) = coverage_processor.process_coverage_report(
+                    time_of_test_execution_command=time_of_test_execution_command
                 )
 
                 # Process the extracted coverage metrics
                 self.current_coverage = (line_percentage, branch_percentage)
-                self.code_coverage_report = f"Lines missed: {self.lines_missed}\n" \
-                                            f"Branches missed: {self.branch_missed}\n" \
-                                            f"Line coverage: {round(line_percentage * 100, 2)}%\n" \
-                                            f"Branch coverage: {round(branch_percentage * 100, 2)}%"
+                self.code_coverage_report = (
+                    f"Lines missed: {self.lines_missed}\n"
+                    f"Branches missed: {self.branch_missed}\n"
+                    f"Line coverage: {round(line_percentage * 100, 2)}%\n"
+                    f"Branch coverage: {round(branch_percentage * 100, 2)}%"
+                )
             except AssertionError as error:
                 self.logger.error(f"Error in coverage processing: {error}")
                 raise
@@ -165,12 +203,16 @@ class UnitTestGenerator:
             out_str = ""
             if included_files_content:
                 for i, content in enumerate(included_files_content):
-                    out_str += f"file_path: `{file_names[i]}`\ncontent:\n```\n{content}\n```\n"
+                    out_str += (
+                        f"file_path: `{file_names[i]}`\ncontent:\n```\n{content}\n```\n"
+                    )
 
             return out_str.strip()
         return ""
 
-    def build_prompt(self, prompt_type, pick_two_paths=True) -> dict:
+    def build_prompt(
+        self, prompt_type, pick_two_paths=True, no_coverage_increase_count=0
+    ) -> dict:
         """
         Returns:
             str: prompt that will be used for generating new tests
@@ -220,11 +262,24 @@ class UnitTestGenerator:
             lines_missed=self.lines_missed,
             branch_missed=self.branch_missed,
             path_history=self.path_history,
-            test_dependencies=self.test_dependencies
+            test_dependencies=self.test_dependencies,
+            llm_model=self.llm_invoker.model,
+            llm_path_advice_model=self.llm_path_advice_model,
+            selection_mode=self.selection_mode,
+            current_coverage=self.current_coverage,
+            no_coverage_increase_count=no_coverage_increase_count,
+            llm_advice_activation_line_coverage=self.llm_advice_activation_line_coverage,
+            llm_advice_activation_no_growth=self.llm_advice_activation_no_growth,
+            snapshotter=self.snapshotter,
         )
-        if prompt_type == "control":
+        if prompt_type == "control" and self.selection_mode == "comex":
             prompt = self.prompt_builder.build_prompt_cfa_guided(pick_two_paths)
             self.path_history = self.prompt_builder.get_current_path_history()
+            self.selection_state = self.prompt_builder.get_current_selection_state()
+            return prompt
+        elif prompt_type == "control" and self.selection_mode == "llm":
+            prompt = self.prompt_builder.build_prompt_llm_guided()
+            self.selection_state = self.prompt_builder.get_current_selection_state()
             return prompt
         elif prompt_type == "coverage":
             return self.prompt_builder.build_prompt(coverage_enabled=True)
@@ -242,11 +297,11 @@ class UnitTestGenerator:
             test_headers_indentation = None
             allowed_attempts = 3
             counter_attempts = 0
-            while test_headers_indentation is None and counter_attempts < allowed_attempts:
-                prompt_headers_indentation = (
-                    self.prompt_builder.build_prompt_custom(
-                        file="test_headers_indentation_prompt"
-                    )
+            while (
+                test_headers_indentation is None and counter_attempts < allowed_attempts
+            ):
+                prompt_headers_indentation = self.prompt_builder.build_prompt_custom(
+                    file="test_headers_indentation_prompt"
                 )
                 response, prompt_token_count, response_token_count = (
                     self.llm_invoker.call_model(prompt=prompt_headers_indentation)
@@ -264,11 +319,12 @@ class UnitTestGenerator:
             relevant_line_number_to_insert_imports_after = None
             allowed_attempts = 3
             counter_attempts = 0
-            while not relevant_line_number_to_insert_tests_after and counter_attempts < allowed_attempts:
-                prompt_test_insert_line = (
-                    self.prompt_builder.build_prompt_custom(
-                        file="analyze_suite_test_insert_line"
-                    )
+            while (
+                not relevant_line_number_to_insert_tests_after
+                and counter_attempts < allowed_attempts
+            ):
+                prompt_test_insert_line = self.prompt_builder.build_prompt_custom(
+                    file="analyze_suite_test_insert_line"
                 )
                 response, prompt_token_count, response_token_count = (
                     self.llm_invoker.call_model(prompt=prompt_test_insert_line)
@@ -288,8 +344,12 @@ class UnitTestGenerator:
                 )
 
             self.test_headers_indentation = test_headers_indentation
-            self.relevant_line_number_to_insert_tests_after = relevant_line_number_to_insert_tests_after
-            self.relevant_line_number_to_insert_imports_after = relevant_line_number_to_insert_imports_after
+            self.relevant_line_number_to_insert_tests_after = (
+                relevant_line_number_to_insert_tests_after
+            )
+            self.relevant_line_number_to_insert_imports_after = (
+                relevant_line_number_to_insert_imports_after
+            )
         except Exception as e:
             self.logger.error(f"Error during initial test suite analysis: {e}")
             raise Exception("Error during initial test suite analysis")
@@ -304,19 +364,31 @@ class UnitTestGenerator:
         """
 
         test_code = read_file(self.test_code_file)
-        cfg_driver = CFGDriver(self.language, test_code, {"test_code": True})
-        _, node_id_to_line_numbers_mapping = line_number_to_node_id_mapping(test_code, cfg_driver.CFG_nodes)
+        cfg_driver = get_structural_cfg(self.language, test_code, {"test_code": True})
+        # Semantic change: record CFG output for test-suite AST analysis stage.
+        if self.snapshotter:
+            self.snapshotter.capture(
+                stage="initial_test_suite_analysis_ast_cfg",
+                source_code_file=self.test_code_file,
+                language=self.language,
+                cfg_driver=cfg_driver,
+            )
+        node_id_to_line_numbers_mapping = cfg_driver.node_id_to_line_number
         last_import_id = cfg_driver.file_obj["imports"][-1]["id"]
         last_line_for_imports = node_id_to_line_numbers_mapping[last_import_id][-1]
 
         class_obj = cfg_driver.file_obj["class_objects"][0]
         class_declaration_id = class_obj["class_declaration"]["id"]
-        class_declaration_start_line = node_id_to_line_numbers_mapping[class_declaration_id][0]
+        class_declaration_start_line = node_id_to_line_numbers_mapping[
+            class_declaration_id
+        ][0]
 
         last_method_declaration = class_obj["methods_under_test"][-1]
         last_method_start_id = last_method_declaration["method_declaration"]["id"]
-        last_method_start_line = node_id_to_line_numbers_mapping[last_method_start_id][0]
-        test_code_lines = test_code.split('\n')
+        last_method_start_line = node_id_to_line_numbers_mapping[last_method_start_id][
+            0
+        ]
+        test_code_lines = test_code.split("\n")
         method_line_str = test_code_lines[last_method_start_line - 1]
         indents = count_leading_spaces(method_line_str)
 
@@ -324,28 +396,43 @@ class UnitTestGenerator:
         self.relevant_line_number_to_insert_tests_before = last_method_start_line
         self.relevant_line_number_to_insert_imports_after = last_line_for_imports
 
-    def generate_tests(self, g_label, max_tokens=4096, pick_two_paths=True):
-        self.prompt = self.build_prompt(self.prompt_type, pick_two_paths)
+    def generate_tests(
+        self,
+        g_label,
+        max_tokens=4096,
+        pick_two_paths=True,
+        no_coverage_increase_count=0,
+    ):
+        self.prompt = self.build_prompt(
+            self.prompt_type,
+            pick_two_paths,
+            no_coverage_increase_count=no_coverage_increase_count,
+        )
         # self.logger.info(f"{g_label}: {self.path_history}")
-        tests_dict, token_count = self.generate_test_by_prompt_llm(self.prompt, max_tokens)
+        tests_dict, token_count = self.generate_test_by_prompt_llm(
+            self.prompt, max_tokens
+        )
         return tests_dict, token_count
 
-    def generate_init_tests(self, prompt_type='baseline', max_tokens=4096):
+    def generate_init_tests(self, prompt_type="baseline", max_tokens=4096):
         prompt = self.build_prompt(prompt_type)
         tests_dict, token_count = self.generate_test_by_prompt_llm(prompt, max_tokens)
         return tests_dict, token_count
 
     def generate_test_by_prompt_llm(self, prompt, max_tokens=4096):
         response, prompt_token_count, response_token_count = (
-            self.llm_invoker.call_model(prompt=prompt,
-                                        max_tokens=max_tokens))
-        self.logger.info(f"Total token count for LLM {self.llm_invoker.model}: "
-                         f"{prompt_token_count + response_token_count}")
+            self.llm_invoker.call_model(prompt=prompt, max_tokens=max_tokens)
+        )
+        self.logger.info(
+            f"Total token count for LLM {self.llm_invoker.model}: "
+            f"{prompt_token_count + response_token_count}"
+        )
         token_count = prompt_token_count + response_token_count
         try:
-            tests_dict = load_yaml(response, keys_fix_yaml=["test_code",
-                                                            "test_name",
-                                                            "test_behavior"], )
+            tests_dict = load_yaml(
+                response,
+                keys_fix_yaml=["test_code", "test_name", "test_behavior"],
+            )
             if tests_dict is None:
                 return {}
         except Exception as e:
@@ -368,8 +455,11 @@ class UnitTestGenerator:
         with open(self.test_code_file, "r") as test_file:
             original_content = test_file.read()  # Store original content
         try:
-            processed_test, relevant_line_number_to_insert_imports_after, \
-            relevant_line_number_to_insert_tests_before = self.add_new_test_to_test_file(generated_test, original_content)
+            (
+                processed_test,
+                relevant_line_number_to_insert_imports_after,
+                relevant_line_number_to_insert_tests_before,
+            ) = self.add_new_test_to_test_file(generated_test, original_content)
             if processed_test:
                 with open(self.test_code_file, "w") as test_file:
                     test_file.write(processed_test)
@@ -383,9 +473,15 @@ class UnitTestGenerator:
                 #     )
                 # else:
                 # Now try to run the test so that we can check if the newly added test is valid
-                self.logger.info(f'Run test with the command: "{self.test_execution_command}"')
-                stdout, stderr, exit_code, time_of_command, command_duration = CommandExecutor.run_command(
-                    command=self.test_execution_command, cwd=self.test_code_command_dir, timeout=60
+                self.logger.info(
+                    f'Run test with the command: "{self.test_execution_command}"'
+                )
+                stdout, stderr, exit_code, time_of_command, command_duration = (
+                    CommandExecutor.run_command(
+                        command=self.test_execution_command,
+                        cwd=self.test_code_command_dir,
+                        timeout=60,
+                    )
                 )
 
                 # Now we need to check if we were able to run the test successfully or not
@@ -404,12 +500,11 @@ class UnitTestGenerator:
                             "stdout": error_message,
                             "test": generated_test,
                             "line_coverage": round(self.current_coverage[0] * 100, 2),
-                            "branch_coverage": round(self.current_coverage[1] * 100, 2)
+                            "branch_coverage": round(self.current_coverage[1] * 100, 2),
                         }
-                        self.failed_test_runs.append({
-                            "code": generated_test,
-                            "error_message": error_message
-                        })
+                        self.failed_test_runs.append(
+                            {"code": generated_test, "error_message": error_message}
+                        )
                     elif "Timeout" in stdout:
                         self.logger.info(f"Test generated failed due to timeout.")
                         failure_details = {
@@ -420,12 +515,11 @@ class UnitTestGenerator:
                             "stdout": "Timeout",
                             "test": generated_test,
                             "line_coverage": round(self.current_coverage[0] * 100, 2),
-                            "branch_coverage": round(self.current_coverage[1] * 100, 2)
+                            "branch_coverage": round(self.current_coverage[1] * 100, 2),
                         }
-                        self.failed_test_runs.append({
-                            "code": generated_test,
-                            "error_message": "Timeout"
-                        })
+                        self.failed_test_runs.append(
+                            {"code": generated_test, "error_message": "Timeout"}
+                        )
                     else:
                         self.logger.info(f"Test generated failed due to runtime error.")
                         error_message = extract_error_message(stdout, self.language)
@@ -437,13 +531,10 @@ class UnitTestGenerator:
                             "stdout": error_message,
                             "test": generated_test,
                             "line_coverage": round(self.current_coverage[0] * 100, 2),
-                            "branch_coverage": round(self.current_coverage[1] * 100, 2)
+                            "branch_coverage": round(self.current_coverage[1] * 100, 2),
                         }
                         self.failed_test_runs.append(
-                            {
-                                "code": generated_test,
-                                "error_message": error_message
-                            }
+                            {"code": generated_test, "error_message": error_message}
                         )
 
                     return failure_details
@@ -516,7 +607,7 @@ class UnitTestGenerator:
                 #     )
                 # else:
                 # If the test passes and the coverage increases, we return the test as a successful test
-                #self.current_coverage = (new_line_coverage, new_branch_coverage)
+                # self.current_coverage = (new_line_coverage, new_branch_coverage)
 
                 # self.logger.info(
                 #     f"Test generated which has passed and coverage increased. "
@@ -531,11 +622,15 @@ class UnitTestGenerator:
                     "stdout": "",
                     "test": generated_test,
                     "line_coverage": round(self.current_coverage[0] * 100, 2),
-                    "branch_coverage": round(self.current_coverage[1] * 100, 2)
+                    "branch_coverage": round(self.current_coverage[1] * 100, 2),
                 }
 
-                self.relevant_line_number_to_insert_tests_before = relevant_line_number_to_insert_tests_before
-                self.relevant_line_number_to_insert_imports_after = relevant_line_number_to_insert_imports_after
+                self.relevant_line_number_to_insert_tests_before = (
+                    relevant_line_number_to_insert_tests_before
+                )
+                self.relevant_line_number_to_insert_imports_after = (
+                    relevant_line_number_to_insert_imports_after
+                )
                 return pass_details
         except Exception as e:
             self.logger.error(f"Error validating test: {e}")
@@ -549,22 +644,30 @@ class UnitTestGenerator:
                 "stdout": "",
                 "test": generated_test,
                 "line_coverage": round(self.current_coverage[0] * 100, 2),
-                "branch_coverage": round(self.current_coverage[1] * 100, 2)
+                "branch_coverage": round(self.current_coverage[1] * 100, 2),
             }
 
     def add_new_test_to_test_file(self, generated_test: dict, original_content):
         processed_test = ""
         test_code = generated_test.get("test_code", "").rstrip()
         additional_imports = (generated_test.get("new_imports_code", "") or "").strip()
-        if additional_imports and additional_imports[0] == '"' and additional_imports[-1] == '"':
+        if (
+            additional_imports
+            and additional_imports[0] == '"'
+            and additional_imports[-1] == '"'
+        ):
             additional_imports = additional_imports.strip('"')
 
         # check if additional_imports only contains '"':
         if additional_imports and additional_imports == '""':
             additional_imports = ""
 
-        relevant_line_number_to_insert_tests_before = self.relevant_line_number_to_insert_tests_before
-        relevant_line_number_to_insert_imports_after = self.relevant_line_number_to_insert_imports_after
+        relevant_line_number_to_insert_tests_before = (
+            self.relevant_line_number_to_insert_tests_before
+        )
+        relevant_line_number_to_insert_imports_after = (
+            self.relevant_line_number_to_insert_imports_after
+        )
 
         needed_indent = self.test_headers_indentation
 
@@ -583,26 +686,44 @@ class UnitTestGenerator:
             original_content_lines = original_content.split("\n")
             test_code_lines = test_code_indented.split("\n")
             processed_test_lines = (
-                    original_content_lines[:relevant_line_number_to_insert_tests_before - 1]
-                    + test_code_lines
-                    + original_content_lines[relevant_line_number_to_insert_tests_before - 1:]
+                original_content_lines[
+                    : relevant_line_number_to_insert_tests_before - 1
+                ]
+                + test_code_lines
+                + original_content_lines[
+                    relevant_line_number_to_insert_tests_before - 1 :
+                ]
             )
             relevant_line_number_to_insert_tests_before += len(test_code_lines)
 
             # additional imports for line 'relevant_line_number_to_insert_imports_after
             processed_test = "\n".join(processed_test_lines)
-            if relevant_line_number_to_insert_imports_after and additional_imports and additional_imports not in processed_test:
+            if (
+                relevant_line_number_to_insert_imports_after
+                and additional_imports
+                and additional_imports not in processed_test
+            ):
                 additional_imports_lines = additional_imports.split("\n")
                 processed_test_lines = (
-                        processed_test_lines[:relevant_line_number_to_insert_imports_after]
-                        + additional_imports_lines
-                        + processed_test_lines[relevant_line_number_to_insert_imports_after:]
+                    processed_test_lines[:relevant_line_number_to_insert_imports_after]
+                    + additional_imports_lines
+                    + processed_test_lines[
+                        relevant_line_number_to_insert_imports_after:
+                    ]
                 )
-                relevant_line_number_to_insert_imports_after += len(additional_imports_lines)
-                relevant_line_number_to_insert_tests_before += len(additional_imports_lines)
+                relevant_line_number_to_insert_imports_after += len(
+                    additional_imports_lines
+                )
+                relevant_line_number_to_insert_tests_before += len(
+                    additional_imports_lines
+                )
 
             processed_test = "\n".join(processed_test_lines)
-        return processed_test, relevant_line_number_to_insert_imports_after, relevant_line_number_to_insert_tests_before
+        return (
+            processed_test,
+            relevant_line_number_to_insert_imports_after,
+            relevant_line_number_to_insert_tests_before,
+        )
 
     def build_prompt_for_fixing(self) -> dict:
         """
@@ -620,7 +741,7 @@ class UnitTestGenerator:
             source_code_file=self.source_code_file,
             test_code_file=self.test_code_file,
             failed_test_runs=failed_test_runs_value,
-            language=self.language
+            language=self.language,
         )
         # reset failed tests
         self.failed_test_runs = []
@@ -634,12 +755,14 @@ class UnitTestGenerator:
         while self.failed_test_runs and iter_count < iter_num:
             try:
                 fixing_prompt = self.build_prompt_for_fixing()
-                fixed_tests, tokens = self.generate_test_by_prompt_llm(fixing_prompt, max_tokens)
+                fixed_tests, tokens = self.generate_test_by_prompt_llm(
+                    fixing_prompt, max_tokens
+                )
                 iter_count += 1
                 token_count += tokens
                 for fixed_test in fixed_tests.get("new_tests", []):
                     test_result = self.validate_test(fixed_test)
-                    test_result['label'] = f"{f_label}_{iter_count}"
+                    test_result["label"] = f"{f_label}_{iter_count}"
                     fix_results_list.append(test_result)
             except Exception as e:
                 self.logger.error(f"Error processing failed test runs: {e}")
