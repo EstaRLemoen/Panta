@@ -25,7 +25,13 @@ test_code_command_dir = defects4j-subjects-notests/Csv-16f/
 model = gpt-4o-mini
 
 # Optional dedicated model for llm-style advice generation. Falls back to `model` when empty.
-llm_path_advice_model = gpt-4o
+llm_path_advice_model = gpt-4o-mini
+
+# Temperature for the normal llm-style advice generation stage.
+llm_path_advice_temperature = 0.1
+
+# Temperature for the low-coverage lightweight advice stage.
+llm_light_advice_temperature = 0.5
 
 # Type of coverage report. Default: jacoco
 coverage_type = jacoco
@@ -37,7 +43,7 @@ report_filepath = test_results.html
 target_coverage = 100
 
 # The maximum number of iterations to prompt LLM for test generation
-maximum_iterations = 2
+maximum_iterations = 3
 
 # The maximum number of iterations without coverage increase
 no_coverage_increase_iterations = 3
@@ -56,7 +62,7 @@ selection_mode = llm
 
 # For llm selection mode: before line coverage reaches this percentage,
 # skip advice and generate directly from annotated source unless coverage has stalled.
-llm_advice_activation_line_coverage = 50
+llm_advice_activation_line_coverage = 30
 
 # For llm selection mode: once this many consecutive no-growth iterations are reached,
 # switch from direct annotated prompting to advice-guided prompting even below the coverage threshold.
@@ -70,6 +76,7 @@ run_symprompt = false
 
 # Path to the output test file. Default: ""
 test_file_output_path =
+
 
 # Any additional instructions you wish to append at the end of the prompt. Default: ""
 additional_instructions =

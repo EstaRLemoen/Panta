@@ -83,6 +83,14 @@ public class CSVParserTest {
         CSVParser.parse((URL) null, Charset.defaultCharset(), CSVFormat.DEFAULT);
     }
 
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testDuplicateHeaderHandling() throws IOException {
+        String csvInput = "header1,header2,header1\nvalue1,value2,value3";
+        CSVParser parser = CSVParser.parse(csvInput, CSVFormat.DEFAULT.withHeader());
+        parser.getRecords(); // This should trigger header initialization and throw an exception
+    }
+
     @Test
     public void  testPlaceHolder() {
         assertTrue(true); 

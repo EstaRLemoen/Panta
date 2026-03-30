@@ -83,6 +83,17 @@ public class CSVParserTest {
         CSVParser.parse((URL) null, Charset.defaultCharset(), CSVFormat.DEFAULT);
     }
 
+
+    @Test
+    public void testCSVParserWithClosedLexer() throws IOException {
+        String csvInput = "name,age\nJohn,30";
+        CSVFormat format = CSVFormat.DEFAULT;
+        CSVParser parser = CSVParser.parse(csvInput, format);
+        Iterator<CSVRecord> iterator = parser.iterator();
+        parser.close();
+        assertFalse(iterator.hasNext());
+    }
+
     @Test
     public void  testPlaceHolder() {
         assertTrue(true); 

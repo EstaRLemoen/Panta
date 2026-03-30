@@ -83,6 +83,19 @@ public class CSVParserTest {
         CSVParser.parse((URL) null, Charset.defaultCharset(), CSVFormat.DEFAULT);
     }
 
+
+    @Test
+    public void testHeaderInitializationWithEmptyHeader() throws IOException {
+        String csvInput = "value1,value2\nvalue3,value4";
+        CSVParser parser = CSVParser.parse(new StringReader(csvInput), CSVFormat.DEFAULT.withHeader());
+        List<CSVRecord> records = parser.getRecords();
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        assertNotNull(headerMap);
+        assertEquals(2, headerMap.size());
+        assertTrue(headerMap.containsKey("value1"));
+        assertTrue(headerMap.containsKey("value2"));
+    }
+
     @Test
     public void  testPlaceHolder() {
         assertTrue(true); 

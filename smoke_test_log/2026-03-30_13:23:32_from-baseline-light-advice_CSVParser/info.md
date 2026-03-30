@@ -21,3 +21,7 @@ Run a smoke from the saved baseline-only CSVParser test file after switching low
   - `testCSVParserTrailingDelimiterEmptyLastRecord`
   - `testCSVParserDuplicateHeaders`
 - This is the first clear evidence that the lightweight-advice low-coverage stage can lift the suite materially from the saved baseline fixture.
+- `backup/test_before.java` is the true run start file and was replaced with the saved baseline fixture.
+- `backup/original_test_before.java` preserves the pre-run working-tree test file that existed before the baseline fixture was copied in.
+- `backup/config.ini.snapshot` is a reconstructed effective config for this run, based on the runtime behavior and the user-directed settings active at that time.
+- `backup/original_config.ini.backup` preserves the pre-run working-tree config that existed before the smoke-specific edits.

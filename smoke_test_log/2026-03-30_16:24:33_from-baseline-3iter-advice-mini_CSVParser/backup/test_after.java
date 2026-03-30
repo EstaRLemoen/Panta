@@ -83,6 +83,26 @@ public class CSVParserTest {
         CSVParser.parse((URL) null, Charset.defaultCharset(), CSVFormat.DEFAULT);
     }
 
+
+    @Test
+    public void testClosedParserHasNext() throws IOException {
+        String csvInput = "value1,value2\nvalue3,value4";
+        CSVParser parser = CSVParser.parse(new StringReader(csvInput), CSVFormat.DEFAULT);
+        parser.close();
+        Iterator<CSVRecord> iterator = parser.iterator();
+        assertFalse(iterator.hasNext()); // Should return false since parser is closed
+    }
+
+
+    @Test(expected = NoSuchElementException.class)
+    public void testCsvParserClosedDuringIteration() throws IOException {
+        String csvInput = "value1,value2\nvalue3,value4";
+        CSVParser parser = CSVParser.parse(new StringReader(csvInput), CSVFormat.DEFAULT);
+        Iterator<CSVRecord> iterator = parser.iterator();
+        parser.close(); // Close the parser before calling next
+        iterator.next(); // This should throw NoSuchElementException
+    }
+
     @Test
     public void  testPlaceHolder() {
         assertTrue(true); 

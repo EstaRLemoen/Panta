@@ -56,7 +56,7 @@ selection_mode = llm
 
 # For llm selection mode: before line coverage reaches this percentage,
 # skip advice and generate directly from annotated source unless coverage has stalled.
-llm_advice_activation_line_coverage = 50
+llm_advice_activation_line_coverage = 30
 
 # For llm selection mode: once this many consecutive no-growth iterations are reached,
 # switch from direct annotated prompting to advice-guided prompting even below the coverage threshold.
@@ -70,6 +70,7 @@ run_symprompt = false
 
 # Path to the output test file. Default: ""
 test_file_output_path =
+
 
 # Any additional instructions you wish to append at the end of the prompt. Default: ""
 additional_instructions =

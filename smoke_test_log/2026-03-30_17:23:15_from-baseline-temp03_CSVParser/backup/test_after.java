@@ -44,6 +44,7 @@ import org.junit.After;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import java.nio.charset.StandardCharsets;
+import java.io.ByteArrayInputStream;
 
 public class CSVParserTest {
 
@@ -80,6 +81,68 @@ public class CSVParserTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testParseNullURL() throws IOException {
+        CSVParser.parse((URL) null, Charset.defaultCharset(), CSVFormat.DEFAULT);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseNullFormatWithFile() throws IOException {
+        CSVParser.parse(new File("dummy.csv"), Charset.defaultCharset(), null);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseNullFormatWithPath() throws IOException {
+        CSVParser.parse(Files.createTempFile("dummy", ".csv"), Charset.defaultCharset(), null);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseNullFormatWithReader() throws IOException {
+        CSVParser.parse(new StringReader("data"), null);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseNullFormatWithString() throws IOException {
+        CSVParser.parse("data", null);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseNullFormatWithURL() throws IOException {
+        CSVParser.parse(new URL("http://example.com"), Charset.defaultCharset(), null);
+    }
+
+
+    @Test
+    public void testGetRecordsFromEmptyInput() throws IOException {
+        CSVParser parser = CSVParser.parse("", CSVFormat.DEFAULT);
+        List<CSVRecord> records = parser.getRecords();
+        assertTrue(records.isEmpty());
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseNullFormatWithInputStream() throws IOException {
+        CSVParser.parse(new ByteArrayInputStream("data".getBytes()), Charset.defaultCharset(), null);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseNullStringDuplicate() throws IOException {
+        CSVParser.parse((String) null, CSVFormat.DEFAULT);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseNullReaderDuplicate() throws IOException {
+        CSVParser.parse((Reader) null, CSVFormat.DEFAULT);
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseNullURLDuplicate() throws IOException {
         CSVParser.parse((URL) null, Charset.defaultCharset(), CSVFormat.DEFAULT);
     }
 
