@@ -9,6 +9,7 @@ SETTINGS_FILES = [
     "java_templates/test_generation_prompt_with_code_coverage_report.toml",
     "java_templates/test_generation_prompt_with_existing_test_code_and_control_flow_analysis.toml",
     "java_templates/test_generation_llm_advice_selection_prompt.toml",
+    "java_templates/test_generation_llm_light_advice_selection_prompt.toml",
     "java_templates/test_generation_llm_annotated_prompt.toml",
     "java_templates/test_generation_llm_guided_prompt.toml",
     "java_templates/test_headers_indentation_prompt.toml",

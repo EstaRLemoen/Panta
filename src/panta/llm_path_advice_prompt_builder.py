@@ -111,20 +111,31 @@ class LLMPathAdvicePromptBuilder:
         self.logger = pantaLogger.initialize_logger(__name__)
         self.selection_state = {"mode": "llm", "advice_history": []}
         self.builder = None
+        self.last_advice_fallback_reason = None
 
     def build_prompt_guided(self) -> dict:
         self._build_annotated_source()
         annotated_source_code = self.builder.get_annotated_source()
         uncovered_branches = self.builder.get_uncovered_branches()
         if self._should_use_advice():
-            advice = self._generate_advice(annotated_source_code, uncovered_branches)
-            prompt = self._build_final_generation_prompt(annotated_source_code, advice)
-            self.selection_state = self._build_selection_state(advice)
-        else:
-            prompt = self._build_direct_generation_prompt(
-                annotated_source_code, uncovered_branches
+            advice = self._generate_advice(
+                annotated_source_code,
+                uncovered_branches,
+                light_mode=False,
             )
-            self.selection_state = self._build_direct_selection_state()
+            prompt = self._build_final_generation_prompt(annotated_source_code, advice)
+            self.selection_state = self._build_selection_state(advice, mode="llm")
+        else:
+            advice = self._generate_advice(
+                annotated_source_code,
+                uncovered_branches,
+                light_mode=True,
+            )
+            prompt = self._build_final_generation_prompt(annotated_source_code, advice)
+            self.selection_state = self._build_selection_state(
+                advice,
+                mode="llm-light-advice",
+            )
         return prompt
 
     def get_current_selection_state(self):
@@ -141,7 +152,7 @@ class LLMPathAdvicePromptBuilder:
         self.builder.build(self.source_file, self.lines_missed, self.branch_missed)
 
     def _build_advice_prompt(
-        self, annotated_source_code: str, uncovered_branches
+        self, annotated_source_code: str, uncovered_branches, light_mode: bool = False
     ) -> dict:
         variables = {
             "source_file_name": self.source_file_name,
@@ -151,61 +162,49 @@ class LLMPathAdvicePromptBuilder:
             "language": self.language,
         }
         environment = Environment(undefined=StrictUndefined)
+        settings = get_settings()
+        prompt_setting = (
+            settings.test_generation_llm_light_advice_selection_prompt
+            if light_mode
+            else settings.test_generation_llm_advice_selection_prompt
+        )
         return {
-            "system": environment.from_string(
-                get_settings().test_generation_llm_advice_selection_prompt.system
-            ).render(variables),
-            "user": environment.from_string(
-                get_settings().test_generation_llm_advice_selection_prompt.user
-            ).render(variables),
+            "system": environment.from_string(prompt_setting.system).render(variables),
+            "user": environment.from_string(prompt_setting.user).render(variables),
         }
 
-    def _generate_advice(self, annotated_source_code: str, uncovered_branches) -> dict:
+    def _generate_advice(
+        self,
+        annotated_source_code: str,
+        uncovered_branches,
+        light_mode: bool = False,
+    ) -> dict:
         advice_prompt = self._build_advice_prompt(
-            annotated_source_code, uncovered_branches
+            annotated_source_code, uncovered_branches, light_mode=light_mode
         )
         response, prompt_tokens, response_tokens = self.llm_invoker.call_model(
             prompt=advice_prompt, max_tokens=2048, temperature=0.1
         )
         advice = load_yaml(response) or {}
         advice = self._normalize_advice(advice)
+        if self.last_advice_fallback_reason:
+            self.logger.warning(
+                "LLM advice invalid; fell back to default advice. reason: %s",
+                self.last_advice_fallback_reason,
+            )
         self._capture_advice_snapshot(
             annotated_source_code,
             advice_prompt,
             advice,
             prompt_tokens + response_tokens,
+            light_mode=light_mode,
         )
         return advice
 
-    def _build_direct_generation_prompt(
-        self, annotated_source_code: str, uncovered_branches
-    ) -> dict:
-        variables = {
-            "source_file_name": self.source_file_name,
-            "test_file_name": self.test_file_name,
-            "annotated_source_code": annotated_source_code,
-            "uncovered_branches": uncovered_branches,
-            "uncovered_branches_text": self.builder.get_uncovered_branches_text(),
-            "test_file": self.test_file,
-            "test_dependencies": self.test_dependencies,
-            "failed_tests_section": self.failed_test_runs_feedback,
-            "additional_instructions_text": self.additional_instructions,
-            "language": self.language,
-        }
-        environment = Environment(undefined=StrictUndefined)
-        prompt = {
-            "system": environment.from_string(
-                get_settings().test_generation_llm_annotated_prompt.system
-            ).render(variables),
-            "user": environment.from_string(
-                get_settings().test_generation_llm_annotated_prompt.user
-            ).render(variables),
-        }
-        self._capture_direct_prompt_snapshot(annotated_source_code, prompt)
-        return prompt
-
     def _normalize_advice(self, advice: dict) -> dict:
+        self.last_advice_fallback_reason = None
         if not isinstance(advice, dict):
+            self.last_advice_fallback_reason = "parsed response is not a mapping"
             return self._fallback_advice()
 
         normalized = {
@@ -328,10 +327,19 @@ class LLMPathAdvicePromptBuilder:
             )
 
         if not normalized["focus_summary"] or not normalized["test_intent"]:
+            self.last_advice_fallback_reason = (
+                "normalized advice missing focus_summary or test_intent"
+            )
             fallback = self._fallback_advice()
             for key, value in fallback.items():
                 if not normalized.get(key):
                     normalized[key] = value
+
+        if not normalized["test_designs"]:
+            if not self.last_advice_fallback_reason:
+                self.last_advice_fallback_reason = (
+                    "normalized advice contains no valid test_designs"
+                )
 
         return normalized
 
@@ -420,25 +428,11 @@ class LLMPathAdvicePromptBuilder:
         self._capture_final_prompt_snapshot(annotated_source_code, advice, prompt)
         return prompt
 
-    def _build_selection_state(self, advice: dict) -> dict:
+    def _build_selection_state(self, advice: dict, mode: str = "llm") -> dict:
         return {
-            "mode": "llm",
+            "mode": mode,
             "last_advice": advice,
             "advice_history": [advice],
-        }
-
-    def _build_direct_selection_state(self) -> dict:
-        return {
-            "mode": "llm-direct",
-            "advice_history": [],
-            "direct_prompt_reason": {
-                "current_line_coverage": round(
-                    (self.current_coverage[0] or 0.0) * 100, 2
-                ),
-                "coverage_threshold": self.llm_advice_activation_line_coverage,
-                "no_coverage_increase_count": self.no_coverage_increase_count,
-                "no_growth_threshold": self.llm_advice_activation_no_growth,
-            },
         }
 
     def _capture_advice_snapshot(
@@ -447,11 +441,16 @@ class LLMPathAdvicePromptBuilder:
         advice_prompt: dict,
         advice: dict,
         token_count: int,
+        light_mode: bool = False,
     ):
         if not self.snapshotter:
             return
         self.snapshotter.capture(
-            stage="prompt_builder_llm_advice",
+            stage=(
+                "prompt_builder_llm_light_advice"
+                if light_mode
+                else "prompt_builder_llm_advice"
+            ),
             source_code_file=self.source_code_file_path,
             language=self.language,
             context={
@@ -483,23 +482,5 @@ class LLMPathAdvicePromptBuilder:
                     "annotated_line_count": len(annotated_source_code.splitlines()),
                 },
                 "generation_outcome": advice,
-            },
-        )
-
-    def _capture_direct_prompt_snapshot(self, annotated_source_code: str, prompt: dict):
-        if not self.snapshotter:
-            return
-        self.snapshotter.capture(
-            stage="prompt_builder_llm_direct_selection",
-            source_code_file=self.source_code_file_path,
-            language=self.language,
-            context={
-                "prompt_context": {
-                    "prompt": prompt.get("user", ""),
-                    "target_methods": [],
-                    "advice_summary": "direct-annotated",
-                    "annotated_line_count": len(annotated_source_code.splitlines()),
-                },
-                "generation_outcome": self._build_direct_selection_state(),
             },
         )
