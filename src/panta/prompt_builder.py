@@ -34,12 +34,15 @@ class PromptBuilder:
         test_dependencies="",
         llm_model="",
         llm_path_advice_model="",
+        llm_path_advice_temperature=0.1,
+        llm_light_advice_temperature=0.1,
         selection_mode="comex",
         current_coverage=None,
         no_coverage_increase_count=0,
         llm_advice_activation_line_coverage=50.0,
         llm_advice_activation_no_growth=1,
         snapshotter=None,
+        previous_advice_feedback="",
     ):
         if lines_missed is None:
             lines_missed = []
@@ -58,12 +61,15 @@ class PromptBuilder:
         self.language = language
         self.llm_model = llm_model
         self.llm_path_advice_model = llm_path_advice_model or llm_model
+        self.llm_path_advice_temperature = llm_path_advice_temperature
+        self.llm_light_advice_temperature = llm_light_advice_temperature
         self.selection_mode = selection_mode
         self.current_coverage = current_coverage or (0.0, 0.0)
         self.no_coverage_increase_count = no_coverage_increase_count
         self.llm_advice_activation_line_coverage = llm_advice_activation_line_coverage
         self.llm_advice_activation_no_growth = llm_advice_activation_no_growth
         self.snapshotter = snapshotter
+        self.previous_advice_feedback = previous_advice_feedback
         self.lines_missed = lines_missed
         self.branch_missed = branch_missed
         self.path_history = path_history
@@ -146,11 +152,14 @@ class PromptBuilder:
             branch_missed=self.branch_missed,
             test_dependencies=self.test_dependencies,
             llm_model=self.llm_path_advice_model,
+            llm_path_advice_temperature=self.llm_path_advice_temperature,
+            llm_light_advice_temperature=self.llm_light_advice_temperature,
             current_coverage=self.current_coverage,
             no_coverage_increase_count=self.no_coverage_increase_count,
             llm_advice_activation_line_coverage=self.llm_advice_activation_line_coverage,
             llm_advice_activation_no_growth=self.llm_advice_activation_no_growth,
             snapshotter=self.snapshotter,
+            previous_advice_feedback=self.previous_advice_feedback,
         )
         prompt = llm_prompt_builder.build_prompt_guided()
         self.selection_state = llm_prompt_builder.get_current_selection_state()

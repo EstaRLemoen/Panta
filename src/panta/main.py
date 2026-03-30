@@ -39,6 +39,12 @@ def config_to_namespace(config):
         prompt_type=config.get("prompt_type"),
         pick_two_paths=config.getboolean("pick_two_paths"),
         selection_mode=config.get("selection_mode", fallback="comex"),
+        llm_path_advice_temperature=config.getfloat(
+            "llm_path_advice_temperature", fallback=0.1
+        ),
+        llm_light_advice_temperature=config.getfloat(
+            "llm_light_advice_temperature", fallback=0.1
+        ),
         llm_advice_activation_line_coverage=config.getfloat(
             "llm_advice_activation_line_coverage", fallback=50.0
         ),

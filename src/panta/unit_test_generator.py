@@ -59,6 +59,8 @@ class UnitTestGenerator:
         test_execution_command: str,
         llm_model: str,
         llm_path_advice_model: str = "",
+        llm_path_advice_temperature: float = 0.1,
+        llm_light_advice_temperature: float = 0.1,
         selection_mode: str = "comex",
         test_code_command_dir: str = os.getcwd(),
         test_dependencies: str = "",
@@ -95,6 +97,8 @@ class UnitTestGenerator:
         self.language = get_code_language(source_code_file)
         self.selection_mode = selection_mode
         self.llm_path_advice_model = llm_path_advice_model or llm_model
+        self.llm_path_advice_temperature = llm_path_advice_temperature
+        self.llm_light_advice_temperature = llm_light_advice_temperature
         # Semantic change: optional snapshotter for sidecar CFG recording.
         self.snapshotter = snapshotter
 
@@ -211,7 +215,11 @@ class UnitTestGenerator:
         return ""
 
     def build_prompt(
-        self, prompt_type, pick_two_paths=True, no_coverage_increase_count=0
+        self,
+        prompt_type,
+        pick_two_paths=True,
+        no_coverage_increase_count=0,
+        previous_advice_feedback="",
     ) -> dict:
         """
         Returns:
@@ -265,12 +273,15 @@ class UnitTestGenerator:
             test_dependencies=self.test_dependencies,
             llm_model=self.llm_invoker.model,
             llm_path_advice_model=self.llm_path_advice_model,
+            llm_path_advice_temperature=self.llm_path_advice_temperature,
+            llm_light_advice_temperature=self.llm_light_advice_temperature,
             selection_mode=self.selection_mode,
             current_coverage=self.current_coverage,
             no_coverage_increase_count=no_coverage_increase_count,
             llm_advice_activation_line_coverage=self.llm_advice_activation_line_coverage,
             llm_advice_activation_no_growth=self.llm_advice_activation_no_growth,
             snapshotter=self.snapshotter,
+            previous_advice_feedback=previous_advice_feedback,
         )
         if prompt_type == "control" and self.selection_mode == "comex":
             prompt = self.prompt_builder.build_prompt_cfa_guided(pick_two_paths)
@@ -402,11 +413,13 @@ class UnitTestGenerator:
         max_tokens=4096,
         pick_two_paths=True,
         no_coverage_increase_count=0,
+        previous_advice_feedback="",
     ):
         self.prompt = self.build_prompt(
             self.prompt_type,
             pick_two_paths,
             no_coverage_increase_count=no_coverage_increase_count,
+            previous_advice_feedback=previous_advice_feedback,
         )
         # self.logger.info(f"{g_label}: {self.path_history}")
         tests_dict, token_count = self.generate_test_by_prompt_llm(
@@ -503,7 +516,11 @@ class UnitTestGenerator:
                             "branch_coverage": round(self.current_coverage[1] * 100, 2),
                         }
                         self.failed_test_runs.append(
-                            {"code": generated_test, "error_message": error_message}
+                            {
+                                "code": generated_test,
+                                "error_message": error_message,
+                                "error_type": "compilation",
+                            }
                         )
                     elif "Timeout" in stdout:
                         self.logger.info(f"Test generated failed due to timeout.")
@@ -518,7 +535,11 @@ class UnitTestGenerator:
                             "branch_coverage": round(self.current_coverage[1] * 100, 2),
                         }
                         self.failed_test_runs.append(
-                            {"code": generated_test, "error_message": "Timeout"}
+                            {
+                                "code": generated_test,
+                                "error_message": "Timeout",
+                                "error_type": "timeout",
+                            }
                         )
                     else:
                         self.logger.info(f"Test generated failed due to runtime error.")
@@ -534,7 +555,11 @@ class UnitTestGenerator:
                             "branch_coverage": round(self.current_coverage[1] * 100, 2),
                         }
                         self.failed_test_runs.append(
-                            {"code": generated_test, "error_message": error_message}
+                            {
+                                "code": generated_test,
+                                "error_message": error_message,
+                                "error_type": "runtime",
+                            }
                         )
 
                     return failure_details
@@ -767,3 +792,27 @@ class UnitTestGenerator:
             except Exception as e:
                 self.logger.error(f"Error processing failed test runs: {e}")
         return fix_results_list, token_count
+
+    def get_iteration_error_summary(self) -> dict:
+        comp_errors = []
+        rt_errors = []
+        timeout_errors = []
+        for entry in self.failed_test_runs:
+            error_type = entry.get("error_type", "runtime")
+            error_message = entry.get("error_message", "")
+            if error_type == "compilation":
+                comp_errors.append(error_message)
+            elif error_type == "timeout":
+                timeout_errors.append(error_message)
+            else:
+                rt_errors.append(error_message)
+        return {
+            "compilation_errors": len(comp_errors),
+            "runtime_errors": len(rt_errors),
+            "timeout_errors": len(timeout_errors),
+            "first_compilation_error": comp_errors[0][:300] if comp_errors else "",
+            "first_runtime_error": rt_errors[0][:300] if rt_errors else "",
+        }
+
+    def clear_failed_test_runs(self):
+        self.failed_test_runs = []

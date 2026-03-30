@@ -75,5 +75,6 @@ Never use reflection to access private or internal methods unless the existing t
 If a design references an internal target, use it only to reason about the path and assertions; the generated test should still execute through a public or externally reachable API.
 Do not copy `entry_hint` as if it were complete test code. Build the actual invocation from the entry method identified there plus the concrete setup described in `input_focus`.
 Do not invent assertions from `execution_flow` alone when `observable_behavior` already specifies the expected public result.
+If you are uncertain about the exact expected result for a given design, generate multiple tests for the same scenario covering different possible outcomes (e.g. one test expecting a null value and another expecting a non-null value, or one expecting an exception and another expecting normal return). This increases the chance that at least one test will be correct and improve coverage.
 
 Response:"""

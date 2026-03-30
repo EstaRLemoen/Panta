@@ -39,7 +39,7 @@ test_designs:
     input_focus: |
       The concrete input condition, state setup, or configuration needed to drive that path.
     observable_behavior: |
-      The externally observable result that the generated test should assert after driving this path.
+      A brief, open-ended description of what to look for when the path is exercised (e.g. "verify the return value, exception behavior, or collection contents according to the source code"). Do NOT predict exact values or precise assertions — let the test generator infer the correct expected behavior from the source code.
 ```
 
 Rules:
@@ -51,7 +51,7 @@ Rules:
 6. If the uncovered branch is inside a private or internal method, keep that method in `method_signature_hint`, but describe a public or externally reachable path in `entry_hint` and `execution_flow`.
 7. Never propose direct calls to private or internal methods, and never propose reflection-based access.
 8. Prefer non-trivial behaviors over null-argument validation unless those are the only uncovered behaviors left.
-9. `observable_behavior` must describe only externally observable behavior such as return values, exceptions, public results, collection contents, collection size, or state visible through public APIs.
-10. Base `observable_behavior` on the source code path you described.
+9. `observable_behavior` should be open-ended and qualitative (e.g. "check the return value structure", "verify exception type", "check collection size or contents"). Do NOT predict exact expected values or write assertion-style statements.
+10. The test generator will infer the precise expected behavior from the source code. Your job is to point it in the right direction, not to specify exact assertions.
 
 Response:"""

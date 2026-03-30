@@ -81,11 +81,14 @@ class LLMPathAdvicePromptBuilder:
         branch_missed,
         test_dependencies: str,
         llm_model: str,
+        llm_path_advice_temperature: float = 0.1,
+        llm_light_advice_temperature: float = 0.1,
         current_coverage=None,
         no_coverage_increase_count: int = 0,
         llm_advice_activation_line_coverage: float = 50.0,
         llm_advice_activation_no_growth: int = 1,
         snapshotter=None,
+        previous_advice_feedback: str = "",
     ):
         self.source_code_file_path = source_code_file
         self.source_file_name = source_file_name
@@ -105,7 +108,10 @@ class LLMPathAdvicePromptBuilder:
         self.no_coverage_increase_count = no_coverage_increase_count
         self.llm_advice_activation_line_coverage = llm_advice_activation_line_coverage
         self.llm_advice_activation_no_growth = llm_advice_activation_no_growth
+        self.llm_path_advice_temperature = llm_path_advice_temperature
+        self.llm_light_advice_temperature = llm_light_advice_temperature
         self.snapshotter = snapshotter
+        self.previous_advice_feedback = previous_advice_feedback
         self.llm_model = llm_model
         self.llm_invoker = LLMInvocation(model=llm_model)
         self.logger = pantaLogger.initialize_logger(__name__)
@@ -168,9 +174,12 @@ class LLMPathAdvicePromptBuilder:
             if light_mode
             else settings.test_generation_llm_advice_selection_prompt
         )
+        user_prompt = environment.from_string(prompt_setting.user).render(variables)
+        if self.previous_advice_feedback:
+            user_prompt += "\n\n" + self.previous_advice_feedback
         return {
             "system": environment.from_string(prompt_setting.system).render(variables),
-            "user": environment.from_string(prompt_setting.user).render(variables),
+            "user": user_prompt,
         }
 
     def _generate_advice(
@@ -182,11 +191,16 @@ class LLMPathAdvicePromptBuilder:
         advice_prompt = self._build_advice_prompt(
             annotated_source_code, uncovered_branches, light_mode=light_mode
         )
+        temperature = (
+            self.llm_light_advice_temperature
+            if light_mode
+            else self.llm_path_advice_temperature
+        )
         response, prompt_tokens, response_tokens = self.llm_invoker.call_model(
-            prompt=advice_prompt, max_tokens=2048, temperature=0.1
+            prompt=advice_prompt, max_tokens=2048, temperature=temperature
         )
         advice = load_yaml(response) or {}
-        advice = self._normalize_advice(advice)
+        advice = self._normalize_advice(advice, light_mode=light_mode)
         if self.last_advice_fallback_reason:
             self.logger.warning(
                 "LLM advice invalid; fell back to default advice. reason: %s",
@@ -201,7 +215,7 @@ class LLMPathAdvicePromptBuilder:
         )
         return advice
 
-    def _normalize_advice(self, advice: dict) -> dict:
+    def _normalize_advice(self, advice: dict, light_mode: bool = False) -> dict:
         self.last_advice_fallback_reason = None
         if not isinstance(advice, dict):
             self.last_advice_fallback_reason = "parsed response is not a mapping"
@@ -277,9 +291,10 @@ class LLMPathAdvicePromptBuilder:
                         }
                     )
 
-            if (
-                not design_name
-                or not method_signature_hint
+            if not design_name:
+                continue
+            if not light_mode and (
+                not method_signature_hint
                 or not entry_hint
                 or not execution_flow
                 or not input_focus
@@ -326,10 +341,14 @@ class LLMPathAdvicePromptBuilder:
                 or first_design.get("input_focus", "")
             )
 
-        if not normalized["focus_summary"] or not normalized["test_intent"]:
-            self.last_advice_fallback_reason = (
-                "normalized advice missing focus_summary or test_intent"
-            )
+        if not normalized["focus_summary"]:
+            self.last_advice_fallback_reason = "normalized advice missing focus_summary"
+            fallback = self._fallback_advice()
+            for key, value in fallback.items():
+                if not normalized.get(key):
+                    normalized[key] = value
+        elif not normalized["test_intent"]:
+            self.last_advice_fallback_reason = "normalized advice missing test_intent"
             fallback = self._fallback_advice()
             for key, value in fallback.items():
                 if not normalized.get(key):
