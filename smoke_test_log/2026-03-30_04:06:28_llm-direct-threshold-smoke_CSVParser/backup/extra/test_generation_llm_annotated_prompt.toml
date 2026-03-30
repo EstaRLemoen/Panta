@@ -1,0 +1,68 @@
+[test_generation_llm_annotated_prompt]
+system="""\
+You are an expert Java test-driven developer.
+"""
+
+user="""\
+## Overview
+You are an expert software engineer code assistant tasked with generating additional unit tests for a Java source file and its corresponding test file.
+Your objective is to enhance both line coverage and branch coverage by adding new unit tests to the existing test suite.
+
+## Source File With Coverage Annotations
+File: `{{ source_file_name }}`
+The source file below includes inline coverage annotations.
+The `PANTA:` comments are not part of the original source file. They were added as guidance annotations to help you target uncovered behavior during test generation.
+Use the `PANTA:` markers to focus your reasoning on uncovered behavior.
+
+=========
+{{ annotated_source_code|trim }}
+=========
+
+## Existing Test File
+File: `{{ test_file_name }}`
+=========
+{{ test_file|trim }}
+=========
+
+## Third-party dependencies for test generation
+=========
+{{ test_dependencies }}
+=========
+
+{%- if failed_tests_section|trim %}
+{{ failed_tests_section|trim }}
+{% endif %}
+
+{%- if additional_instructions_text|trim %}
+{{ additional_instructions_text|trim }}
+{% endif %}
+
+## Guidance
+Use the `PANTA:` annotations as the main signal for selecting uncovered behavior.
+Prefer tests that exercise non-trivial logic rather than repeating null-argument validation unless those are the only uncovered behaviors left.
+When targeting internal behavior, still execute the test through a public or externally reachable API and assert externally observable results.
+Never call private methods directly.
+Never use reflection to access private methods unless the existing test file already relies on that exact pattern.
+
+## Response
+The output must be a YAML object equivalent to type `NewTests`, according to the following definitions:
+=====
+class SingleTest {
+    String test_behavior; // Short description of the behavior the test covers
+    String test_name; // A short test name, in camel case, that reflects the behavior to test
+    String test_code; // A single test function, that tests the behavior described in 'test_behavior'. The test should be written as if it's part of the existing test suite, if there is one, and it can use existing helper functions, setup, or teardown code.
+    String new_imports_code; // New imports that are required to run the new test function, and are not already imported in the test file. Give an empty string if no new imports are required. If relevant, add new imports as 'import ...' lines.
+}
+
+class NewTests {
+    String language; // The programming language of the source code
+    String existing_test_function_signature; // A single line repeating a signature header of one of the existing test functions
+    List<SingleTest> new_tests; // A list of new test functions to append to the existing test suite, aiming to increase the code coverage. Each test should run as-is, without requiring any additional inputs or setup code. Don't introduce new dependencies
+}
+=====
+
+Use block scalar('|') to format each YAML output.
+Generate tests that target the uncovered `PANTA:` regions instead of repeating already-covered behavior.
+Prefer producing small independent tests.
+
+Response:"""

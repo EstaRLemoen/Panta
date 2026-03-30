@@ -1,0 +1,99 @@
+[test_generation_llm_advice_selection_prompt]
+system="""\
+You are an expert Java code analyst focused on test guidance.
+"""
+
+user="""\
+## Overview
+You are analyzing a Java source file to decide what the next generated unit tests should target.
+Do not generate tests yet. First produce a concise testing advice object that highlights the most valuable uncovered behavior.
+
+## Source File
+File: `{{ source_file_name }}`
+
+The source code below includes inline coverage annotations.
+Lines marked with `PANTA: uncovered-line` are not covered.
+Lines marked with `PANTA: uncovered-branch` contain uncovered branch behavior.
+
+=========
+{{ annotated_source_code|trim }}
+=========
+
+## Uncovered Branches (extracted for you)
+{{ uncovered_branches_text|trim }}
+
+## Task
+Return one YAML object with this schema:
+
+```yaml
+test_designs:
+  - design_name: |
+      A short name for this test idea.
+    method_context:
+      method_signature_hint: |
+        Short method signature or declaration fragment that identifies the method containing the uncovered target branch. This may be a private or internal method if that is where the branch lives.
+      entry_hint: |
+        The public or externally reachable entry method that a real test should use to reach this target region. Give a method signature or method-identifying fragment with parameter types or other details needed to disambiguate overloads. Do not provide a full invocation expression, literal test data, or private/internal helper calls here.
+    execution_flow: |
+      How execution should flow from the chosen public or externally reachable entry method to the uncovered target.
+      It Should consist of actual code statements instead of giving a one-line summary.
+    input_focus: |
+      A concise description of the input condition, state setup, or external condition needed to drive that execution flow.
+    observable_behavior: |
+      The externally observable result that the generated test should assert after driving this path.
+```
+
+Rules:
+1. Do not generate test code.
+2. `execution_flow` must be a numbered list of concrete steps that describe the exact runtime path from the public or externally reachable entry method to the uncovered branch. The first step must start from the entry identified by `entry_hint`. Each step must include:
+- The method name and the line number (if available) where execution currently is.
+- If a branch is encountered: state the exact condition expression, the actual runtime value of each variable in that condition, and which branch is taken (e.g., "then branch" or "else branch").
+- Any intermediate method calls or state changes that affect the condition.
+- The path must actually reach the chosen uncovered target branch. Do not describe a path whose own runtime values show that the branch condition stays false when the target is the true branch, or stays true when the target is the false branch.
+Example format (use similar level of detail):
+annotated_source_code：
+```java
+public class DiscountCalculator {
+  public double calculate(double amount, Customer customer) {
+      double discount = 0.0;
+      if (customer.isPremium() && amount > 100) {
+          discount = amount * 0.2;   // uncovered branch
+      }
+      return amount - discount;
+  }
+}
+```
+`execution_flow` part :
+``` yaml 
+execution_flow: |
+  1. Call public entry `DiscountCalculator.calculate(150.0, premiumCustomer)`.
+  2. Inside `calculate(double, Customer)` at line 3, evaluate the condition:
+      `if (customer.isPremium() && amount > 100)`
+  3. Runtime values:
+      - `customer.isPremium()` returns `true` (premiumCustomer is a Customer with premium flag set to true).
+      - `amount` is `150.0`, so `amount > 100` is `true`.
+  4. Because both sides of `&&` are `true`, the overall condition is `true`.
+  5. Execution enters the **then branch** (line 4) and executes `discount = amount * 0.2`.
+  6. After the branch, returns `150.0 - 30.0 = 120.0`.
+```
+If the uncovered branch is inside a loop or switch, describe the iteration count or case value that leads to it.
+3. DO NOT design tests for parameter validation branches that only check for null (e.g., `Objects.requireNonNull`, `Assertions.notNull`, `if (param == null)`). These are trivial and rarely increase branch coverage.
+4. DO NOT design tests for simple getter/setter branches unless they are the only uncovered code.
+5. You MUST select an uncovered branch that contains at least one of the following:
+   - A logical operator (&&, ||, !)
+   - A comparison (<, >, <=, >=, ==, !=) between non-null variables
+   - A switch statement with multiple cases
+   - A ternary operator
+   - A loop condition (while, for) with non-trivial bounds
+6. If the source file has no such branch, only then fall back to null checks.
+7. If the uncovered branch is inside a private or internal method, keep that method in `method_signature_hint`, but use `entry_hint` and `execution_flow` to describe how a real test reaches it through a public or externally reachable API.
+8. Never propose direct calls to private or internal methods, and never propose reflection-based access such as `getDeclaredMethod`, `setAccessible`, or `invoke` as the testing strategy.
+9. Prefer designs whose success can be asserted through externally observable behavior such as returned records, exceptions, header maps, line numbers, emitted values, or other public results.
+10. Use `entry_hint` only to identify which public entry method the test should start from. Put the concrete argument values, format flags, and state setup needed to make the target branch reachable in `input_focus` instead.
+11. If a branch depends on a specific configuration flag or setup condition, name that requirement explicitly in `input_focus`.
+12. `observable_behavior` must describe only externally observable behavior such as return values, exceptions, public results, collection contents, collection size, or state visible through public APIs.
+13. Do not describe internal implementation steps in `observable_behavior`; those belong in `execution_flow`.
+14. Base `observable_behavior` on the source code path you described.
+
+
+Response:"""

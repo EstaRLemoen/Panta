@@ -1,0 +1,1 @@
+set -a && source cfg_snapshot_test/local.secrets.env && set +a && conda run -n panta-env python -m panta.main

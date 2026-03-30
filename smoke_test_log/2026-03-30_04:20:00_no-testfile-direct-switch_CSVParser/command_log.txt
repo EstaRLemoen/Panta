@@ -1,0 +1,1 @@
+set -a && source cfg_snapshot_test/local.secrets.env && set +a && conda run -n panta-env python -m panta.main 2>&1 | tee smoke_test_log/2026-03-30_04:20:00_no-testfile-direct-switch_CSVParser/runtime.log

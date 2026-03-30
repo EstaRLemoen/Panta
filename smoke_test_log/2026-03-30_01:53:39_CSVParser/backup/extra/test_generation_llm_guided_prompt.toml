@@ -1,0 +1,88 @@
+[test_generation_llm_guided_prompt]
+system="""\
+You are an expert Java test-driven developer.
+"""
+
+user="""\
+## Overview
+You are an expert software engineer code assistant tasked with generating additional unit tests for a Java source file and its corresponding test file.
+Your objective is to enhance both line coverage and branch coverage by adding new unit tests to the existing test suite.
+
+## Source File
+File: `{{ source_file_name }}`
+=========
+{{ source_file|trim }}
+=========
+
+## Source File With Coverage Annotations
+The same source file is shown below with inline coverage annotations.
+Use the `PANTA:` markers to focus your reasoning on uncovered behavior.
+
+=========
+{{ annotated_source_code|trim }}
+=========
+
+## Existing Test File
+File: `{{ test_file_name }}`
+=========
+{{ test_file|trim }}
+=========
+
+## Third-party dependencies for test generation
+=========
+{{ test_dependencies }}
+=========
+
+{%- if failed_tests_section|trim %}
+{{ failed_tests_section|trim }}
+{% endif %}
+
+{%- if additional_instructions_text|trim %}
+{{ additional_instructions_text|trim }}
+{% endif %}
+
+## Testing Advice
+The following YAML advice contains a list of candidate test designs.
+Use these test designs as your primary focus when deciding what tests to generate.
+Treat `method_signature_hint` as the method that contains the internal target behavior, not necessarily as a callable test entrypoint.
+Treat `entry_hint` as a locator for the public or externally reachable entry method that the generated test should use, not as ready-to-paste test code.
+Use `input_focus` as the main source for the concrete arguments, format flags, and setup needed to make that path reach the target behavior.
+Use `observable_behavior` as the primary source for what the generated test should assert.
+
+```yaml
+{{ advice_yaml|trim }}
+```
+
+## Coverage Summary
+=========
+{{ code_coverage_report|trim }}
+=========
+
+## Response
+The output must be a YAML object equivalent to type `NewTests`, according to the following definitions:
+=====
+class SingleTest {
+    String test_behavior; // Short description of the behavior the test covers
+    String test_name; // A short test name, in camel case, that reflects the behavior to test
+    String test_code; // A single test function, that tests the behavior described in 'test_behavior'. The test should be written as if it's part of the existing test suite, if there is one, and it can use existing helper functions, setup, or teardown code.
+    String new_imports_code; // New imports that are required to run the new test function, and are not already imported in the test file. Give an empty string if no new imports are required. If relevant, add new imports as 'import ...' lines.
+}
+
+class NewTests {
+    String language; // The programming language of the source code
+    String existing_test_function_signature; // A single line repeating a signature header of one of the existing test functions
+    List<SingleTest> new_tests; // A list of new test functions to append to the existing test suite, aiming to increase the code coverage. Each test should run as-is, without requiring any additional inputs or setup code. Don't introduce new dependencies
+}
+=====
+
+Use block scalar('|') to format each YAML output.
+Generate tests that target the advice above and the uncovered `PANTA:` regions instead of repeating already-covered behavior.
+Prefer producing small independent tests that align with the suggested `test_designs`.
+When a design references a private/internal target, reach it through the suggested public entrypoint and assert only externally observable behavior.
+Never call private or internal methods directly.
+Never use reflection to access private or internal methods unless the existing test file already relies on that exact pattern.
+If a design references an internal target, use it only to reason about the path and assertions; the generated test should still execute through a public or externally reachable API.
+Do not copy `entry_hint` as if it were complete test code. Build the actual invocation from the entry method identified there plus the concrete setup described in `input_focus`.
+Do not invent assertions from `execution_flow` alone when `observable_behavior` already specifies the expected public result.
+
+Response:"""
