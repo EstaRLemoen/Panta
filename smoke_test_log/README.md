@@ -29,7 +29,7 @@ Examples:
 Use this command for a normal Panta smoke run:
 
 ```bash
-set -a && source cfg_snapshot_test/local.secrets.env && set +a && conda run -n panta-env python -m panta.main 2>&1 | tee smoke_test_log/<run_dir>/runtime.log
+set -a && source cfg_snapshot_test/local.secrets.env && set +a && conda run --no-capture-output -n panta-env python -m panta.main 2>&1 | tee smoke_test_log/<run_dir>/runtime.log
 ```
 
 Notes:
