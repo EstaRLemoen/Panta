@@ -31,6 +31,12 @@ Please use the following dependencies to generation tests
 ## Failed Tests
 Below is a list of failed tests and their error messages.
 Please fix the failed tests based on the error message one by one. The fixed test cases should be executable in the above test file.
+
+### Fixing Guidelines
+1. If an assertion failed with an unexpected actual value (e.g. "expected null, but was:<>"), **trust the observed actual value** and adjust your assertion accordingly — the actual value reflects the real behavior of the code.
+2. If you are unsure about the exact expected value, consider rewriting the test to avoid precise value assertions. Prefer: testing for non-null/null, testing collection size, testing exception types, or testing boolean conditions.
+3. If the same test has failed multiple times with similar errors, consider writing a **completely different test** targeting the same functionality from a different angle.
+4. If a compilation error is caused by a missing or wrong API call, check the source file for the correct method signatures.
 ======
 {{ failed_test_runs }}
 ======

@@ -480,6 +480,7 @@ class LLMPathAdvicePromptBuilder:
                     "annotated_line_count": len(annotated_source_code.splitlines()),
                     "token_count": token_count,
                 },
+                "previous_advice_feedback": self.previous_advice_feedback,
                 "generation_outcome": advice,
             },
         )
@@ -500,6 +501,7 @@ class LLMPathAdvicePromptBuilder:
                     "advice_summary": advice.get("focus_summary", ""),
                     "annotated_line_count": len(annotated_source_code.splitlines()),
                 },
+                "previous_advice_feedback": self.previous_advice_feedback,
                 "generation_outcome": advice,
             },
         )

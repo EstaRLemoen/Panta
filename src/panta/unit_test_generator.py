@@ -113,11 +113,158 @@ class UnitTestGenerator:
         self.prompt_type = prompt_type
         self.path_history = {}
         self.selection_state = {}
+        self.current_iteration_results = []
         # self.prompt = self.build_prompt(self.prompt_type)
         self.prompt = ""
 
     def get_prompt_selection_state(self):
         return self.selection_state
+
+    def start_iteration_tracking(self):
+        self.current_iteration_results = []
+
+    def record_iteration_result(self, test_result: dict):
+        if not isinstance(test_result, dict):
+            return
+        self.current_iteration_results.append(dict(test_result))
+
+    def build_advice_feedback(self) -> str:
+        selection_state = self.get_prompt_selection_state() or {}
+        last_advice = selection_state.get("last_advice") or {}
+        if not last_advice:
+            return ""
+
+        design_lines = []
+        for design in last_advice.get("test_designs", [])[:4]:
+            if not isinstance(design, dict):
+                continue
+            design_name = str(design.get("design_name", "")).strip()
+            method_context = design.get("method_context") or {}
+            entry_hint = str(method_context.get("entry_hint", "")).strip()
+            if not design_name:
+                continue
+            if entry_hint:
+                design_lines.append(f'- "{design_name}" via `{entry_hint}`')
+            else:
+                design_lines.append(f'- "{design_name}"')
+
+        result_lines, note_lines = self._summarize_current_iteration_for_feedback()
+        lines = [
+            "## Previous Advice Feedback",
+            "The previous iteration's advice did not lead to any coverage increase.",
+        ]
+        if design_lines:
+            lines.append("### Previous Advice Designs")
+            lines.extend(design_lines)
+        if result_lines:
+            lines.append("### Generated Tests And Fixing Summary")
+            lines.extend(result_lines)
+        if note_lines:
+            lines.append("### Notes")
+            lines.extend(note_lines)
+        return "\n".join(lines)
+
+    @staticmethod
+    def _categorize_test_result(test_result: dict) -> str:
+        if test_result.get("status") == "PASS":
+            return "passed"
+        reason = str(test_result.get("reason", "")).strip()
+        if reason == "Compilation failure":
+            return "compilation failure"
+        if reason == "Timeout":
+            return "timeout"
+        if reason == "Test failures":
+            return "runtime failure"
+        return "failed"
+
+    def _summarize_current_iteration_for_feedback(self):
+        per_test = {}
+        unresolved_failure_types = []
+        fixed_count = 0
+        passed_without_fix_count = 0
+
+        for test_result in self.current_iteration_results:
+            test = test_result.get("test") or {}
+            test_name = str(test.get("test_name", "")).strip() or "<unnamed test>"
+            label = str(test_result.get("label", ""))
+            phase = "fixing" if label.startswith("f_") else "generation"
+            category = self._categorize_test_result(test_result)
+            entry = per_test.setdefault(
+                test_name,
+                {"generation": [], "fixing": []},
+            )
+            entry[phase].append(category)
+
+        result_lines = []
+        for test_name, entry in per_test.items():
+            gen_results = entry["generation"]
+            fix_results = entry["fixing"]
+            first_gen = gen_results[0] if gen_results else ""
+            has_gen_failure = any(result != "passed" for result in gen_results)
+            has_fix_pass = any(result == "passed" for result in fix_results)
+            fix_failures = [result for result in fix_results if result != "passed"]
+
+            if has_gen_failure and has_fix_pass:
+                fixed_count += 1
+                result_lines.append(
+                    f"- `{test_name}`: generation {first_gen}, then fixing passed"
+                )
+                continue
+
+            if gen_results == ["passed"] and not fix_results:
+                passed_without_fix_count += 1
+                result_lines.append(f"- `{test_name}`: passed in generation")
+                continue
+
+            if has_gen_failure:
+                if fix_failures:
+                    unresolved_failure_types.extend(fix_failures)
+                    fix_summary = ", ".join(fix_failures[:2])
+                    if len(fix_failures) > 2:
+                        fix_summary += ", ..."
+                    result_lines.append(
+                        f"- `{test_name}`: generation {first_gen}; fixing still failed ({fix_summary})"
+                    )
+                else:
+                    unresolved_failure_types.extend(
+                        result for result in gen_results if result != "passed"
+                    )
+                    result_lines.append(f"- `{test_name}`: generation {first_gen}")
+                continue
+
+            if fix_results:
+                final_fix = "passed" if has_fix_pass else fix_results[-1]
+                if final_fix != "passed":
+                    unresolved_failure_types.append(final_fix)
+                result_lines.append(f"- `{test_name}`: fixing {final_fix}")
+
+        note_lines = []
+        if fixed_count:
+            note_lines.append(
+                f"- Fixing recovered {fixed_count} test(s), but the iteration still produced no coverage increase."
+            )
+        if unresolved_failure_types:
+            compilation_count = unresolved_failure_types.count("compilation failure")
+            runtime_count = unresolved_failure_types.count("runtime failure")
+            timeout_count = unresolved_failure_types.count("timeout")
+            if compilation_count and compilation_count >= runtime_count + timeout_count:
+                note_lines.append(
+                    "- Most unresolved tests failed at compilation time; prefer simpler, well-supported test code and imports."
+                )
+            elif runtime_count:
+                note_lines.append(
+                    "- Most unresolved tests reached execution but failed assertions or setup; reconsider the expected behavior and path setup."
+                )
+            elif timeout_count:
+                note_lines.append(
+                    "- Some unresolved tests timed out; avoid flows that may block or depend on unfinished iteration state."
+                )
+        if passed_without_fix_count and not fixed_count:
+            note_lines.append(
+                "- Some generated tests already passed but still did not add coverage; consider switching to a different uncovered region instead of refining the same direction."
+            )
+
+        return result_lines, note_lines
 
     def run_coverage(self):
         """

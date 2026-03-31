@@ -180,6 +180,7 @@ class Panta:
                 and iteration_count < self.args.maximum_iterations
                 and no_coverage_increase < self.args.no_coverage_increase_iterations
             ):
+                self.test_gen.start_iteration_tracking()
                 cur_line_cov = round(self.test_gen.current_coverage[0] * 100, 2)
                 cur_branch_cov = round(self.test_gen.current_coverage[1] * 100, 2)
                 self.logger.info(
@@ -212,6 +213,7 @@ class Panta:
                 for generated_test in generated_tests_dict.get("new_tests") or []:
                     test_result = self.test_gen.validate_test(generated_test)
                     test_result["label"] = g_label
+                    self.test_gen.record_iteration_result(test_result)
                     test_results_list.append(test_result)
 
                 # collect code coverage after generation phase
@@ -239,6 +241,7 @@ class Panta:
                     )
                     token_count += fix_token_count
                     for fix_result in fix_results_list:
+                        self.test_gen.record_iteration_result(fix_result)
                         test_results_list.append(fix_result)
 
                     # collect coverage after fixing phase
@@ -285,10 +288,13 @@ class Panta:
                             f"Iteration {iteration_count} cannot increase coverage."
                         )
                         no_coverage_increase += 1
-                        if advice_mode in ("llm", "llm-light-advice") and last_advice:
-                            error_summary = self.test_gen.get_iteration_error_summary()
-                            previous_advice_feedback = self._build_advice_feedback(
-                                last_advice, error_summary
+                        if (
+                            advice_mode in ("llm", "llm-light-advice")
+                            and last_advice
+                            and self.args.enable_advice_feedback
+                        ):
+                            previous_advice_feedback = (
+                                self.test_gen.build_advice_feedback()
                             )
                         else:
                             previous_advice_feedback = ""
@@ -339,43 +345,6 @@ class Panta:
             os.makedirs(report_path)
         ReportGenerator.generate_report(test_results_list, report_path + report_file)
         self.logger.info("Report generated successfully at: " + report_path)
-
-    @staticmethod
-    def _build_advice_feedback(last_advice: dict, error_summary: dict) -> str:
-        focus = last_advice.get("focus_summary", "")
-        targets = last_advice.get("target_methods", [])
-        design_names = [
-            d.get("design_name", "")
-            for d in last_advice.get("test_designs", [])
-            if d.get("design_name")
-        ]
-        lines = [
-            "## Previous Advice Feedback",
-            "The previous iteration's advice did not lead to any coverage increase.",
-            "- Advice focus: " + (f'"{focus}"' if focus else "(none)"),
-        ]
-        if design_names:
-            lines.append("- Test designs: " + ", ".join(f'"{d}"' for d in design_names))
-        if targets:
-            lines.append("- Target methods: " + str(targets))
-        lines.append(
-            f"- Result: {error_summary.get('compilation_errors', 0)} compilation errors, "
-            f"{error_summary.get('runtime_errors', 0)} runtime errors, "
-            f"{error_summary.get('timeout_errors', 0)} timeouts"
-        )
-        first_comp = error_summary.get("first_compilation_error", "")
-        first_rt = error_summary.get("first_runtime_error", "")
-        if first_comp:
-            lines.append(f"- Key compilation error: {first_comp}")
-        if first_rt:
-            lines.append(f"- Key runtime error: {first_rt}")
-        lines.append(
-            "Note: Runtime errors typically indicate that the behavioral prediction "
-            "(observable_behavior) was inaccurate, or that the test setup did not "
-            "correctly reach the target code path. Consider targeting a different "
-            "method or adjusting the behavioral prediction."
-        )
-        return "\n".join(lines)
 
     def run_symprompt(self):
         test_results_list = []

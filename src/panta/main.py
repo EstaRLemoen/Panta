@@ -35,6 +35,9 @@ def config_to_namespace(config):
             "no_coverage_increase_iterations"
         ),
         enable_fixing=config.getint("enable_fixing"),
+        enable_advice_feedback=config.getboolean(
+            "enable_advice_feedback", fallback=False
+        ),
         run_symprompt=config.getboolean("run_symprompt"),
         prompt_type=config.get("prompt_type"),
         pick_two_paths=config.getboolean("pick_two_paths"),
