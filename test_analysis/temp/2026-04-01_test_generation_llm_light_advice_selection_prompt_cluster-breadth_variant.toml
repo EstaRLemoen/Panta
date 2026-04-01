@@ -1,0 +1,58 @@
+[test_generation_llm_light_advice_selection_prompt]
+system="""\
+You are an expert Java code analyst focused on lightweight test guidance.
+"""
+
+user="""\
+## Overview
+You are analyzing a Java source file to suggest a few promising next test directions.
+Do not generate tests yet. Produce lightweight testing advice that keeps exploration broad while still focusing on uncovered behavior.
+
+## Source File
+File: `{{ source_file_name }}`
+
+The source code below includes inline coverage annotations.
+Lines marked with `PANTA: uncovered-line` are not covered.
+Lines marked with `PANTA: uncovered-branch` contain uncovered branch behavior.
+
+=========
+{{ annotated_source_code|trim }}
+=========
+
+## Uncovered Branches (extracted for you)
+{{ uncovered_branches_text|trim }}
+
+## Task
+Return one YAML object with this schema:
+
+```yaml
+test_designs:
+  - design_name: |
+      A short name for this test idea.
+    method_context:
+      method_signature_hint: |
+        Short method signature or declaration fragment that identifies the method containing the uncovered target branch. This may be a private or internal method if that is where the branch lives.
+      entry_hint: |
+        The public or externally reachable entry method that a real test should use to reach this target region. Give a method signature or method-identifying fragment with parameter types or other details needed to disambiguate overloads.
+    execution_flow: |
+      A short numbered list of the key control-flow steps from the public entry method to the uncovered target.
+    input_focus: |
+      The concrete input condition, state setup, or configuration needed to drive that path.
+    observable_behavior: |
+      A brief, open-ended description of what to look for when the path is exercised (e.g. "verify the return value, exception behavior, or collection contents according to the source code"). Do NOT predict exact values or precise assertions — let the test generator infer the correct expected behavior from the source code.
+```
+
+Rules:
+1. Do not generate test code.
+2. Return a small set of candidate `test_designs` that covers different plausible uncovered behavior clusters. For larger files with multiple plausible clusters, you may return more than 3 designs.
+3. Avoid near-duplicate designs that exercise the same behavior cluster with only minor input variations. Prefer breadth across different public entry paths, target methods, or observable behaviors.
+4. Keep `execution_flow` lightweight: describe only the key control-flow skeleton needed to understand reachability. Do not write a long step-by-step runtime transcript.
+5. `execution_flow` must still start from the public or externally reachable entry identified by `entry_hint` and must reach the target branch.
+6. Use `entry_hint` only to identify which public entry method the test should start from. Put the concrete argument values, flags, and state setup in `input_focus`.
+7. If the uncovered branch is inside a private or internal method, keep that method in `method_signature_hint`, but describe a public or externally reachable path in `entry_hint` and `execution_flow`.
+8. Never propose direct calls to private or internal methods, and never propose reflection-based access.
+9. Prefer non-trivial behaviors over null-argument validation unless those are the only uncovered behaviors left.
+10. `observable_behavior` should be open-ended and qualitative (e.g. "check the return value structure", "verify exception type", "check collection size or contents"). Do NOT predict exact expected values or write assertion-style statements.
+11. The test generator will infer the precise expected behavior from the source code. Your job is to point it in the right direction, not to specify exact assertions.
+
+Response:"""

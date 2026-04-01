@@ -248,3 +248,291 @@ Total:
 2. `withHeader` / `withQuoteMode` 这类主题能不能通过更强的 prompt 约束减少 runtime failure？
 3. 现在 light-advice 已经能漂移到新方法，是否还需要进一步提高 temperature，还是先只改 prompt diversification 规则？
 4. `CSVFormat` 是否适合单独做一个“配置类策略”模板，而不是复用当前通用 light-advice？
+
+---
+
+## 7. Follow-Up Runs From The 55.90% Baseline
+
+在第一次 `threshold=100` 的 6-iter run 结束后，我们又做了两次 continuation：
+
+1. `continue-after-6iter`：从第二次 continuation 的 `after` 往后继续 6 轮
+2. `continue-first-after-4iter`：重新从第一次 6-iter run 的 `after` 出发，再跑 4 轮
+
+为了避免混淆，这里统一把三次 run 记为：
+
+- **Run A**: `2026-03-31_23:13:11_csvformat-6iter_r1_CSVFormat`
+- **Run B**: `2026-03-31_23:47:07_csvformat-continue-after-6iter_r1_CSVFormat`
+- **Run C**: `2026-04-01_00:42:38_csvformat-continue-first-after-4iter_r1_CSVFormat`
+
+### Coverage summary
+
+| Run | Start | End | Delta |
+|-----|-------|-----|-------|
+| A | `0.00 / 0.00` | `55.90 / 42.15` | `+55.90 / +42.15` |
+| B | `55.90 / 42.15` | `63.59 / 52.11` | `+7.69 / +9.96` |
+| C | `55.90 / 42.15` | `64.36 / 51.72` | `+8.46 / +9.57` |
+
+结论：
+- 从 `55.90 / 42.15` 这个 baseline 出发，覆盖率**还没涨到头**。
+- Run B 和 Run C 都能继续推高 coverage。
+- Run C 的 line coverage 更高，Run B 的 branch coverage 略高。
+
+---
+
+## 8. Advice Evolution Across The Three Runs
+
+### Run B: 第二次 continuation（从 55.90 开始再跑 6 轮）
+
+总体轨迹：
+- Iter 0 仍然锚在 `equals(...)`
+- Iter 1 开始出现 `getHeaderComments()`、`isEscapeCharacterSet()`
+- Iter 2 扩到 `withNullString()`、`withCommentMarker()`
+- Iter 3/4 又回到 `equals/hashCode/withIgnoreHeaderCase`
+- Iter 5 后期收益明显变小
+
+特点：
+- 仍然有锚定，但已经能慢慢扩到新的 getter/config 相关路径。
+- 这次更像“沿着现有属性簇缓慢外扩”。
+
+### Run C: 第三次 continuation（从同一个 55.90 baseline 出发，改了 light-advice 数量规则后跑 4 轮）
+
+这次一个明显变化是：**每轮都稳定产出 4 个 designs**。
+
+按 snapshot 统计：
+
+| Iter | Designs | Targets |
+|------|---------|---------|
+| 0 | 4 | 4 个都落在 `equals(...)` |
+| 1 | 4 | 3 个 `equals(...)` + 1 个 `getHeaderComments()` |
+| 2 | 4 | `equals` + `withRecordSeparator` + `withNullString` + `withIgnoreEmptyLines` |
+| 3 | 4 | 3 个 `equals(...)` + 1 个 `print(...)` |
+
+说明：
+- 改完模板后，light-advice 已经不再被 `2-3` 个 design 上限卡住。
+- 但“避免同一行为簇重复”这个规则只部分生效：
+  - Iter 2 的探索最健康，4 个 design 明显分散。
+  - Iter 0 / 1 / 3 仍然存在 3 个 design 都围着 `equals(...)` 的现象。
+
+### Run C 的新增有效方向
+
+相较于 Run B，Run C 里更明显被打开的方向包括：
+- `getHeaderComments()`
+- `withRecordSeparator(...)`
+- `withIgnoreEmptyLines(...)`
+- `withNullString(...)` 的 formatting 路径
+
+其中最有价值的一轮是 Iter 2：
+- 直接带来 `+5.13 line / +4.98 branch`
+- 成功测试包括：
+  - `testCSVFormatWithRecordSeparator`
+  - `testCSVFormatIgnoringEmptyLines`
+  - `testCSVFormatWithNullStringUpdated`
+
+这说明“放宽 design 数量 + 避免同簇重复”这个方向是有收益的。
+
+---
+
+## 9. Is Fixing Worse In Run C Than In Run B?
+
+### 结论
+
+**不是全面更差，但 Run C 在 Iter 3 的 fixing 明显更差。**
+
+也就是说：
+- Run C 前 0-2 轮的 fixing 并不比 Run B 差，甚至有些轮次更有效。
+- 但 Run C 的最后一轮（Iter 3）失败密度明显更高，compile/runtime error 一起上来，最终没有带来覆盖增长。
+
+### Run B（前 0-3 轮）
+
+| Iter | LLM calls | Attempts | Passed | Compile | Runtime | Coverage delta |
+|------|-----------|----------|--------|---------|---------|----------------|
+| 0 | 4 | 9 | 1 | 4 | 4 | `+0.00 / +0.00` |
+| 1 | 4 | 6 | 2 | 0 | 4 | `+1.79 / +2.29` |
+| 2 | 3 | 4 | 2 | 0 | 2 | `+4.10 / +5.37` |
+| 3 | 3 | 6 | 3 | 3 | 0 | `+1.29 / +1.91` |
+
+观察：
+- Run B 的 fixing 问题偏向 **runtime failure**，尤其 Iter 0-2。
+- 到 Iter 3，compile failure 增加，但整体还能把 3 个测试修成并带来增长。
+
+### Run C（前 0-3 轮）
+
+| Iter | LLM calls | Attempts | Passed | Compile | Runtime | Coverage delta |
+|------|-----------|----------|--------|---------|---------|----------------|
+| 0 | 4 | 9 | 3 | 2 | 4 | `+1.28 / +1.91` |
+| 1 | 3 | 7 | 3 | 4 | 0 | `+2.05 / +2.68` |
+| 2 | 4 | 7 | 3 | 4 | 0 | `+5.13 / +4.98` |
+| 3 | 4 | 16 | 2 | 9 | 5 | `+0.00 / +0.00` |
+
+观察：
+- Run C 的 Iter 0-2 其实不差：
+  - 成功数都达到 3
+  - Iter 2 还是本次最强的一轮
+- 但 Iter 3 明显崩了：
+  - `16` 次 attempts
+  - `9` 个 compilation error
+  - `5` 个 runtime error
+  - 最终只修成 2 个测试，而且没带来 coverage increase
+
+### 为什么会觉得“现在的 fixing 更差”
+
+因为 Run C 的失败集中出现在最后一轮，而且很刺眼：
+
+1. **compile failure 数量非常高**
+   - 相比 Run B 前 0-3 轮，Run C Iter 3 的 compile fail 是最高的。
+
+2. **这一轮 advice 本身更复杂**
+   - 不只是 `equals(...)`
+   - 还混入了 `print(...)` 这类需要更多上下文和 imports 的路径
+   - 生成难度和修复难度都更高
+
+3. **大部分失败没有被 fixing 真正消掉**
+   - 最终只有 nullString/commentMarker 两条被修成
+   - quoteMode/print 相关路径还是没站稳
+
+### 更准确的判断
+
+如果只看“前几轮 fixing 的总体表现”：
+- **Run C 不比 Run B 差**
+- 它甚至更有效率地把一些新方向（record separator / ignore empty lines / header comments）转成了通过测试
+
+如果看“最后一轮 fixing 的稳定性”：
+- **Run C 明显更差**
+- 说明随着 design 更分散、路径更复杂，当前 fixing 模块开始扛不住了
+
+也就是说，问题不是“新的 light-advice 改法整体更差”，而是：
+- **探索宽度上去了**
+- **但 fixing 对更复杂 design 的承接能力不够**
+
+这和我们前面的判断是一致的：
+- 当前 fixing 更擅长修简单 `equals/hashCode` 型测试
+- 一旦进入 `print/parse/config-combination` 这类稍复杂路径，compile/runtime 错误会明显增多
+
+---
+
+## 10. Updated Takeaways
+
+1. 从 `55.90 / 42.15` 出发，`CSVFormat` 还有进一步上涨空间。
+2. light-advice 放宽 design 数量后，探索面确实变宽了。
+3. 当前模板改动的收益主要体现在：
+   - 更容易碰到新的 public behavior cluster
+   - 不再完全被 `equals(...)` 单线锁死
+4. 但 fixing 现在成了更明显的瓶颈：
+   - 对简单 equality-style 测试还行
+   - 对更复杂的 printing/parsing/config-combination 测试承接能力不足
+5. 因此下一阶段如果继续优化，优先级应当是：
+   - 先提升 fixing 的结构化修复能力
+   - 再继续放宽 light-advice 的探索面
+
+---
+
+## 11. Template / Temperature Comparison From The Same 55.90% Baseline
+
+这一段专门记录从同一个 baseline
+
+- Start coverage: `55.90% line / 42.15% branch`
+- Baseline file: `smoke_test_log/2026-03-31_23:13:11_csvformat-6iter_r1_CSVFormat/backup/CSVFormatTest_after.java`
+
+出发做的对比试验。
+
+### C run: cluster-breadth light-advice variant
+
+Run:
+- `2026-04-01_00:42:38_csvformat-continue-first-after-4iter_r1_CSVFormat`
+
+Prompt/config changes relative to the original threshold100 run:
+- `light-advice` 模板改动位于
+  - `src/panta/prompt_templates/java_templates/test_generation_llm_light_advice_selection_prompt.toml`
+- 规则文本的关键变化是：
+
+Original:
+```text
+2. Prefer returning 2 or 3 candidate `test_designs` when the source file offers multiple plausible uncovered behaviors.
+```
+
+Variant:
+```text
+2. Return a small set of candidate `test_designs` that covers different plausible uncovered behavior clusters. For larger files with multiple plausible clusters, you may return more than 3 designs.
+3. Avoid near-duplicate designs that exercise the same behavior cluster with only minor input variations. Prefer breadth across different public entry paths, target methods, or observable behaviors.
+```
+
+- 也就是从“数量偏好”改成了“行为簇覆盖 + 去重约束”
+- 其余关键参数保持：
+  - `llm_advice_activation_line_coverage = 100`
+  - `llm_light_advice_temperature = 0.2`
+  - `maximum_iterations = 4`
+
+Result:
+- End coverage: `64.36% / 51.72%`
+- Delta: `+8.46 line / +9.57 branch`
+
+Observed behavior:
+- 每轮稳定产出 `4` 个 designs
+- advice 开始更频繁地扩到：
+  - `getHeaderComments()`
+  - `withRecordSeparator(...)`
+  - `withIgnoreEmptyLines(...)`
+  - `print(...)`
+- fixing 压力明显上升，但探索宽度也明显更大
+
+### D run: original light-advice template + higher temperature
+
+Run:
+- `2026-04-01_01:21:46_csvformat-continue-first-after-4iter-temp04_r1_CSVFormat`
+
+Prompt/config changes relative to the original threshold100 run:
+- `light-advice` 模板恢复为原版：
+
+```text
+2. Prefer returning 2 or 3 candidate `test_designs` when the source file offers multiple plausible uncovered behaviors.
+```
+
+- 不再包含下列 variant 规则：
+
+```text
+2. Return a small set of candidate `test_designs` that covers different plausible uncovered behavior clusters. For larger files with multiple plausible clusters, you may return more than 3 designs.
+3. Avoid near-duplicate designs that exercise the same behavior cluster with only minor input variations. Prefer breadth across different public entry paths, target methods, or observable behaviors.
+```
+
+- 温度提高：
+  - `llm_light_advice_temperature = 0.4`
+- 其余关键参数保持：
+  - `llm_advice_activation_line_coverage = 100`
+  - `maximum_iterations = 4`
+
+Result:
+- End coverage: `58.97% / 46.74%`
+- Delta: `+3.07 line / +4.59 branch`
+
+Observed behavior:
+- 每轮大多仍是 `3` 个 designs
+- focus 仍然主要围绕：
+  - `equals(...)`
+  - `getHeaderComments()`
+  - `isNullStringSet()` / `isCommentMarkerSet()`
+- 0.4 温度带来一些表述扰动，但没有稳定扩大探索宽度
+
+### Side-by-side comparison
+
+| Run | Template | Temp | Typical design count | End coverage | Delta |
+|-----|----------|------|----------------------|--------------|-------|
+| C | cluster-breadth variant | 0.2 | 4 | `64.36 / 51.72` | `+8.46 / +9.57` |
+| D | original template | 0.4 | 3 | `58.97 / 46.74` | `+3.07 / +4.59` |
+
+### What this comparison suggests
+
+1. 这组结果**不支持**“只要把原模板 temperature 调高一点，就能达到和 C run 类似的效果”。
+2. 原模板的主要限制更像是**候选 design 集过窄**，而不是单纯 temperature 太低。
+3. 提高 temperature 让输出更松，但没有自动解决“行为簇重复”问题。
+4. `cluster-breadth` 版本虽然 fixing 成本更高，但明显更能打开新 coverage 区域。
+
+### Temporary artifact storage
+
+为了保留这次 prompt A/B 对比里的临时修改，当前变体模板已存放在：
+
+- `test_analysis/temp/2026-04-01_test_generation_llm_light_advice_selection_prompt_cluster-breadth_variant.toml`
+
+`test_analysis/temp/` 目录用于存放：
+- 临时 prompt/template 变体
+- 短期 A/B 实验输入
+- 不适合直接放进最终分析正文、但后续可能要回看的一次性文件

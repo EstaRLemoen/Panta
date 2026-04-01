@@ -30,6 +30,28 @@ This directory stores reusable shell scripts for long-running local experiments.
   - Thin wrapper around `run_batch.sh`
   - Runs 2 rounds from the same baseline with `maximum_iterations = 5` and `enable_fixing = 2`
   - Uses `llm_advice_activation_line_coverage = 70` for round 1 and `100` for round 2
+- `repeat_baseline_5iter_fix3_threshold70_vs_100.sh`
+  - Thin wrapper around `run_batch.sh`
+  - Runs 2 rounds from the same baseline with `maximum_iterations = 5` and `enable_fixing = 3`
+  - Uses `llm_advice_activation_line_coverage = 70` for round 1 and `100` for round 2
+- `no_feedback_5iter_fix3_threshold70.sh`
+  - Runs 2 rounds from the same CSVParser baseline with `maximum_iterations = 5`, `enable_fixing = 3`, and `llm_advice_activation_line_coverage = 70`
+  - Forces `enable_advice_feedback = false` for the advice-feedback A/B check
+- `run_csvformat_6iter.sh`
+  - Runs `CSVFormat.java` for 1 round with `maximum_iterations = 6`
+  - Uses the current project state as the default baseline for `CSVFormatTest.java`; if the file is absent, the run starts without an initial test file
+- `run_csvformat_continue_from_after_6iter.sh`
+  - Continues `CSVFormat.java` from the `CSVFormatTest_after.java` produced by the earlier 6-iteration run
+  - Runs 1 round with `maximum_iterations = 6`
+- `run_csvformat_continue_from_first_after_4iter.sh`
+  - Continues `CSVFormat.java` from the first `threshold=100` 6-iteration run's `CSVFormatTest_after.java`
+  - Runs 1 round with `maximum_iterations = 4`
+  - Used for the cluster-breadth light-advice comparison run
+- `run_csvformat_continue_from_first_after_4iter_temp04.sh`
+  - Continues `CSVFormat.java` from the same `55.90% / 42.15%` baseline as `run_csvformat_continue_from_first_after_4iter.sh`
+  - Runs 1 round with `maximum_iterations = 4`
+  - Uses the original light-advice template with `llm_light_advice_temperature = 0.4`
+  - Used for the D-run comparison against the cluster-breadth variant
 
 ## `run_batch.sh` Usage
 
