@@ -23,6 +23,12 @@ This directory stores reusable shell scripts for long-running local experiments.
   - Supports shared config overrides via `--set KEY=VALUE`
   - Supports per-run config overrides via `--set-per-round KEY=V1,V2,...,VN`
   - Auto-generates unique `report_filepath` values
+- `run_class_list_batch.py`
+  - Thin selector wrapper around `run_batch.sh`
+  - Reads `evaluation/data/class_list.csv`
+  - Resolves source/test paths from `evaluation/defects4j-codefiles/<project>-codefiles.json`
+  - Uses CSV `complexity` as `maximum_iterations`
+  - Supports selecting a subset of classes and adding a custom batch name prefix
 - `repeat_baseline_3iter.sh`
   - Thin wrapper around `run_batch.sh`
   - Equivalent to a 3-run baseline repeat with `maximum_iterations = 3`, `no_coverage_increase_iterations = 3`, and `llm_advice_activation_line_coverage = 50`
@@ -114,6 +120,28 @@ Use the compatibility wrapper:
 
 ```bash
 nohup bash offline_runs/repeat_baseline_3iter.sh > repeat_baseline_3iter.log 2>&1 &
+```
+
+Run a selected subset from `class_list.csv` with a custom prefix:
+
+```bash
+python3 offline_runs/run_class_list_batch.py \
+  --project Csv-16f \
+  --class CSVParser \
+  --class CSVFormat \
+  --rounds 2 \
+  --batch-prefix apr02-sample
+```
+
+Preview selection without running:
+
+```bash
+python3 offline_runs/run_class_list_batch.py \
+  --project Csv-16f \
+  --min-complexity 14 \
+  --max-classes 3 \
+  --batch-prefix apr02-sample \
+  --dry-run
 ```
 
 Use the 2-round threshold comparison wrapper:

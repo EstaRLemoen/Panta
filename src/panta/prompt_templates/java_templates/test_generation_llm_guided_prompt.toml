@@ -24,6 +24,10 @@ File: `{{ test_file_name }}`
 {{ test_file|trim }}
 =========
 
+Use the existing test file for suite integration only: reuse its imports, helpers, naming style, and setup patterns when helpful.
+Do not let the existing tests determine what behavior to target when the advice and `PANTA:` markers point elsewhere.
+Do not blindly mimic the scenario shapes of the existing tests if that would repeat already-covered behavior.
+
 ## Third-party dependencies for test generation
 =========
 {{ test_dependencies }}
