@@ -76,11 +76,41 @@ test_designs:
       Provide a Parcel that is both fragile and above the oversized threshold.
     observable_behavior: |
       Verify that the produced invoice includes a higher shipping-related charge than the non-fragile baseline.
+  - design_name: |
+      Test retry path after a transient inventory lookup miss.
+    method_context:
+      method_signature_hint: |
+        private StockRecord fetchStockRecord(String sku)
+      entry_hint: |
+        public ReservationResult reserve(String sku, int quantity)
+    execution_flow: |
+      1. Call reserve() for a SKU whose first stock lookup misses but a retry succeeds.
+      2. During reservation, fetchStockRecord(...) is reached and the retry path is taken.
+      3. The reservation completes after recovering from the transient miss.
+    input_focus: |
+      Use a SKU and collaborator setup where the first lookup returns no record and the immediate retry returns available stock.
+    observable_behavior: |
+      Verify that reservation succeeds and reflects the recovered stock availability rather than failing immediately.
+  - design_name: |
+      Test fallback formatting when the preferred locale pattern is unavailable.
+    method_context:
+      method_signature_hint: |
+        private String resolvePattern(Locale locale)
+      entry_hint: |
+        public String formatStatement(Locale locale, Money total)
+    execution_flow: |
+      1. Call formatStatement() with a locale whose preferred pattern is missing.
+      2. During formatting, resolvePattern(...) is reached and falls back to the default pattern.
+      3. The statement is formatted using the fallback path.
+    input_focus: |
+      Choose a Locale without a configured custom pattern and provide a representative Money value.
+    observable_behavior: |
+      Check that formatting still succeeds and that the output follows the fallback style rather than the missing preferred pattern.
 ```
 
 Rules:
 1. Do not generate test code.
-2. Prefer returning 4 candidate `test_designs` when the source file offers multiple plausible uncovered behaviors. Only return fewer when there are clearly fewer than 4 meaningful uncovered behavior clusters left.
+2. Prefer returning 4 candidate `test_designs` when the source file offers multiple plausible uncovered behaviors. For larger files, broader APIs, or fragmented uncovered regions, prefer 5 or 6 candidate `test_designs` in a single round. Only return fewer when there are clearly fewer than 4 meaningful uncovered behavior clusters left.
 3. Do not let multiple designs collapse onto the same behavior cluster unless the remaining uncovered behavior is genuinely concentrated there. Vary public entry paths, target methods, or observable behaviors when plausible.
 4. Keep `execution_flow` lightweight: describe only the key control-flow skeleton needed to understand reachability. Do not write a long step-by-step runtime transcript.
 5. `execution_flow` must still start from the public or externally reachable entry identified by `entry_hint` and must reach the target branch.
