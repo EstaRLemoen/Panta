@@ -1,0 +1,23 @@
+# Batch Run R3
+
+- Batch name: repeat-csvparser-11iter
+- Timestamp: 2026-04-01_22:09:10
+- Round: 3 / 3
+- Baseline test file: original `defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java` contents
+- report_filepath: repeat_csvparser_11iter_r3_20260401_220910.html
+- Run status: completed
+- Process exit code: 0
+- Effective config overrides:
+  - code_coverage_report_path = defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+  - enable_advice_feedback = false
+  - enable_fixing = 3
+  - junit_version = 4
+  - llm_advice_activation_line_coverage = 100
+  - maximum_iterations = 11
+  - no_coverage_increase_iterations = 3
+  - project_directory = defects4j-subjects-notests/Csv-16f
+  - report_filepath = repeat_csvparser_11iter_r3_20260401_220910.html
+  - source_code_file = defects4j-subjects-notests/Csv-16f/src/main/java/org/apache/commons/csv/CSVParser.java
+  - test_code_command_dir = defects4j-subjects-notests/Csv-16f/
+  - test_code_file = defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+  - test_execution_command = mvn clean package -Dtest=CSVParserTest
