@@ -1,0 +1,24 @@
+# Batch Run R2
+
+- Batch name: no-feedback-csvparser-iter11-growth11-activation11
+- Timestamp: 2026-04-03_19:27:59
+- Round: 2 / 3
+- Baseline test file: original `defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java` contents
+- report_filepath: no_feedback_csvparser_iter11_growth11_activation11_r2_20260403_192759.html
+- Run status: completed
+- Process exit code: 0
+- Effective config overrides:
+  - code_coverage_report_path = defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+  - enable_advice_feedback = false
+  - enable_fixing = 3
+  - junit_version = 4
+  - llm_advice_activation_line_coverage = 100
+  - llm_advice_activation_no_growth = 11
+  - maximum_iterations = 11
+  - no_coverage_increase_iterations = 11
+  - project_directory = defects4j-subjects-notests/Csv-16f
+  - report_filepath = no_feedback_csvparser_iter11_growth11_activation11_r2_20260403_192759.html
+  - source_code_file = defects4j-subjects-notests/Csv-16f/src/main/java/org/apache/commons/csv/CSVParser.java
+  - test_code_command_dir = defects4j-subjects-notests/Csv-16f/
+  - test_code_file = defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+  - test_execution_command = mvn clean package -Dtest=CSVParserTest

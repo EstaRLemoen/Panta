@@ -1,0 +1,1105 @@
+2026-04-06 06:45:22,991 - panta.panta - INFO - CFG snapshot directory created: cfg_snapshot_test/intermediate/cfg/UTF32Reader_20260406_064522_ad5bf9f7
+2026-04-06 06:45:34,003 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:46:05,201 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-06 06:46:05,253 - panta.panta - INFO - Current line Coverage: 0.0%, branch coverage: 0.0%
+2026-04-06 06:46:05,253 - panta.panta - INFO - initial tests generation using baseline type of prompt
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test reading a single valid UTF-32 character in big-endian format.
+  test_name: |
+    testReadSingleCharacterBigEndian
+  test_code: |
+    @Test
+    public void testReadSingleCharacterBigEndian() throws IOException {
+        byte[] input = new byte[] {0x00, 0x00, 0x00, 0x41}; // UTF-32 for 'A'
+        UTF32Reader reader = new UTF32Reader(new IOContext(null, null), new ByteArrayInputStream(input), new byte[4], 0, 4, true);
+        char[] output = new char[1];
+        int len = reader.read(output, 0, 1);
+        assertEquals(1, len);
+        assertEquals('A', output[0]);
+        reader.close();
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+- test_behavior: |
+    Test reading a single valid UTF-32 character in little-endian format.
+  test_name: |
+    testReadSingleCharacterLittleEndian
+  test_code: |
+    @Test
+    public void testReadSingleCharacterLittleEndian() throws IOException {
+        byte[] input = new byte[] {0x41, 0x00, 0x00, 0x00}; // UTF-32 for 'A'
+        UTF32Reader reader = new UTF32Reader(new IOContext(null, null), new ByteArrayInputStream(input), new byte[4], 0, 4, false);
+        char[] output = new char[1];
+        int len = reader.read(output, 0, 1);
+        assertEquals(1, len);
+        assertEquals('A', output[0]);
+        reader.close();
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+- test_behavior: |
+    Test reading a surrogate pair for a character outside the Basic Multilingual Plane (BMP).
+  test_name: |
+    testReadSurrogatePair
+  test_code: |
+    @Test
+    public void testReadSurrogatePair() throws IOException {
+        byte[] input = new byte[] {
+            0x00, 0x00, 0xD8, 0x34, // UTF-32 for U+1F600 (😀)
+            0x00, 0x00, 0xDC, 0x00
+        };
+        UTF32Reader reader = new UTF32Reader(new IOContext(null, null), new ByteArrayInputStream(input), new byte[8], 0, 8, true);
+        char[] output = new char[2];
+        int len = reader.read(output, 0, 2);
+        assertEquals(2, len);
+        assertEquals('\uD83D', output[0]); // High surrogate
+        assertEquals('\uDE00', output[1]); // Low surrogate
+        reader.close();
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+- test_behavior: |
+    Test handling of unexpected EOF when trying to read a character.
+  test_name: |
+    testReadUnexpectedEOF
+  test_code: |
+    @Test(expected = CharConversionException.class)
+    public void testReadUnexpectedEOF() throws IOException {
+        byte[] input = new byte[] {0x00, 0x00}; // Incomplete UTF-32 character
+        UTF32Reader reader = new UTF32Reader(new IOContext(null, null), new ByteArrayInputStream(input), new byte[4], 0, 2, true);
+        char[] output = new char[1];
+        reader.read(output, 0, 1);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+- test_behavior: |
+    Test reading with invalid UTF-32 character.
+  test_name: |
+    testReadInvalidCharacter
+  test_code: |
+    @Test(expected = CharConversionException.class)
+    public void testReadInvalidCharacter() throws IOException {
+        byte[] input = new byte[] {0x00, 0x00, 0xFF, 0xFF}; // Invalid UTF-32 character
+        UTF32Reader reader = new UTF32Reader(new IOContext(null, null), new ByteArrayInputStream(input), new byte[4], 0, 4, true);
+        char[] output = new char[1];
+        reader.read(output, 0, 1);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+```2026-04-06 06:46:26,555 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 4307
+2026-04-06 06:46:26,565 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:46:26,566 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:46:43,982 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 06:46:43,986 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:46:43,986 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:47:01,939 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 06:47:01,941 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:47:01,942 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:47:19,977 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 06:47:19,979 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:47:19,979 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:47:38,188 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 06:47:38,191 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:47:38,192 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:47:56,465 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 06:47:56,466 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:48:29,306 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test reading a single character in big-endian format.
+  test_name: |
+    testReadSingleCharacterBigEndian
+  test_code: |
+    @Test
+    public void testReadSingleCharacterBigEndian() throws IOException {
+        byte[] input = new byte[] {0x00, 0x00, 0x00, 0x41}; // UTF-32 for 'A'
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), null, false), new ByteArrayInputStream(input), new byte[4], 0, 4, true);
+        char[] output = new char[1];
+        int len = reader.read(output, 0, 1);
+        assertEquals(1, len);
+        assertEquals('A', output[0]);
+        reader.close();
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+- test_behavior: |
+    Test reading a single character in little-endian format.
+  test_name: |
+    testReadSingleCharacterLittleEndian
+  test_code: |
+    @Test
+    public void testReadSingleCharacterLittleEndian() throws IOException {
+        byte[] input = new byte[] {0x41, 0x00, 0x00, 0x00}; // UTF-32 for 'A'
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), null, false), new ByteArrayInputStream(input), new byte[4], 0, 4, false);
+        char[] output = new char[1];
+        int len = reader.read(output, 0, 1);
+        assertEquals(1, len);
+        assertEquals('A', output[0]);
+        reader.close();
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+- test_behavior: |
+    Test reading a surrogate pair for a character.
+  test_name: |
+    testReadSurrogatePair
+  test_code: |
+    @Test
+    public void testReadSurrogatePair() throws IOException {
+        byte[] input = new byte[] {
+            0x00, 0x00, 0xD8, 0x34, // UTF-32 for U+1F600 (😀)
+            0x00, 0x00, 0xDC, 0x00
+        };
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), null, false), new ByteArrayInputStream(input), new byte[8], 0, 8, true);
+        char[] output = new char[2];
+        int len = reader.read(output, 0, 2);
+        assertEquals(2, len);
+        assertEquals('\uD83D', output[0]); // High surrogate
+        assertEquals('\uDE00', output[1]); // Low surrogate
+        reader.close();
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+- test_behavior: |
+    Test reading when unexpected EOF occurs.
+  test_name: |
+    testReadUnexpectedEOF
+  test_code: |
+    @Test(expected = CharConversionException.class)
+    public void testReadUnexpectedEOF() throws IOException {
+        byte[] input = new byte[] {0x00, 0x00}; // Incomplete UTF-32 character
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), null, false), new ByteArrayInputStream(input), new byte[4], 0, 2, true);
+        char[] output = new char[1];
+        reader.read(output, 0, 1);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+- test_behavior: |
+    Test reading an invalid UTF-32 character.
+  test_name: |
+    testReadInvalidCharacter
+  test_code: |
+    @Test(expected = CharConversionException.class)
+    public void testReadInvalidCharacter() throws IOException {
+        byte[] input = new byte[] {0x00, 0x00, 0xFF, 0xFF}; // Invalid UTF-32 character
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), null, false), new ByteArrayInputStream(input), new byte[4], 0, 4, true);
+        char[] output = new char[1];
+        reader.read(output, 0, 1);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+```2026-04-06 06:48:47,863 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5535
+2026-04-06 06:48:47,874 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:48:47,875 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:49:09,086 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 06:49:09,089 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:49:09,089 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:49:29,657 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 06:49:29,659 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:49:29,660 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:49:46,383 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 06:49:46,384 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:49:46,384 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:50:07,161 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 06:50:07,163 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:50:07,163 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:50:24,225 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test reading a single character in big-endian format.
+  test_name: |
+    testReadSingleCharacterBigEndian
+  test_code: |
+    @Test
+    public void testReadSingleCharacterBigEndian() throws IOException {
+        byte[] input = new byte[] {0x00, 0x00, 0x00, 0x41}; // UTF-32 for 'A'
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), null, false), new ByteArrayInputStream(input), new byte[4], 0, 4, true);
+        char[] output = new char[1];
+        int len = reader.read(output, 0, 1);
+        assertEquals(1, len);
+        assertEquals('A', output[0]);
+        reader.close();
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+- test_behavior: |
+    Test reading a single character in little-endian format.
+  test_name: |
+    testReadSingleCharacterLittleEndian
+  test_code: |
+    @Test
+    public void testReadSingleCharacterLittleEndian() throws IOException {
+        byte[] input = new byte[] {0x41, 0x00, 0x00, 0x00}; // UTF-32 for 'A'
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), null, false), new ByteArrayInputStream(input), new byte[4], 0, 4, false);
+        char[] output = new char[1];
+        int len = reader.read(output, 0, 1);
+        assertEquals(1, len);
+        assertEquals('A', output[0]);
+        reader.close();
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+- test_behavior: |
+    Test reading a surrogate pair for a character outside the Basic Multilingual Plane.
+  test_name: |
+    testReadSurrogatePair
+  test_code: |
+    @Test
+    public void testReadSurrogatePair() throws IOException {
+        byte[] input = new byte[] {
+            0x00, 0x00, 0xD8, 0x34, // UTF-32 for U+1F600 (😀)
+            0x00, 0x00, 0xDC, 0x00
+        };
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), null, false), new ByteArrayInputStream(input), new byte[8], 0, 8, true);
+        char[] output = new char[2];
+        int len = reader.read(output, 0, 2);
+        assertEquals(2, len);
+        assertEquals('\uD83D', output[0]); // High surrogate
+        assertEquals('\uDE00', output[1]); // Low surrogate
+        reader.close();
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+- test_behavior: |
+    Test reading when unexpected EOF occurs.
+  test_name: |
+    testReadUnexpectedEOF
+  test_code: |
+    @Test(expected = CharConversionException.class)
+    public void testReadUnexpectedEOF() throws IOException {
+        byte[] input = new byte[] {0x00, 0x00}; // Incomplete UTF-32 character
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), null, false), new ByteArrayInputStream(input), new byte[4], 0, 2, true);
+        char[] output = new char[1];
+        reader.read(output, 0, 1);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+- test_behavior: |
+    Test reading an invalid UTF-32 character.
+  test_name: |
+    testReadInvalidCharacter
+  test_code: |
+    @Test(expected = CharConversionException.class)
+    public void testReadInvalidCharacter() throws IOException {
+        byte[] input = new byte[] {0x00, 0x00, (byte)0xFF, (byte)0xFF}; // Invalid UTF-32 character
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), null, false), new ByteArrayInputStream(input), new byte[4], 0, 4, true);
+        char[] output = new char[1];
+        reader.read(output, 0, 1);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+```2026-04-06 06:50:42,742 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5255
+2026-04-06 06:50:42,753 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:50:42,754 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:51:03,403 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 06:51:03,404 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:51:03,405 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:51:25,019 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 06:51:25,021 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:51:25,021 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:51:42,931 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 06:51:42,932 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:51:42,933 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:52:04,382 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 06:52:04,384 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:52:04,384 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:52:26,041 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testReadSingleCharacterBigEndian() throws IOException {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test reading a single character in big-endian UTF-32 format.
+  test_name: |
+    testReadSingleCharacterBigEndian
+  test_code: |
+    @Test
+    public void testReadSingleCharacterBigEndian() throws IOException {
+        byte[] input = new byte[] {0x00, 0x00, 0x00, 0x41}; // UTF-32 for 'A'
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), null, false), new ByteArrayInputStream(input), new byte[4], 0, 4, true);
+        char[] output = new char[1];
+        int len = reader.read(output, 0, 1);
+        assertEquals(1, len);
+        assertEquals('A', output[0]);
+        reader.close();
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+- test_behavior: |
+    Test reading a single character in little-endian UTF-32 format.
+  test_name: |
+    testReadSingleCharacterLittleEndian
+  test_code: |
+    @Test
+    public void testReadSingleCharacterLittleEndian() throws IOException {
+        byte[] input = new byte[] {0x41, 0x00, 0x00, 0x00}; // UTF-32 for 'A'
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), null, false), new ByteArrayInputStream(input), new byte[4], 0, 4, false);
+        char[] output = new char[1];
+        int len = reader.read(output, 0, 1);
+        assertEquals(1, len);
+        assertEquals('A', output[0]);
+        reader.close();
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+- test_behavior: |
+    Test reading a surrogate pair for the character U+1F600 (😀).
+  test_name: |
+    testReadSurrogatePair
+  test_code: |
+    @Test
+    public void testReadSurrogatePair() throws IOException {
+        byte[] input = new byte[] {
+            0x00, 0x00, 0xD8, 0x34, // UTF-32 for U+1F600 (😀)
+            0x00, 0x00, 0xDC, 0x00
+        };
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), null, false), new ByteArrayInputStream(input), new byte[8], 0, 8, true);
+        char[] output = new char[2];
+        int len = reader.read(output, 0, 2);
+        assertEquals(2, len);
+        assertEquals('\uD83D', output[0]); // High surrogate
+        assertEquals('\uDE00', output[1]); // Low surrogate
+        reader.close();
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+- test_behavior: |
+    Test reading when an unexpected EOF occurs.
+  test_name: |
+    testReadUnexpectedEOF
+  test_code: |
+    @Test(expected = CharConversionException.class)
+    public void testReadUnexpectedEOF() throws IOException {
+        byte[] input = new byte[] {0x00, 0x00}; // Incomplete UTF-32 character
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), null, false), new ByteArrayInputStream(input), new byte[4], 0, 2, true);
+        char[] output = new char[1];
+        reader.read(output, 0, 1);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+- test_behavior: |
+    Test reading an invalid UTF-32 character.
+  test_name: |
+    testReadInvalidCharacter
+  test_code: |
+    @Test(expected = CharConversionException.class)
+    public void testReadInvalidCharacter() throws IOException {
+        byte[] input = new byte[] {0x00, 0x00, (byte)0xFF, (byte)0xFF}; // Invalid UTF-32 character
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), null, false), new ByteArrayInputStream(input), new byte[4], 0, 4, true);
+        char[] output = new char[1];
+        reader.read(output, 0, 1);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+```2026-04-06 06:52:46,486 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5199
+2026-04-06 06:52:46,496 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:52:46,497 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:53:07,843 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 06:53:07,845 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:53:07,845 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:53:28,922 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 06:53:28,925 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:53:28,925 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:53:45,752 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 06:53:45,754 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:53:45,754 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:54:06,211 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 06:54:06,213 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:54:06,214 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:54:25,167 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 06:54:25,167 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:54:55,630 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-06 06:54:55,659 - panta.panta - INFO - Iteration 0 cannot increase coverage.
+2026-04-06 06:54:55,660 - panta.panta - INFO - Current line Coverage: 0.0%, branch coverage: 0.0%
+2026-04-06 06:54:55,660 - panta.panta - INFO - initial tests generation using baseline type of prompt
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the read method returns -1 when the buffer is empty.
+  test_name: |
+    testReadReturnsNegativeOneOnEmptyBuffer
+  test_code: |
+    @Test
+    public void testReadReturnsNegativeOneOnEmptyBuffer() throws IOException {
+        IOContext ctxt = new IOContext(new BufferRecycler(), null, false);
+        UTF32Reader reader = new UTF32Reader(ctxt, null, new byte[0], 0, 0, true);
+        assertEquals(-1, reader.read());
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+- test_behavior: |
+    Test that the read method throws an exception when the start index is out of bounds.
+  test_name: |
+    testReadThrowsExceptionOnOutOfBoundsStart
+  test_code: |
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    public void testReadThrowsExceptionOnOutOfBoundsStart() throws IOException {
+        IOContext ctxt = new IOContext(new BufferRecycler(), null, false);
+        UTF32Reader reader = new UTF32Reader(ctxt, new ByteArrayInputStream(new byte[8]), new byte[8], 0, 8, true);
+        char[] buffer = new char[4];
+        reader.read(buffer, 5, 4); // start index is out of bounds
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+- test_behavior: |
+    Test that the read method correctly handles surrogate pairs.
+  test_name: |
+    testReadHandlesSurrogatePairs
+  test_code: |
+    @Test
+    public void testReadHandlesSurrogatePairs() throws IOException {
+        IOContext ctxt = new IOContext(new BufferRecycler(), null, false);
+        byte[] input = new byte[] {
+            (byte)0x00, (byte)0x00, (byte)0x20, (byte)0x00, // U+20000
+            (byte)0x00, (byte)0x00, (byte)0x20, (byte)0x01  // U+20001
+        };
+        UTF32Reader reader = new UTF32Reader(ctxt, new ByteArrayInputStream(input), new byte[8], 0, input.length, true);
+        char[] buffer = new char[4];
+        int charsRead = reader.read(buffer, 0, 4);
+        assertEquals(4, charsRead);
+        assertEquals('\uD800', buffer[0]); // First part of surrogate pair
+        assertEquals('\uDC00', buffer[1]); // Second part of surrogate pair
+        assertEquals('\uD800', buffer[2]); // First part of next surrogate pair
+        assertEquals('\uDC01', buffer[3]); // Second part of next surrogate pair
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+```2026-04-06 06:55:07,623 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 3967
+2026-04-06 06:55:07,628 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:55:07,629 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:55:25,405 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 06:55:25,406 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:55:25,406 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:55:43,290 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 06:55:43,291 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:55:43,291 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:56:02,007 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 06:56:02,008 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:56:34,573 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the read method returns -1 when the buffer is empty.
+  test_name: |
+    testReadReturnsNegativeOneOnEmptyBuffer
+  test_code: |
+    @Test
+    public void testReadReturnsNegativeOneOnEmptyBuffer() throws IOException {
+        IOContext ctxt = new IOContext(new BufferRecycler(), null, false);
+        UTF32Reader reader = new UTF32Reader(ctxt, null, new byte[0], 0, 0, true);
+        assertEquals(-1, reader.read());
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that the read method throws an ArrayIndexOutOfBoundsException when the start index is out of bounds.
+  test_name: |
+    testReadThrowsExceptionOnOutOfBoundsStart
+  test_code: |
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    public void testReadThrowsExceptionOnOutOfBoundsStart() throws IOException {
+        IOContext ctxt = new IOContext(new BufferRecycler(), null, false);
+        UTF32Reader reader = new UTF32Reader(ctxt, new ByteArrayInputStream(new byte[8]), new byte[8], 0, 8, true);
+        char[] buffer = new char[4];
+        reader.read(buffer, 5, 4); // start index is out of bounds
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that the read method correctly handles surrogate pairs.
+  test_name: |
+    testReadHandlesSurrogatePairs
+  test_code: |
+    @Test
+    public void testReadHandlesSurrogatePairs() throws IOException {
+        IOContext ctxt = new IOContext(new BufferRecycler(), null, false);
+        byte[] input = new byte[] {
+            (byte)0x00, (byte)0x00, (byte)0x20, (byte)0x00, // U+20000
+            (byte)0x00, (byte)0x00, (byte)0x20, (byte)0x01  // U+20001
+        };
+        UTF32Reader reader = new UTF32Reader(ctxt, new ByteArrayInputStream(input), new byte[8], 0, input.length, true);
+        char[] buffer = new char[4];
+        int charsRead = reader.read(buffer, 0, 4);
+        assertEquals(4, charsRead);
+        assertEquals('\uD800', buffer[0]); // First part of surrogate pair
+        assertEquals('\uDC00', buffer[1]); // Second part of surrogate pair
+        assertEquals('\uD800', buffer[2]); // First part of next surrogate pair
+        assertEquals('\uDC01', buffer[3]); // Second part of next surrogate pair
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+```2026-04-06 06:56:47,285 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 4266
+2026-04-06 06:56:47,293 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:56:47,294 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:57:04,881 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 06:57:04,882 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:57:04,883 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:57:21,893 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 06:57:21,895 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:57:21,895 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:57:39,397 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the read method returns -1 when the buffer is empty.
+  test_name: |
+    testReadReturnsNegativeOneOnEmptyBuffer
+  test_code: |
+    @Test
+    public void testReadReturnsNegativeOneOnEmptyBuffer() throws IOException {
+        IOContext ctxt = new IOContext(new BufferRecycler(), null, false);
+        UTF32Reader reader = new UTF32Reader(ctxt, null, new byte[0], 0, 0, true);
+        assertEquals(-1, reader.read());
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that the read method throws an ArrayIndexOutOfBoundsException when the start index is out of bounds.
+  test_name: |
+    testReadThrowsExceptionOnOutOfBoundsStart
+  test_code: |
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    public void testReadThrowsExceptionOnOutOfBoundsStart() throws IOException {
+        IOContext ctxt = new IOContext(new BufferRecycler(), null, false);
+        UTF32Reader reader = new UTF32Reader(ctxt, new ByteArrayInputStream(new byte[8]), new byte[8], 0, 8, true);
+        char[] buffer = new char[4];
+        reader.read(buffer, 5, 4); // start index is out of bounds
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that the read method correctly handles surrogate pairs.
+  test_name: |
+    testReadHandlesSurrogatePairs
+  test_code: |
+    @Test
+    public void testReadHandlesSurrogatePairs() throws IOException {
+        IOContext ctxt = new IOContext(new BufferRecycler(), null, false);
+        byte[] input = new byte[] {
+            (byte)0x00, (byte)0x00, (byte)0x20, (byte)0x00, // U+20000
+            (byte)0x00, (byte)0x00, (byte)0x20, (byte)0x01  // U+20001
+        };
+        UTF32Reader reader = new UTF32Reader(ctxt, new ByteArrayInputStream(input), new byte[8], 0, input.length, true);
+        char[] buffer = new char[4];
+        int charsRead = reader.read(buffer, 0, 4);
+        assertEquals(4, charsRead);
+        assertEquals('\uD800', buffer[0]); // First part of surrogate pair
+        assertEquals('\uDC00', buffer[1]); // Second part of surrogate pair
+        assertEquals('\uD800', buffer[2]); // First part of next surrogate pair
+        assertEquals('\uDC01', buffer[3]); // Second part of next surrogate pair
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+```2026-04-06 06:57:51,716 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 4503
+2026-04-06 06:57:51,723 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:57:51,724 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:58:08,884 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 06:58:08,888 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:58:08,889 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:58:25,567 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 06:58:25,568 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:58:25,568 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:58:42,835 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the read method returns -1 when the buffer is empty.
+  test_name: |
+    testReadReturnsNegativeOneOnEmptyBuffer
+  test_code: |
+    @Test
+    public void testReadReturnsNegativeOneOnEmptyBuffer() throws IOException {
+        IOContext ctxt = new IOContext(new BufferRecycler(), null, false);
+        UTF32Reader reader = new UTF32Reader(ctxt, null, new byte[0], 0, 0, true);
+        assertEquals(-1, reader.read());
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that the read method throws an ArrayIndexOutOfBoundsException when the start index is out of bounds.
+  test_name: |
+    testReadThrowsExceptionOnOutOfBoundsStart
+  test_code: |
+    @Test(expected = ArrayIndexOutOfBoundsException.class)
+    public void testReadThrowsExceptionOnOutOfBoundsStart() throws IOException {
+        IOContext ctxt = new IOContext(new BufferRecycler(), null, false);
+        UTF32Reader reader = new UTF32Reader(ctxt, new ByteArrayInputStream(new byte[8]), new byte[8], 0, 8, true);
+        char[] buffer = new char[4];
+        reader.read(buffer, 5, 4); // start index is out of bounds
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that the read method correctly handles surrogate pairs.
+  test_name: |
+    testReadHandlesSurrogatePairs
+  test_code: |
+    @Test
+    public void testReadHandlesSurrogatePairs() throws IOException {
+        IOContext ctxt = new IOContext(new BufferRecycler(), null, false);
+        byte[] input = new byte[] {
+            (byte)0x00, (byte)0x00, (byte)0x20, (byte)0x00, // U+20000
+            (byte)0x00, (byte)0x00, (byte)0x20, (byte)0x01  // U+20001
+        };
+        UTF32Reader reader = new UTF32Reader(ctxt, new ByteArrayInputStream(input), new byte[8], 0, input.length, true);
+        char[] buffer = new char[4];
+        int charsRead = reader.read(buffer, 0, 4);
+        assertEquals(4, charsRead);
+        assertEquals('\uD800', buffer[0]); // First part of surrogate pair
+        assertEquals('\uDC00', buffer[1]); // Second part of surrogate pair
+        assertEquals('\uD800', buffer[2]); // First part of next surrogate pair
+        assertEquals('\uDC01', buffer[3]); // Second part of next surrogate pair
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+```2026-04-06 06:58:55,977 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 4503
+2026-04-06 06:58:55,984 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:58:55,985 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:59:14,547 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 06:59:14,549 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:59:14,550 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:59:32,861 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 06:59:32,863 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 06:59:32,863 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 06:59:51,530 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 06:59:51,531 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 07:00:24,067 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-06 07:00:24,105 - panta.panta - INFO - Iteration 1 cannot increase coverage.
+2026-04-06 07:00:24,106 - panta.panta - INFO - Current line Coverage: 0.0%, branch coverage: 0.0%
+2026-04-06 07:00:24,106 - panta.panta - INFO - initial tests generation using baseline type of prompt
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the read method returns -1 when the end of the buffer is reached.
+  test_name: |
+    testReadReturnsMinusOneAtEOF
+  test_code: |
+    @Test
+    public void testReadReturnsMinusOneAtEOF() throws IOException {
+        byte[] buffer = new byte[4]; // Buffer for 4 bytes
+        InputStream in = new ByteArrayInputStream(new byte[0]); // Empty input stream
+        UTF32Reader reader = new UTF32Reader(new IOContext(null, null), in, buffer, 0, buffer.length, true);
+        assertEquals(-1, reader.read());
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+- test_behavior: |
+    Test that the read method correctly reads a single UTF-32 character.
+  test_name: |
+    testReadSingleCharacter
+  test_code: |
+    @Test
+    public void testReadSingleCharacter() throws IOException {
+        byte[] buffer = new byte[] {0x00, 0x00, 0x00, 0x41}; // UTF-32 for 'A'
+        InputStream in = new ByteArrayInputStream(buffer);
+        UTF32Reader reader = new UTF32Reader(new IOContext(null, null), in, new byte[4], 0, 4, true);
+        assertEquals('A', reader.read());
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+- test_behavior: |
+    Test that the read method handles surrogate pairs correctly.
+  test_name: |
+    testReadSurrogatePairs
+  test_code: |
+    @Test
+    public void testReadSurrogatePairs() throws IOException {
+        byte[] buffer = new byte[] {
+            0x00, 0x00, 0xD8, 0x00, // High surrogate (U+D800)
+            0x00, 0x00, 0xDC, 0x00  // Low surrogate (U+DC00)
+        };
+        InputStream in = new ByteArrayInputStream(buffer);
+        UTF32Reader reader = new UTF32Reader(new IOContext(null, null), in, new byte[8], 0, 8, true);
+        char[] output = new char[2];
+        reader.read(output, 0, 2);
+        assertEquals('\uD800', output[0]);
+        assertEquals('\uDC00', output[1]);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+- test_behavior: |
+    Test that the read method throws an exception for invalid UTF-32 characters.
+  test_name: |
+    testReadInvalidCharacter
+  test_code: |
+    @Test(expected = CharConversionException.class)
+    public void testReadInvalidCharacter() throws IOException {
+        byte[] buffer = new byte[] {0x00, 0x00, 0xFF, 0xFF}; // Invalid character
+        InputStream in = new ByteArrayInputStream(buffer);
+        UTF32Reader reader = new UTF32Reader(new IOContext(null, null), in, new byte[4], 0, 4, true);
+        reader.read(new char[1], 0, 1);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+```2026-04-06 07:00:37,900 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 4058
+2026-04-06 07:00:37,908 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 07:00:37,909 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 07:00:56,304 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 07:00:56,306 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 07:00:56,307 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 07:01:13,962 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 07:01:13,964 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 07:01:13,965 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 07:01:30,953 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 07:01:30,955 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 07:01:30,955 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 07:01:48,396 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 07:01:48,397 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 07:02:18,797 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the read method returns -1 when reaching the end of the input stream.
+  test_name: |
+    testReadReturnsMinusOneAtEOF
+  test_code: |
+    @Test
+    public void testReadReturnsMinusOneAtEOF() throws IOException {
+        byte[] buffer = new byte[4]; // Buffer for 4 bytes
+        InputStream in = new ByteArrayInputStream(new byte[0]); // Empty input stream
+        UTF32Reader reader = new UTF32Reader(new com.fasterxml.jackson.core.util.BufferRecycler(), null, buffer, 0, buffer.length, true);
+        assertEquals(-1, reader.read());
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+- test_behavior: |
+    Test that the read method correctly reads a single UTF-32 character.
+  test_name: |
+    testReadSingleCharacter
+  test_code: |
+    @Test
+    public void testReadSingleCharacter() throws IOException {
+        byte[] buffer = new byte[] {0x00, 0x00, 0x00, 0x41}; // UTF-32 for 'A'
+        InputStream in = new ByteArrayInputStream(buffer);
+        UTF32Reader reader = new UTF32Reader(new com.fasterxml.jackson.core.util.BufferRecycler(), null, new byte[4], 0, 4, true);
+        assertEquals('A', reader.read());
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+- test_behavior: |
+    Test that the read method correctly reads surrogate pairs.
+  test_name: |
+    testReadSurrogatePairs
+  test_code: |
+    @Test
+    public void testReadSurrogatePairs() throws IOException {
+        byte[] buffer = new byte[] {
+            0x00, 0x00, 0xD8, 0x00, // High surrogate (U+D800)
+            0x00, 0x00, 0xDC, 0x00  // Low surrogate (U+DC00)
+        };
+        InputStream in = new ByteArrayInputStream(buffer);
+        UTF32Reader reader = new UTF32Reader(new com.fasterxml.jackson.core.util.BufferRecycler(), null, new byte[8], 0, 8, true);
+        char[] output = new char[2];
+        reader.read(output, 0, 2);
+        assertEquals('\uD800', output[0]);
+        assertEquals('\uDC00', output[1]);
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+- test_behavior: |
+    Test that the read method throws a CharConversionException for an invalid character.
+  test_name: |
+    testReadInvalidCharacter
+  test_code: |
+    @Test(expected = CharConversionException.class)
+    public void testReadInvalidCharacter() throws IOException {
+        byte[] buffer = new byte[] {0x00, 0x00, 0xFF, 0xFF}; // Invalid character
+        InputStream in = new ByteArrayInputStream(buffer);
+        UTF32Reader reader = new UTF32Reader(new com.fasterxml.jackson.core.util.BufferRecycler(), null, new byte[4], 0, 4, true);
+        reader.read(new char[1], 0, 1);
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+```2026-04-06 07:02:33,397 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 4910
+2026-04-06 07:02:33,405 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 07:02:33,405 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 07:02:50,698 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 07:02:50,699 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 07:02:50,700 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 07:03:08,451 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 07:03:08,453 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 07:03:08,453 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 07:03:26,695 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 07:03:26,697 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 07:03:26,698 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 07:03:44,713 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the read method returns -1 at EOF.
+  test_name: |
+    testReadReturnsMinusOneAtEOF
+  test_code: |
+    @Test
+    public void testReadReturnsMinusOneAtEOF() throws IOException {
+        byte[] buffer = new byte[4]; // Buffer for 4 bytes
+        InputStream in = new ByteArrayInputStream(new byte[0]); // Empty input stream
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), null), in, buffer, 0, buffer.length, true);
+        assertEquals(-1, reader.read());
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+    import com.fasterxml.jackson.core.io.IOContext;
+- test_behavior: |
+    Test that the read method correctly reads a single character.
+  test_name: |
+    testReadSingleCharacter
+  test_code: |
+    @Test
+    public void testReadSingleCharacter() throws IOException {
+        byte[] buffer = new byte[] {0x00, 0x00, 0x00, 0x41}; // UTF-32 for 'A'
+        InputStream in = new ByteArrayInputStream(buffer);
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), null), in, new byte[4], 0, 4, true);
+        assertEquals('A', reader.read());
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+    import com.fasterxml.jackson.core.io.IOContext;
+- test_behavior: |
+    Test that the read method correctly reads surrogate pairs.
+  test_name: |
+    testReadSurrogatePairs
+  test_code: |
+    @Test
+    public void testReadSurrogatePairs() throws IOException {
+        byte[] buffer = new byte[] {
+            0x00, 0x00, 0xD8, 0x00, // High surrogate (U+D800)
+            0x00, 0x00, 0xDC, 0x00  // Low surrogate (U+DC00)
+        };
+        InputStream in = new ByteArrayInputStream(buffer);
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), null), in, new byte[8], 0, 8, true);
+        char[] output = new char[2];
+        reader.read(output, 0, 2);
+        assertEquals('\uD800', output[0]);
+        assertEquals('\uDC00', output[1]);
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+    import com.fasterxml.jackson.core.io.IOContext;
+- test_behavior: |
+    Test that the read method throws CharConversionException for invalid characters.
+  test_name: |
+    testReadInvalidCharacter
+  test_code: |
+    @Test(expected = CharConversionException.class)
+    public void testReadInvalidCharacter() throws IOException {
+        byte[] buffer = new byte[] {0x00, 0x00, (byte) 0xFF, (byte) 0xFF}; // Invalid character
+        InputStream in = new ByteArrayInputStream(buffer);
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), null), in, new byte[4], 0, 4, true);
+        reader.read(new char[1], 0, 1);
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+    import com.fasterxml.jackson.core.io.IOContext;
+```2026-04-06 07:03:59,355 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 4781
+2026-04-06 07:03:59,364 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 07:03:59,365 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 07:04:18,000 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 07:04:18,001 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 07:04:18,001 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 07:04:36,749 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 07:04:36,751 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 07:04:36,751 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 07:04:55,365 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 07:04:55,367 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 07:04:55,367 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 07:05:12,631 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that read() returns -1 when the end of the stream is reached.
+  test_name: |
+    testReadReturnsMinusOneAtEOF
+  test_code: |
+    @Test
+    public void testReadReturnsMinusOneAtEOF() throws IOException {
+        byte[] buffer = new byte[4]; // Buffer for 4 bytes
+        InputStream in = new ByteArrayInputStream(new byte[0]); // Empty input stream
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), new Object(), false), in, buffer, 0, buffer.length, true);
+        assertEquals(-1, reader.read());
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+    import com.fasterxml.jackson.core.io.IOContext;
+- test_behavior: |
+    Test that read() returns the correct character for a single UTF-32 encoded character.
+  test_name: |
+    testReadSingleCharacter
+  test_code: |
+    @Test
+    public void testReadSingleCharacter() throws IOException {
+        byte[] buffer = new byte[] {0x00, 0x00, 0x00, 0x41}; // UTF-32 for 'A'
+        InputStream in = new ByteArrayInputStream(buffer);
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), new Object(), false), in, new byte[4], 0, 4, true);
+        assertEquals('A', reader.read());
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+    import com.fasterxml.jackson.core.io.IOContext;
+- test_behavior: |
+    Test that read() correctly handles surrogate pairs.
+  test_name: |
+    testReadSurrogatePairs
+  test_code: |
+    @Test
+    public void testReadSurrogatePairs() throws IOException {
+        byte[] buffer = new byte[] {
+            0x00, 0x00, 0xD8, 0x00, // High surrogate (U+D800)
+            0x00, 0x00, 0xDC, 0x00  // Low surrogate (U+DC00)
+        };
+        InputStream in = new ByteArrayInputStream(buffer);
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), new Object(), false), in, new byte[8], 0, 8, true);
+        char[] output = new char[2];
+        reader.read(output, 0, 2);
+        assertEquals('\uD800', output[0]);
+        assertEquals('\uDC00', output[1]);
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+    import com.fasterxml.jackson.core.io.IOContext;
+- test_behavior: |
+    Test that reading an invalid character throws a CharConversionException.
+  test_name: |
+    testReadInvalidCharacter
+  test_code: |
+    @Test(expected = CharConversionException.class)
+    public void testReadInvalidCharacter() throws IOException {
+        byte[] buffer = new byte[] {0x00, 0x00, (byte) 0xFF, (byte) 0xFF}; // Invalid character
+        InputStream in = new ByteArrayInputStream(buffer);
+        UTF32Reader reader = new UTF32Reader(new IOContext(new BufferRecycler(), new Object(), false), in, new byte[4], 0, 4, true);
+        reader.read(new char[1], 0, 1);
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.util.BufferRecycler;
+    import com.fasterxml.jackson.core.io.IOContext;
+```2026-04-06 07:05:27,763 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 4902
+2026-04-06 07:05:27,773 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 07:05:27,773 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 07:05:48,387 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 07:05:48,389 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 07:05:48,390 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 07:06:09,138 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 07:06:09,140 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 07:06:09,140 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 07:06:25,977 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 07:06:25,979 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+2026-04-06 07:06:25,980 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 07:06:46,278 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 07:06:46,279 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=UTF32ReaderTest"
+2026-04-06 07:07:17,752 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-06 07:07:17,783 - panta.panta - INFO - Iteration 2 cannot increase coverage.
+2026-04-06 07:07:17,784 - panta.panta - ERROR - Reached maximum iteration limit without improving coverage. Current Coverage: (0.0%, 0.0%)
+2026-04-06 07:07:17,801 - panta.panta - INFO - Report generated successfully at: ../../result-files/control_gpt-4o-mini/
+
+

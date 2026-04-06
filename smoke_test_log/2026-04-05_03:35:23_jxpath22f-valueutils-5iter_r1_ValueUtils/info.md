@@ -1,0 +1,24 @@
+# Batch Run R1
+
+- Batch name: jxpath22f-valueutils-5iter
+- Timestamp: 2026-04-05_03:35:23
+- Round: 1 / 1
+- Baseline test file: original `defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/util/ValueUtilsTest.java` contents
+- report_filepath: jxpath22f_valueutils_5iter_r1_20260405_033523.html
+- Run status: completed
+- Process exit code: 0
+- Effective config overrides:
+  - code_coverage_report_path = defects4j-subjects-notests/JxPath-22f/target/jacoco/jacoco.csv
+  - enable_advice_feedback = false
+  - enable_fixing = 3
+  - junit_version = 4
+  - llm_advice_activation_line_coverage = 100
+  - llm_advice_activation_no_growth = 3
+  - maximum_iterations = 5
+  - no_coverage_increase_iterations = 5
+  - project_directory = defects4j-subjects-notests/JxPath-22f
+  - report_filepath = jxpath22f_valueutils_5iter_r1_20260405_033523.html
+  - source_code_file = defects4j-subjects-notests/JxPath-22f/src/java/org/apache/commons/jxpath/util/ValueUtils.java
+  - test_code_command_dir = defects4j-subjects-notests/JxPath-22f
+  - test_code_file = defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/util/ValueUtilsTest.java
+  - test_execution_command = mvn clean package -Dtest=ValueUtilsTest

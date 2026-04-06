@@ -1,0 +1,24 @@
+# Batch Run R1
+
+- Batch name: feedback-alignment-csvparser-4iter-v2
+- Timestamp: 2026-04-04_03:12:20
+- Round: 1 / 1
+- Baseline test file: smoke_test_log/2026-04-01_20:14:55_repeat-csvparser-11iter_r1_CSVParser/backup/CSVParserTest_after.java
+- report_filepath: feedback_alignment_csvparser_4iter_v2_r1_20260404_031220.html
+- Run status: completed
+- Process exit code: 0
+- Effective config overrides:
+  - code_coverage_report_path = defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+  - enable_advice_feedback = true
+  - enable_fixing = 3
+  - junit_version = 4
+  - llm_advice_activation_line_coverage = 100
+  - llm_advice_activation_no_growth = 4
+  - maximum_iterations = 4
+  - no_coverage_increase_iterations = 4
+  - project_directory = defects4j-subjects-notests/Csv-16f
+  - report_filepath = feedback_alignment_csvparser_4iter_v2_r1_20260404_031220.html
+  - source_code_file = defects4j-subjects-notests/Csv-16f/src/main/java/org/apache/commons/csv/CSVParser.java
+  - test_code_command_dir = defects4j-subjects-notests/Csv-16f/
+  - test_code_file = defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+  - test_execution_command = mvn clean package -Dtest=CSVParserTest

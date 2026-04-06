@@ -1,0 +1,937 @@
+2026-04-03 17:54:58,413 - panta.panta - INFO - CFG snapshot directory created: cfg_snapshot_test/intermediate/cfg/CSVParser_20260403_175458_0dcd64d4
+2026-04-03 17:55:08,427 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 17:55:42,559 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+2026-04-03 17:55:42,802 - panta.panta - INFO - Current line Coverage: 80.2%, branch coverage: 76.79%
+```yaml
+test_designs:
+  - design_name: |
+      Test behavior when format is null during CSV parsing.
+    method_context:
+      method_signature_hint: |
+        private CSVParser parse(final InputStream inputStream, final Charset charset, final CSVFormat format)
+      entry_hint: |
+        public static CSVParser parse(final File file, final Charset charset, final CSVFormat format)
+    execution_flow: |
+      1. Call parse() with a valid File and Charset, but pass null for the CSVFormat.
+      2. The method should reach the validation for the format parameter.
+    input_focus: |
+      Provide a valid File object and a Charset, while passing null for the format parameter.
+    observable_behavior: |
+      Verify that an IllegalArgumentException is thrown indicating that the format must not be null.
+
+  - design_name: |
+      Test behavior when the header contains duplicate names.
+    method_context:
+      method_signature_hint: |
+        private Map<String, Integer> initializeHeader() throws IOException
+      entry_hint: |
+        public List<CSVRecord> getRecords() throws IOException
+    execution_flow: |
+      1. Call getRecords() with a CSV input that has duplicate header names.
+      2. The method should reach initializeHeader() where the duplicate check occurs.
+    input_focus: |
+      Provide a CSV input string with duplicate header names, ensuring the format allows for headers.
+    observable_behavior: |
+      Check that an IllegalArgumentException is thrown indicating the presence of duplicate header names.
+
+  - design_name: |
+      Test behavior when the parser is closed and next() is called.
+    method_context:
+      method_signature_hint: |
+        private CSVRecord nextRecord() throws IOException
+      entry_hint: |
+        public Iterator<CSVRecord> iterator()
+    execution_flow: |
+      1. Call iterator() to get a CSVRecord iterator.
+      2. Close the parser.
+      3. Call next() on the iterator after the parser is closed.
+    input_focus: |
+      Use a valid CSV input to create the parser, then immediately close it before calling next().
+    observable_behavior: |
+      Verify that a NoSuchElementException is thrown indicating that the parser has been closed.
+
+  - design_name: |
+      Test behavior when the lexer encounters an invalid token.
+    method_context:
+      method_signature_hint: |
+        private CSVRecord nextRecord() throws IOException
+      entry_hint: |
+        public List<CSVRecord> getRecords() throws IOException
+    execution_flow: |
+      1. Call getRecords() with a CSV input that contains an invalid token.
+      2. The method should reach nextRecord() where the invalid token is processed.
+    input_focus: |
+      Provide a CSV input string that includes an invalid token format.
+    observable_behavior: |
+      Check that an IOException is thrown indicating an invalid parse sequence.
+
+  - design_name: |
+      Test behavior when the CSV input has comments.
+    method_context:
+      method_signature_hint: |
+        private CSVRecord nextRecord() throws IOException
+      entry_hint: |
+        public List<CSVRecord> getRecords() throws IOException
+    execution_flow: |
+      1. Call getRecords() with a CSV input that includes comment lines.
+      2. The method should reach nextRecord() where comments are processed.
+    input_focus: |
+      Provide a CSV input string that includes comment lines prefixed with a comment character.
+    observable_behavior: |
+      Verify that the returned records do not include the comment lines and are parsed correctly.
+```
+
+```yaml
+language: Java
+existing_test_function_signature: public void testParseFormatNull() throws IOException
+new_tests:
+  - test_behavior: Test behavior when format is null during CSV parsing.
+    test_name: testParseFileWithNullFormat
+    test_code: |
+      @Test(expected = IllegalArgumentException.class)
+      public void testParseFileWithNullFormat() throws IOException {
+          File testFile = new File("test.csv"); // Assuming this file exists for the test
+          CSVParser.parse(testFile, Charset.defaultCharset(), null);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test behavior when the header contains duplicate names.
+    test_name: testGetRecordsWithDuplicateHeaders
+    test_code: |
+      @Test(expected = IllegalArgumentException.class)
+      public void testGetRecordsWithDuplicateHeaders() throws IOException {
+          String csvInput = "Header1,Header1\nvalue1,value2"; // Duplicate headers
+          CSVFormat format = CSVFormat.DEFAULT.withHeader().withAllowMissingColumnNames(false);
+          CSVParser parser = CSVParser.parse(new StringReader(csvInput), format);
+          parser.getRecords(); // This should throw an IllegalArgumentException
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test behavior when the parser is closed and next() is called.
+    test_name: testIteratorAfterClose
+    test_code: |
+      @Test(expected = NoSuchElementException.class)
+      public void testIteratorAfterClose() throws IOException {
+          CSVParser parser = CSVParser.parse(new StringReader("value1,value2\nvalue3,value4"), CSVFormat.DEFAULT);
+          parser.close(); // Close the parser
+          Iterator<CSVRecord> iterator = parser.iterator();
+          iterator.next(); // This should throw NoSuchElementException
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test behavior when the lexer encounters an invalid token.
+    test_name: testGetRecordsWithInvalidToken
+    test_code: |
+      @Test(expected = IOException.class)
+      public void testGetRecordsWithInvalidToken() throws IOException {
+          String csvInput = "value1,value2\nvalue3,invalidToken!"; // Invalid token
+          CSVParser parser = CSVParser.parse(new StringReader(csvInput), CSVFormat.DEFAULT);
+          parser.getRecords(); // This should throw an IOException
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test behavior when the CSV input has comments.
+    test_name: testGetRecordsWithComments
+    test_code: |
+      @Test
+      public void testGetRecordsWithComments() throws IOException {
+          String csvInput = "# This is a comment\nvalue1,value2\n# Another comment\nvalue3,value4";
+          CSVParser parser = CSVParser.parse(new StringReader(csvInput), CSVFormat.DEFAULT.withCommentMarker('#'));
+          List<CSVRecord> records = parser.getRecords();
+          assertEquals(2, records.size());
+          assertEquals("value1", records.get(0).get(0));
+          assertEquals("value2", records.get(0).get(1));
+          assertEquals("value3", records.get(1).get(0));
+          assertEquals("value4", records.get(1).get(1));
+      }
+    new_imports_code: ''
+```2026-04-03 17:56:14,293 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 11261
+2026-04-03 17:56:14,302 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 17:56:14,303 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 17:56:37,317 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 17:56:37,320 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 17:56:37,320 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 17:56:59,704 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 17:56:59,707 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 17:56:59,708 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 17:57:22,168 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 17:57:22,171 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 17:57:22,172 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 17:57:51,916 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 17:57:51,921 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 17:57:51,925 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 17:58:15,753 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 17:58:15,755 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 17:58:49,647 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test(expected = IllegalArgumentException.class)
+  public void testParseFileWithNullFormat() throws IOException {
+      File testFile = new File("test.csv"); // Assuming this file exists for the test
+      CSVParser.parse(testFile, Charset.defaultCharset(), null);
+  }
+new_tests:
+- test_behavior: |
+    Test that parsing a file with a null format throws an IllegalArgumentException.
+  test_name: |
+    testParseFileWithNullFormatFixed
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseFileWithNullFormatFixed() throws IOException {
+        File testFile = new File("test.csv"); // Assuming this file exists for the test
+        CSVParser.parse(testFile, Charset.defaultCharset(), null);
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that getting records with duplicate headers throws an IllegalArgumentException.
+  test_name: |
+    testGetRecordsWithDuplicateHeadersFixed
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetRecordsWithDuplicateHeadersFixed() throws IOException {
+        String csvInput = "Header1,Header1\nvalue1,value2"; // Duplicate headers
+        CSVFormat format = CSVFormat.DEFAULT.withHeader().withAllowMissingColumnNames(false);
+        CSVParser parser = CSVParser.parse(new StringReader(csvInput), format);
+        parser.getRecords(); // This should throw an IllegalArgumentException
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that iterating after closing the parser throws a NoSuchElementException.
+  test_name: |
+    testIteratorAfterCloseFixed
+  test_code: |
+    @Test(expected = NoSuchElementException.class)
+    public void testIteratorAfterCloseFixed() throws IOException {
+        CSVParser parser = CSVParser.parse(new StringReader("value1,value2\nvalue3,value4"), CSVFormat.DEFAULT);
+        parser.close(); // Close the parser
+        Iterator<CSVRecord> iterator = parser.iterator();
+        iterator.next(); // This should throw NoSuchElementException
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that getting records with an invalid token throws an IOException.
+  test_name: |
+    testGetRecordsWithInvalidToken
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testGetRecordsWithInvalidToken() throws IOException {
+        String csvInput = "value1,value2\nvalue3,invalidToken!"; // Invalid token
+        CSVParser parser = CSVParser.parse(new StringReader(csvInput), CSVFormat.DEFAULT);
+        parser.getRecords(); // This should throw an IOException
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that getting records with comments is handled correctly.
+  test_name: |
+    testGetRecordsWithCommentsFixed
+  test_code: |
+    @Test
+    public void testGetRecordsWithCommentsFixed() throws IOException {
+        String csvInput = "# This is a comment\nvalue1,value2\n# Another comment\nvalue3,value4";
+        CSVParser parser = CSVParser.parse(new StringReader(csvInput), CSVFormat.DEFAULT.withCommentMarker('#'));
+        List<CSVRecord> records = parser.getRecords();
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertEquals("value3", records.get(1).get(0));
+        assertEquals("value4", records.get(1).get(1));
+    }
+  new_imports_code: |
+```2026-04-03 17:59:05,650 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 10685
+2026-04-03 17:59:05,663 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 17:59:05,664 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 17:59:28,543 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 17:59:28,546 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 17:59:28,546 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 17:59:52,103 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 17:59:52,110 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 17:59:52,112 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:00:26,761 - panta.unit_test_generator - INFO - Generated test has passed: testIteratorAfterCloseFixed
+
+2026-04-03 18:00:26,763 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:00:26,766 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:00:57,052 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 18:00:57,057 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:00:57,058 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:01:31,195 - panta.unit_test_generator - INFO - Generated test has passed: testGetRecordsWithCommentsFixed
+
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test(expected = IllegalArgumentException.class)
+  public void testParseFileWithNullFormatFixed() throws IOException {
+      File testFile = new File("test.csv"); // Assuming this file exists for the test
+      CSVParser.parse(testFile, Charset.defaultCharset(), null);
+  }
+new_tests:
+- test_behavior: |
+    Test that the function throws an IllegalArgumentException when parsing a file with a null format.
+  test_name: |
+    testParseFileWithNullFormat
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseFileWithNullFormat() throws IOException {
+        File testFile = new File("test.csv"); // Assuming this file exists for the test
+        CSVParser.parse(testFile, Charset.defaultCharset(), null);
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that the function throws an IllegalArgumentException when parsing records with duplicate headers.
+  test_name: |
+    testGetRecordsWithDuplicateHeaders
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetRecordsWithDuplicateHeaders() throws IOException {
+        String csvInput = "Header1,Header1\nvalue1,value2"; // Duplicate headers
+        CSVFormat format = CSVFormat.DEFAULT.withHeader().withAllowMissingColumnNames(false);
+        CSVParser parser = CSVParser.parse(new StringReader(csvInput), format);
+        parser.getRecords(); // This should throw an IllegalArgumentException
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that the function throws an IOException when encountering an invalid token in the CSV input.
+  test_name: |
+    testGetRecordsWithInvalidToken
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testGetRecordsWithInvalidToken() throws IOException {
+        String csvInput = "value1,value2\nvalue3,invalidToken!"; // Invalid token
+        CSVParser parser = CSVParser.parse(new StringReader(csvInput), CSVFormat.DEFAULT);
+        parser.getRecords(); // This should throw an IOException
+    }
+  new_imports_code: |
+```2026-04-03 18:01:46,154 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 10212
+2026-04-03 18:01:46,164 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:01:46,165 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:02:07,979 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 18:02:07,983 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:02:07,983 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:02:31,230 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 18:02:31,236 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:02:31,237 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:03:01,512 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test(expected = IllegalArgumentException.class)
+  public void testParseFileWithNullFormat() throws IOException {
+    File testFile = new File("test.csv"); // Assuming this file exists for the test
+    CSVParser.parse(testFile, Charset.defaultCharset(), null);
+  }
+new_tests:
+- test_behavior: |
+    Test that parsing a file with a null format throws an IllegalArgumentException.
+  test_name: |
+    testParseFileWithNullFormatFixed
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseFileWithNullFormatFixed() throws IOException {
+        File testFile = new File("test.csv"); // Assuming this file exists for the test
+        CSVParser.parse(testFile, Charset.defaultCharset(), null);
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that getting records with duplicate headers throws an IllegalArgumentException.
+  test_name: |
+    testGetRecordsWithDuplicateHeadersFixed
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetRecordsWithDuplicateHeadersFixed() throws IOException {
+        String csvInput = "Header1,Header1\nvalue1,value2"; // Duplicate headers
+        CSVFormat format = CSVFormat.DEFAULT.withHeader().withAllowMissingColumnNames(false);
+        CSVParser parser = CSVParser.parse(new StringReader(csvInput), format);
+        parser.getRecords(); // This should throw an IllegalArgumentException
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that getting records with an invalid token throws an IOException.
+  test_name: |
+    testGetRecordsWithInvalidToken
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testGetRecordsWithInvalidToken() throws IOException {
+        String csvInput = "value1,value2\nvalue3,invalidToken!"; // Invalid token
+        CSVParser parser = CSVParser.parse(new StringReader(csvInput), CSVFormat.DEFAULT);
+        parser.getRecords(); // This should throw an IOException
+    }
+  new_imports_code: |
+```2026-04-03 18:03:12,479 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 10198
+2026-04-03 18:03:12,487 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:03:12,488 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:03:35,703 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 18:03:35,707 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:03:35,709 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:03:57,561 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 18:03:57,563 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:03:57,564 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:04:28,119 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 18:04:28,121 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:05:02,062 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+2026-04-03 18:05:02,114 - panta.panta - INFO - Iteration 0 cannot increase coverage.
+
+
+```yaml
+test_design_matches:
+  - design_id: |
+      D1
+    matched_test_names:
+      - |
+        testParseFileWithNullFormat
+    notes: |
+      The test name and behavior both point to the null-format design.
+  - design_id: |
+      D2
+    matched_test_names:
+      - |
+        testGetRecordsWithDuplicateHeaders
+    notes: |
+      The test name and behavior both point to the duplicate-header design.
+  - design_id: |
+      D3
+    matched_test_names:
+      - |
+        testIteratorAfterClose
+    notes: |
+      The test name and behavior both point to the closed-parser design.
+  - design_id: |
+      D4
+    matched_test_names:
+      - |
+        testGetRecordsWithInvalidToken
+    notes: |
+      The test name and behavior both point to the invalid-token design.
+  - design_id: |
+      D5
+    matched_test_names:
+      - |
+        testGetRecordsWithComments
+    notes: |
+      The test name and behavior both point to the comment-handling design.
+fix_links:
+  - fixed_test_name: |
+      testParseFileWithNullFormatFixed
+    previous_test_name: |
+      testParseFileWithNullFormat
+    link_confidence: |
+      high
+    notes: |
+      The fixing-stage test keeps the same behavior and differs only by a repair suffix.
+  - fixed_test_name: |
+      testGetRecordsWithDuplicateHeadersFixed
+    previous_test_name: |
+      testGetRecordsWithDuplicateHeaders
+    link_confidence: |
+      high
+    notes: |
+      The fixing-stage test keeps the same behavior and differs only by a repair suffix.
+  - fixed_test_name: |
+      testIteratorAfterCloseFixed
+    previous_test_name: |
+      testIteratorAfterClose
+    link_confidence: |
+      high
+    notes: |
+      The fixing-stage test keeps the same behavior and differs only by a repair suffix.
+  - fixed_test_name: |
+      testGetRecordsWithCommentsFixed
+    previous_test_name: |
+      testGetRecordsWithComments
+    link_confidence: |
+      high
+    notes: |
+      The fixing-stage test keeps the same behavior and differs only by a repair suffix.
+design_cluster_updates:
+  - cluster_id: |
+      
+    action: |
+      create_cluster
+    merged_design_id: |
+      D4
+    updated_cluster:
+      cluster_name: |
+        Test invalid token handling during CSV parsing.
+      method_signature_hint: |
+        private CSVRecord nextRecord() throws IOException
+      entry_hint: |
+        public List<CSVRecord> getRecords() throws IOException
+      input_focus: |
+        Provide CSV input that includes invalid tokens.
+      observable_behavior: |
+        Verify that an IOException is thrown indicating an invalid parse sequence.
+      cluster_notes: |
+        D4 creates a new cluster because it does not fit any existing historical cluster.
+global_notes: |
+  All current-round designs were matched with tests, and fixing outputs were linked to their corresponding failed tests. New clusters were created for D4 due to its unique behavior.
+```2026-04-03 18:05:14,900 - panta.panta - INFO - Iteration 0 feedback alignment produced 5 design-test match(es), 4 fix link(s), 1 cluster update(s)
+2026-04-03 18:05:14,901 - panta.panta - INFO - Current line Coverage: 80.2%, branch coverage: 76.79%
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test behavior when the format is null during CSV parsing.
+    method_context:
+      method_signature_hint: |
+        public static CSVParser parse(final File file, final Charset charset, final CSVFormat format)
+      entry_hint: |
+        public static CSVParser parse(final File file, final Charset charset, final CSVFormat format)
+    execution_flow: |
+      1. Call parse() with a valid file and charset, but pass null for the format.
+      2. The method should validate the parameters and throw an IllegalArgumentException.
+    input_focus: |
+      Provide a valid File object and Charset, while setting the format parameter to null.
+    observable_behavior: |
+      Verify that an IllegalArgumentException is thrown indicating that the format must not be null.
+
+  - design_name: |
+      Test behavior when the header contains duplicate names.
+    method_context:
+      method_signature_hint: |
+        private Map<String, Integer> initializeHeader() throws IOException
+      entry_hint: |
+        public List<CSVRecord> getRecords() throws IOException
+    execution_flow: |
+      1. Call getRecords() with a CSV input that has duplicate header names.
+      2. The method should reach initializeHeader() and detect the duplicates.
+      3. An IllegalArgumentException should be thrown due to duplicate headers.
+    input_focus: |
+      Construct a CSV input string with duplicate header names and pass it to the parser.
+    observable_behavior: |
+      Check that an IllegalArgumentException is thrown with a message indicating the duplicate header.
+
+  - design_name: |
+      Test behavior when the parser is closed and next() is called.
+    method_context:
+      method_signature_hint: |
+        private CSVRecord nextRecord() throws IOException
+      entry_hint: |
+        public Iterator<CSVRecord> iterator()
+    execution_flow: |
+      1. Call iterator() to get an iterator for CSV records.
+      2. Close the parser.
+      3. Call next() on the iterator after the parser is closed.
+    input_focus: |
+      Use a valid CSV input and ensure the parser is closed before calling next().
+    observable_behavior: |
+      Verify that calling next() after the parser is closed throws a NoSuchElementException.
+
+  - design_name: |
+      Test behavior when the lexer encounters an invalid token.
+    method_context:
+      method_signature_hint: |
+        private CSVRecord nextRecord() throws IOException
+      entry_hint: |
+        public List<CSVRecord> getRecords() throws IOException
+    execution_flow: |
+      1. Call getRecords() with a CSV input that contains an invalid token.
+      2. The method should reach nextRecord() and encounter the invalid token.
+      3. An IOException should be thrown indicating an invalid parse sequence.
+    input_focus: |
+      Provide a CSV input string that includes an invalid token (e.g., malformed CSV).
+    observable_behavior: |
+      Check that an IOException is thrown with a message indicating the invalid token encountered.
+
+  - design_name: |
+      Test behavior when the lexer encounters a comment token.
+    method_context:
+      method_signature_hint: |
+        private CSVRecord nextRecord() throws IOException
+      entry_hint: |
+        public List<CSVRecord> getRecords() throws IOException
+    execution_flow: |
+      1. Call getRecords() with a CSV input that includes comment lines.
+      2. The method should reach nextRecord() and handle the comment token appropriately.
+      3. The comments should be ignored, and valid records should be returned.
+    input_focus: |
+      Construct a CSV input string that includes comment lines (e.g., lines starting with #).
+    observable_behavior: |
+      Verify that the returned records do not include any data from the comment lines.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testParseFormatNull() throws IOException
+new_tests:
+  - test_behavior: Test behavior when the format is null during CSV parsing.
+    test_name: testParseWithNullFormat
+    test_code: |
+      @Test(expected = IllegalArgumentException.class)
+      public void testParseWithNullFormat() throws IOException {
+          CSVParser.parse(new File("test.csv"), Charset.defaultCharset(), null);
+      }
+    new_imports_code: ''
+    
+  - test_behavior: Test behavior when the header contains duplicate names.
+    test_name: testGetRecordsWithDuplicateHeaders
+    test_code: |
+      @Test(expected = IllegalArgumentException.class)
+      public void testGetRecordsWithDuplicateHeaders() throws IOException {
+          String csvInput = "Header1,Header1\nvalue1,value2";
+          CSVFormat format = CSVFormat.DEFAULT.withHeader().withAllowMissingColumnNames(false);
+          CSVParser parser = CSVParser.parse(new StringReader(csvInput), format);
+          parser.getRecords(); // This should throw an IllegalArgumentException
+      }
+    new_imports_code: ''
+    
+  - test_behavior: Test behavior when the parser is closed and next() is called.
+    test_name: testNextAfterClose
+    test_code: |
+      @Test(expected = NoSuchElementException.class)
+      public void testNextAfterClose() throws IOException {
+          CSVParser parser = CSVParser.parse(new StringReader("value1,value2\nvalue3,value4"), CSVFormat.DEFAULT);
+          parser.close(); // Close the parser
+          Iterator<CSVRecord> iterator = parser.iterator();
+          iterator.next(); // This should throw NoSuchElementException
+      }
+    new_imports_code: ''
+    
+  - test_behavior: Test behavior when the lexer encounters an invalid token.
+    test_name: testGetRecordsWithInvalidToken
+    test_code: |
+      @Test(expected = IOException.class)
+      public void testGetRecordsWithInvalidToken() throws IOException {
+          String csvInput = "value1,value2\nvalue3,value4\ninvalid_token";
+          CSVParser parser = CSVParser.parse(new StringReader(csvInput), CSVFormat.DEFAULT);
+          parser.getRecords(); // This should throw an IOException
+      }
+    new_imports_code: ''
+    
+  - test_behavior: Test behavior when the lexer encounters a comment token.
+    test_name: testGetRecordsWithCommentToken
+    test_code: |
+      @Test
+      public void testGetRecordsWithCommentToken() throws IOException {
+          String csvInput = "# This is a comment\nvalue1,value2\n# Another comment\nvalue3,value4";
+          CSVParser parser = CSVParser.parse(new StringReader(csvInput), CSVFormat.DEFAULT.withCommentMarker('#'));
+          List<CSVRecord> records = parser.getRecords();
+          assertEquals(2, records.size());
+          assertEquals("value1", records.get(0).get(0));
+          assertEquals("value2", records.get(0).get(1));
+          assertEquals("value3", records.get(1).get(0));
+          assertEquals("value4", records.get(1).get(1));
+      }
+    new_imports_code: ''
+```2026-04-03 18:05:43,098 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 11539
+2026-04-03 18:05:43,112 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:05:43,113 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:06:17,431 - panta.unit_test_generator - INFO - Generated test has passed: testParseWithNullFormat
+2026-04-03 18:06:17,433 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:06:17,434 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:06:40,458 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 18:06:40,462 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:06:40,463 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:07:03,604 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 18:07:03,606 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:07:03,608 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:07:34,088 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 18:07:34,093 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:07:34,094 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:08:07,470 - panta.unit_test_generator - INFO - Generated test has passed: testGetRecordsWithCommentToken
+2026-04-03 18:08:07,471 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:08:41,849 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test(expected = IllegalArgumentException.class)
+  public void testGetRecordsWithDuplicateHeaders() throws IOException {
+    String csvInput = "Header1,Header1\nvalue1,value2";
+    CSVFormat format = CSVFormat.DEFAULT.withHeader().withAllowMissingColumnNames(false);
+    CSVParser parser = CSVParser.parse(new StringReader(csvInput), format);
+    parser.getRecords(); // This should throw an IllegalArgumentException
+  }
+new_tests:
+- test_behavior: |
+    Test that the function handles duplicate headers correctly by throwing an IllegalArgumentException.
+  test_name: |
+    testGetRecordsWithDuplicateHeadersFixed
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetRecordsWithDuplicateHeadersFixed() throws IOException {
+        String csvInput = "Header1,Header1\nvalue1,value2"; // Duplicate headers
+        CSVFormat format = CSVFormat.DEFAULT.withHeader().withAllowMissingColumnNames(false);
+        CSVParser parser = CSVParser.parse(new StringReader(csvInput), format);
+        parser.getRecords(); // This should throw an IllegalArgumentException
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that the iterator does not allow access after the parser is closed, throwing a NoSuchElementException.
+  test_name: |
+    testNextAfterCloseFixed
+  test_code: |
+    @Test(expected = NoSuchElementException.class)
+    public void testNextAfterCloseFixed() throws IOException {
+        CSVParser parser = CSVParser.parse(new StringReader("value1,value2\nvalue3,value4"), CSVFormat.DEFAULT);
+        parser.close(); // Close the parser
+        Iterator<CSVRecord> iterator = parser.iterator();
+        iterator.next(); // This should throw NoSuchElementException
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that the function throws an IOException when encountering an invalid token in the CSV input.
+  test_name: |
+    testGetRecordsWithInvalidToken
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testGetRecordsWithInvalidToken() throws IOException {
+        String csvInput = "value1,value2\nvalue3,value4\ninvalid_token"; // Invalid token
+        CSVParser parser = CSVParser.parse(new StringReader(csvInput), CSVFormat.DEFAULT);
+        parser.getRecords(); // This should throw an IOException
+    }
+  new_imports_code: |
+```2026-04-03 18:08:52,915 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 10472
+2026-04-03 18:08:52,924 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:08:52,925 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:09:15,988 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 18:09:15,991 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:09:15,991 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:09:39,677 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 18:09:39,681 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:09:39,681 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:10:09,713 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test(expected = IllegalArgumentException.class)
+  public void testGetRecordsWithDuplicateHeadersFixed() throws IOException {
+    String csvInput = "Header1,Header1\nvalue1,value2"; // Duplicate headers
+    CSVFormat format = CSVFormat.DEFAULT.withHeader().withAllowMissingColumnNames(false);
+    CSVParser parser = CSVParser.parse(new StringReader(csvInput), format);
+    parser.getRecords(); // This should throw an IllegalArgumentException
+  }
+new_tests:
+- test_behavior: |
+    Test that the function handles duplicate headers correctly and throws an IllegalArgumentException.
+  test_name: |
+    testGetRecordsWithDuplicateHeaders
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetRecordsWithDuplicateHeaders() throws IOException {
+        String csvInput = "Header1,Header1\nvalue1,value2"; // Duplicate headers
+        CSVFormat format = CSVFormat.DEFAULT.withHeader().withAllowMissingColumnNames(false);
+        CSVParser parser = CSVParser.parse(new StringReader(csvInput), format);
+        parser.getRecords(); // This should throw an IllegalArgumentException
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that the iterator throws NoSuchElementException when called after the parser is closed.
+  test_name: |
+    testIteratorAfterClose
+  test_code: |
+    @Test(expected = NoSuchElementException.class)
+    public void testIteratorAfterClose() throws IOException {
+        CSVParser parser = CSVParser.parse(new StringReader("value1,value2\nvalue3,value4"), CSVFormat.DEFAULT);
+        parser.close(); // Close the parser
+        Iterator<CSVRecord> iterator = parser.iterator();
+        iterator.next(); // This should throw NoSuchElementException
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that the function throws IOException when encountering an invalid token in the CSV input.
+  test_name: |
+    testGetRecordsWithInvalidToken
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testGetRecordsWithInvalidToken() throws IOException {
+        String csvInput = "value1,value2\nvalue3,value4\ninvalid_token"; // Invalid token
+        CSVParser parser = CSVParser.parse(new StringReader(csvInput), CSVFormat.DEFAULT);
+        parser.getRecords(); // This should throw an IOException
+    }
+  new_imports_code: |
+```2026-04-03 18:10:19,999 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 10482
+2026-04-03 18:10:20,007 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:10:20,009 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:10:43,197 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 18:10:43,203 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:10:43,204 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:11:07,053 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 18:11:07,057 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:11:07,057 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:11:36,845 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test(expected = IllegalArgumentException.class)
+  public void testGetRecordsWithDuplicateHeaders() throws IOException {
+    String csvInput = "Header1,Header1\nvalue1,value2"; // Duplicate headers
+    CSVFormat format = CSVFormat.DEFAULT.withHeader().withAllowMissingColumnNames(false);
+    CSVParser parser = CSVParser.parse(new StringReader(csvInput), format);
+    parser.getRecords(); // This should throw an IllegalArgumentException
+  }
+new_tests:
+- test_behavior: |
+    Test that the function correctly handles duplicate headers by throwing an IllegalArgumentException.
+  test_name: |
+    testGetRecordsWithDuplicateHeadersFixed
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetRecordsWithDuplicateHeadersFixed() throws IOException {
+        String csvInput = "Header1,Header1\nvalue1,value2"; // Duplicate headers
+        CSVFormat format = CSVFormat.DEFAULT.withHeader().withAllowMissingColumnNames(false);
+        CSVParser parser = CSVParser.parse(new StringReader(csvInput), format);
+        parser.getRecords(); // This should throw an IllegalArgumentException
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that the iterator throws NoSuchElementException when called after the parser is closed.
+  test_name: |
+    testIteratorAfterCloseFixed
+  test_code: |
+    @Test(expected = NoSuchElementException.class)
+    public void testIteratorAfterCloseFixed() throws IOException {
+        CSVParser parser = CSVParser.parse(new StringReader("value1,value2\nvalue3,value4"), CSVFormat.DEFAULT);
+        parser.close(); // Close the parser
+        Iterator<CSVRecord> iterator = parser.iterator();
+        iterator.next(); // This should throw NoSuchElementException
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that the function throws an IOException when an invalid token is encountered in the CSV input.
+  test_name: |
+    testGetRecordsWithInvalidToken
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testGetRecordsWithInvalidToken() throws IOException {
+        String csvInput = "value1,value2\nvalue3,value4\ninvalid_token"; // Invalid token
+        CSVParser parser = CSVParser.parse(new StringReader(csvInput), CSVFormat.DEFAULT);
+        parser.getRecords(); // This should throw an IOException
+    }
+  new_imports_code: |
+```2026-04-03 18:11:47,520 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 10481
+2026-04-03 18:11:47,532 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:11:47,532 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:12:10,101 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 18:12:10,103 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:12:10,104 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:12:33,154 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 18:12:33,156 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 18:12:33,156 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:13:03,905 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 18:13:03,908 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 18:13:38,577 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+2026-04-03 18:13:38,620 - panta.panta - INFO - Iteration 1 cannot increase coverage.
+
+
+```yaml
+test_design_matches:
+  - design_id: |
+      D1
+    matched_test_names:
+      - |
+        testParseWithNullFormat
+    notes: |
+      The test name and behavior both point to the null-format design.
+  - design_id: |
+      D2
+    matched_test_names:
+      - |
+        testGetRecordsWithDuplicateHeaders
+    notes: |
+      The test name and behavior both point to the duplicate-header design.
+  - design_id: |
+      D3
+    matched_test_names:
+      - |
+        testNextAfterClose
+    notes: |
+      The test name and behavior both point to the closed-parser design.
+  - design_id: |
+      D4
+    matched_test_names:
+      - |
+        testGetRecordsWithInvalidToken
+    notes: |
+      The test name and behavior both point to the invalid-token design.
+  - design_id: |
+      D5
+    matched_test_names:
+      - |
+        testGetRecordsWithCommentToken
+    notes: |
+      The test name and behavior both point to the comment-handling design.
+fix_links:
+  - fixed_test_name: |
+      testGetRecordsWithDuplicateHeadersFixed
+    previous_test_name: |
+      testGetRecordsWithDuplicateHeaders
+    link_confidence: |
+      high
+    notes: |
+      The fixing-stage test keeps the same behavior and differs only by a repair suffix.
+  - fixed_test_name: |
+      testNextAfterCloseFixed
+    previous_test_name: |
+      testNextAfterClose
+    link_confidence: |
+      high
+    notes: |
+      The fixing-stage test keeps the same behavior and differs only by a repair suffix.
+  - fixed_test_name: |
+      testGetRecordsWithInvalidToken
+    previous_test_name: |
+      testGetRecordsWithInvalidToken
+    link_confidence: |
+      high
+    notes: |
+      The fixing-stage test keeps the same behavior and differs only by a repair suffix.
+  - fixed_test_name: |
+      testGetRecordsWithCommentToken
+    previous_test_name: |
+      testGetRecordsWithCommentToken
+    link_confidence: |
+      high
+    notes: |
+      The fixing-stage test keeps the same behavior and differs only by a repair suffix.
+design_cluster_updates:
+  - cluster_id: |
+      
+    action: |
+      create_cluster
+    merged_design_id: |
+      D4
+    updated_cluster:
+      cluster_name: |
+        Test invalid token handling during CSV parsing.
+      method_signature_hint: |
+        private CSVRecord nextRecord() throws IOException
+      entry_hint: |
+        public List<CSVRecord> getRecords() throws IOException
+      input_focus: |
+        Provide CSV input that includes invalid tokens.
+      observable_behavior: |
+        Verify that an IOException is thrown indicating an invalid parse sequence.
+      cluster_notes: |
+        D4 creates a new cluster because it does not fit any existing historical cluster.
+global_notes: |
+  All current-round designs were matched with tests, and fixing outputs were linked to their corresponding failed tests. New clusters were created for D4 due to its unique behavior.
+```2026-04-03 18:13:52,031 - panta.panta - INFO - Iteration 1 feedback alignment produced 5 design-test match(es), 2 fix link(s), 1 cluster update(s)
+2026-04-03 18:13:52,032 - panta.panta - ERROR - Reached maximum iteration limit without achieving desired coverage. Current Coverage: (80.2%, 76.79%)
+2026-04-03 18:13:52,047 - panta.panta - INFO - Report generated successfully at: ../../result-files/control_gpt-4o-mini/
+
+

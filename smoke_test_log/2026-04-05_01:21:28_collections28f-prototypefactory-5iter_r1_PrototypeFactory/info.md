@@ -1,0 +1,24 @@
+# Batch Run R1
+
+- Batch name: collections28f-prototypefactory-5iter
+- Timestamp: 2026-04-05_01:21:28
+- Round: 1 / 1
+- Baseline test file: original `defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java` contents
+- report_filepath: collections28f_prototypefactory_5iter_r1_20260405_012128.html
+- Run status: completed
+- Process exit code: 0
+- Effective config overrides:
+  - code_coverage_report_path = defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+  - enable_advice_feedback = false
+  - enable_fixing = 3
+  - junit_version = 4
+  - llm_advice_activation_line_coverage = 100
+  - llm_advice_activation_no_growth = 3
+  - maximum_iterations = 5
+  - no_coverage_increase_iterations = 5
+  - project_directory = defects4j-subjects-notests/Collections-28f
+  - report_filepath = collections28f_prototypefactory_5iter_r1_20260405_012128.html
+  - source_code_file = defects4j-subjects-notests/Collections-28f/src/main/java/org/apache/commons/collections4/functors/PrototypeFactory.java
+  - test_code_command_dir = defects4j-subjects-notests/Collections-28f
+  - test_code_file = defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+  - test_execution_command = mvn clean package -Dtest=PrototypeFactoryTest

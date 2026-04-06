@@ -1,0 +1,2056 @@
+2026-04-05 02:22:03,373 - panta.panta - INFO - CFG snapshot directory created: cfg_snapshot_test/intermediate/cfg/UTF8JsonGenerator_20260405_022203_8b8002a9
+2026-04-05 02:22:49,745 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:23:32,823 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-05 02:23:33,077 - panta.panta - INFO - Current line Coverage: 0.0%, branch coverage: 0.0%
+2026-04-05 02:23:33,078 - panta.panta - INFO - initial tests generation using baseline type of prompt
+Function timed out after 5 seconds
+UTF8JsonGenerator writeRaw [(2365, 2374), (2374, 2383), (2374, 2401), (2389, 2396), (2396, 2), (2401, 2405), (2405, 2407), (2405, 2), (2419, 2428), (2428, 2434), (2428, 2436), (2436, 2445), (2445, 2452), (2445, 2415), (2343, 2365), (2383, 2389), (2383, 2397), (2397, 2401), (2407, 2413), (2407, 2), (2413, 2415), (2415, 2419), (2452, 2)]
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that writeFieldName handles a null name correctly and throws an IOException.
+  test_name: |
+    testWriteFieldNameNull
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testWriteFieldNameNull() throws IOException {
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new OutputStreamWriter(new ByteArrayOutputStream())), 0, null, new ByteArrayOutputStream());
+        generator.writeFieldName(null);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+- test_behavior: |
+    Test that writeFieldName handles an empty string name correctly.
+  test_name: |
+    testWriteFieldNameEmptyString
+  test_code: |
+    @Test
+    public void testWriteFieldNameEmptyString() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new OutputStreamWriter(outputStream)), 0, null, outputStream);
+        generator.writeFieldName("");
+        assertTrue(outputStream.toString().contains("\"\"")); // Check if the output contains the empty string
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+- test_behavior: |
+    Test that writeFieldName handles a long field name correctly.
+  test_name: |
+    testWriteFieldNameLongName
+  test_code: |
+    @Test
+    public void testWriteFieldNameLongName() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new OutputStreamWriter(outputStream)), 0, null, outputStream);
+        String longName = "a".repeat(1000); // Create a long field name
+        generator.writeFieldName(longName);
+        String output = outputStream.toString();
+        assertTrue(output.contains("\"" + longName + "\"")); // Check if the output contains the long name
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+- test_behavior: |
+    Test that writeStartArray correctly writes the opening bracket.
+  test_name: |
+    testWriteStartArray
+  test_code: |
+    @Test
+    public void testWriteStartArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new OutputStreamWriter(outputStream)), 0, null, outputStream);
+        generator.writeStartArray();
+        assertEquals("[", outputStream.toString()); // Check if the output is the opening bracket
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+- test_behavior: |
+    Test that writeEndArray correctly writes the closing bracket.
+  test_name: |
+    testWriteEndArray
+  test_code: |
+    @Test
+    public void testWriteEndArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new OutputStreamWriter(outputStream)), 0, null, outputStream);
+        generator.writeStartArray();
+        generator.writeEndArray();
+        assertEquals("[]", outputStream.toString()); // Check if the output is the empty array
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+```2026-04-05 02:23:53,071 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 22113
+2026-04-05 02:23:53,082 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:23:53,083 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:24:10,745 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:24:10,747 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:24:10,748 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:24:28,826 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:24:28,828 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:24:28,829 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:24:45,627 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:24:45,630 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:24:45,630 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:25:02,607 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:25:02,613 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:25:02,614 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:25:20,530 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:25:20,532 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:25:51,835 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+      assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that writing a null field name throws an IOException.
+  test_name: |
+    testWriteFieldNameNull
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testWriteFieldNameNull() throws IOException {
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new OutputStreamWriter(new ByteArrayOutputStream())), 0, null, new ByteArrayOutputStream());
+        generator.writeFieldName(null);
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing an empty string as a field name produces the correct output.
+  test_name: |
+    testWriteFieldNameEmptyString
+  test_code: |
+    @Test
+    public void testWriteFieldNameEmptyString() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new OutputStreamWriter(outputStream)), 0, null, outputStream);
+        generator.writeFieldName("");
+        assertTrue(outputStream.toString().contains("\"\"")); // Check if the output contains the empty string
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing a long field name produces the correct output.
+  test_name: |
+    testWriteFieldNameLongName
+  test_code: |
+    @Test
+    public void testWriteFieldNameLongName() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new OutputStreamWriter(outputStream)), 0, null, outputStream);
+        String longName = "a".repeat(1000); // Create a long field name
+        generator.writeFieldName(longName);
+        String output = outputStream.toString();
+        assertTrue(output.contains("\"" + longName + "\"")); // Check if the output contains the long name
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing the start of an array produces the correct output.
+  test_name: |
+    testWriteStartArray
+  test_code: |
+    @Test
+    public void testWriteStartArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new OutputStreamWriter(outputStream)), 0, null, outputStream);
+        generator.writeStartArray();
+        assertEquals("[", outputStream.toString()); // Check if the output is the opening bracket
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing the end of an array produces the correct output.
+  test_name: |
+    testWriteEndArray
+  test_code: |
+    @Test
+    public void testWriteEndArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new OutputStreamWriter(outputStream)), 0, null, outputStream);
+        generator.writeStartArray();
+        generator.writeEndArray();
+        assertEquals("[]", outputStream.toString()); // Check if the output is the empty array
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+```2026-04-05 02:26:09,099 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 19820
+2026-04-05 02:26:09,109 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:26:09,109 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:26:26,877 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:26:26,879 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:26:26,880 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:26:44,515 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:26:44,518 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:26:44,519 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:27:02,224 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:27:02,226 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:27:02,226 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:27:20,012 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:27:20,016 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:27:20,016 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:27:36,956 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that writing a null field name throws an IOException.
+  test_name: |
+    testWriteFieldNameNull
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testWriteFieldNameNull() throws IOException {
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new OutputStreamWriter(new ByteArrayOutputStream())), 0, null, new ByteArrayOutputStream());
+        generator.writeFieldName(null);
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing an empty field name produces the correct output.
+  test_name: |
+    testWriteFieldNameEmptyString
+  test_code: |
+    @Test
+    public void testWriteFieldNameEmptyString() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new OutputStreamWriter(outputStream)), 0, null, outputStream);
+        generator.writeFieldName("");
+        assertTrue(outputStream.toString().contains("\"\"")); // Check if the output contains the empty string
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing a long field name produces the correct output.
+  test_name: |
+    testWriteFieldNameLongName
+  test_code: |
+    @Test
+    public void testWriteFieldNameLongName() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new OutputStreamWriter(outputStream)), 0, null, outputStream);
+        String longName = new String(new char[1000]).replace("\0", "a"); // Create a long field name
+        generator.writeFieldName(longName);
+        String output = outputStream.toString();
+        assertTrue(output.contains("\"" + longName + "\"")); // Check if the output contains the long name
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing the start of an array produces the correct output.
+  test_name: |
+    testWriteStartArray
+  test_code: |
+    @Test
+    public void testWriteStartArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new OutputStreamWriter(outputStream)), 0, null, outputStream);
+        generator.writeStartArray();
+        assertEquals("[", outputStream.toString()); // Check if the output is the opening bracket
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing the end of an array produces the correct output.
+  test_name: |
+    testWriteEndArray
+  test_code: |
+    @Test
+    public void testWriteEndArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new OutputStreamWriter(outputStream)), 0, null, outputStream);
+        generator.writeStartArray();
+        generator.writeEndArray();
+        assertEquals("[]", outputStream.toString()); // Check if the output is the empty array
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+```2026-04-05 02:27:52,042 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 20234
+2026-04-05 02:27:52,051 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:27:52,051 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:28:09,528 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:28:09,533 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:28:09,534 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:28:26,659 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:28:26,662 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:28:26,663 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:28:42,617 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:28:42,621 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:28:42,621 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:28:59,676 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:28:59,680 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:28:59,681 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:29:17,259 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that writing a null field name throws an IOException.
+  test_name: |
+    testWriteFieldNameNull
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testWriteFieldNameNull() throws IOException {
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new OutputStreamWriter(new ByteArrayOutputStream())), 0, null, new ByteArrayOutputStream());
+        generator.writeFieldName(null);
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing an empty field name produces the correct output.
+  test_name: |
+    testWriteFieldNameEmptyString
+  test_code: |
+    @Test
+    public void testWriteFieldNameEmptyString() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new OutputStreamWriter(outputStream)), 0, null, outputStream);
+        generator.writeFieldName("");
+        assertTrue(outputStream.toString().contains("\"\"")); // Check if the output contains the empty string
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing a long field name produces the correct output.
+  test_name: |
+    testWriteFieldNameLongName
+  test_code: |
+    @Test
+    public void testWriteFieldNameLongName() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new OutputStreamWriter(outputStream)), 0, null, outputStream);
+        String longName = new String(new char[1000]).replace("\0", "a"); // Create a long field name
+        generator.writeFieldName(longName);
+        String output = outputStream.toString();
+        assertTrue(output.contains("\"" + longName + "\"")); // Check if the output contains the long name
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing the start of an array produces the correct output.
+  test_name: |
+    testWriteStartArray
+  test_code: |
+    @Test
+    public void testWriteStartArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new OutputStreamWriter(outputStream)), 0, null, outputStream);
+        generator.writeStartArray();
+        assertEquals("[", outputStream.toString()); // Check if the output is the opening bracket
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing the end of an array produces the correct output.
+  test_name: |
+    testWriteEndArray
+  test_code: |
+    @Test
+    public void testWriteEndArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new OutputStreamWriter(outputStream)), 0, null, outputStream);
+        generator.writeStartArray();
+        generator.writeEndArray();
+        assertEquals("[]", outputStream.toString()); // Check if the output is the empty array
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+```2026-04-05 02:29:32,388 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 20167
+2026-04-05 02:29:32,404 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:29:32,405 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:29:49,919 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:29:49,923 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:29:49,925 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:30:05,772 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:30:05,774 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:30:05,774 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:30:20,251 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:30:20,253 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:30:20,254 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:30:37,602 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:30:37,605 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:30:37,605 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:30:55,822 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:30:55,826 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:31:27,276 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-05 02:31:27,513 - panta.panta - INFO - Iteration 0 cannot increase coverage.
+2026-04-05 02:31:27,514 - panta.panta - INFO - Current line Coverage: 0.0%, branch coverage: 0.0%
+2026-04-05 02:31:27,514 - panta.panta - INFO - initial tests generation using baseline type of prompt
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that writeFieldName throws an exception when trying to write a field name without a preceding value.
+  test_name: |
+    testWriteFieldNameWithoutValue
+  test_code: |
+    @Test(expected = JsonGenerationException.class)
+    public void testWriteFieldNameWithoutValue() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeFieldName("testField");
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+- test_behavior: |
+    Test that writeFieldName handles a valid field name correctly.
+  test_name: |
+    testWriteFieldNameValid
+  test_code: |
+    @Test
+    public void testWriteFieldNameValid() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeFieldName("testField");
+        generator.writeString("testValue");
+        generator.writeEndObject();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{\"testField\":\"testValue\"}", result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+- test_behavior: |
+    Test that writeStartArray correctly writes the start of an array.
+  test_name: |
+    testWriteStartArray
+  test_code: |
+    @Test
+    public void testWriteStartArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartArray();
+        generator.writeEndArray();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("[]", result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+- test_behavior: |
+    Test that writeEndArray throws an exception if called without a corresponding start.
+  test_name: |
+    testWriteEndArrayWithoutStart
+  test_code: |
+    @Test(expected = JsonGenerationException.class)
+    public void testWriteEndArrayWithoutStart() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeEndArray();
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+- test_behavior: |
+    Test that writeStartObject correctly writes the start of an object.
+  test_name: |
+    testWriteStartObject
+  test_code: |
+    @Test
+    public void testWriteStartObject() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeEndObject();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{}", result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+```2026-04-05 02:31:42,575 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 22142
+2026-04-05 02:31:42,585 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:31:42,586 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:32:00,102 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:32:00,104 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:32:00,104 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:32:16,990 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:32:16,992 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:32:16,992 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:32:34,324 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:32:34,326 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:32:34,327 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:32:51,993 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:32:51,995 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:32:51,996 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:33:09,804 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:33:09,807 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:33:41,810 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that writing a field name without a preceding value throws a JsonGenerationException.
+  test_name: |
+    testWriteFieldNameWithoutValue
+  test_code: |
+    @Test(expected = JsonGenerationException.class)
+    public void testWriteFieldNameWithoutValue() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeFieldName("testField");
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.JsonGenerationException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+
+- test_behavior: |
+    Test that writing a valid field name and value produces the correct JSON output.
+  test_name: |
+    testWriteFieldNameValid
+  test_code: |
+    @Test
+    public void testWriteFieldNameValid() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeFieldName("testField");
+        generator.writeString("testValue");
+        generator.writeEndObject();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{\"testField\":\"testValue\"}", result);
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+
+- test_behavior: |
+    Test that starting an array produces the correct JSON output.
+  test_name: |
+    testWriteStartArray
+  test_code: |
+    @Test
+    public void testWriteStartArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartArray();
+        generator.writeEndArray();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("[]", result);
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+
+- test_behavior: |
+    Test that writing an end array without starting an array throws a JsonGenerationException.
+  test_name: |
+    testWriteEndArrayWithoutStart
+  test_code: |
+    @Test(expected = JsonGenerationException.class)
+    public void testWriteEndArrayWithoutStart() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeEndArray();
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.JsonGenerationException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+
+- test_behavior: |
+    Test that starting an object produces the correct JSON output.
+  test_name: |
+    testWriteStartObject
+  test_code: |
+    @Test
+    public void testWriteStartObject() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeEndObject();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{}", result);
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+```2026-04-05 02:33:57,073 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 19667
+2026-04-05 02:33:57,077 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:33:57,077 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:34:01,811 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:34:01,811 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:34:01,811 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:34:13,660 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:34:13,663 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:34:13,664 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:34:31,926 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:34:31,929 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:34:31,930 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:34:49,470 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:34:49,473 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:34:49,474 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:35:07,275 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that writing a field name without a preceding value throws a JsonGenerationException
+  test_name: |
+    testWriteFieldNameWithoutValue
+  test_code: |
+    @Test(expected = JsonGenerationException.class)
+    public void testWriteFieldNameWithoutValue() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeFieldName("testField");
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.JsonGenerationException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+
+- test_behavior: |
+    Test that writing a valid field name and value produces the correct JSON output
+  test_name: |
+    testWriteFieldNameValid
+  test_code: |
+    @Test
+    public void testWriteFieldNameValid() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeFieldName("testField");
+        generator.writeString("testValue");
+        generator.writeEndObject();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{\"testField\":\"testValue\"}", result);
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+
+- test_behavior: |
+    Test that starting an array produces the correct JSON output
+  test_name: |
+    testWriteStartArray
+  test_code: |
+    @Test
+    public void testWriteStartArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartArray();
+        generator.writeEndArray();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("[]", result);
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+
+- test_behavior: |
+    Test that writing an end array without starting an array throws a JsonGenerationException
+  test_name: |
+    testWriteEndArrayWithoutStart
+  test_code: |
+    @Test(expected = JsonGenerationException.class)
+    public void testWriteEndArrayWithoutStart() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeEndArray();
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.JsonGenerationException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+
+- test_behavior: |
+    Test that starting an object produces the correct JSON output
+  test_name: |
+    testWriteStartObject
+  test_code: |
+    @Test
+    public void testWriteStartObject() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeEndObject();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{}", result);
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+```2026-04-05 02:35:22,490 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 20070
+2026-04-05 02:35:22,503 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:35:22,504 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:35:39,812 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:35:39,814 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:35:39,815 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:35:57,023 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:35:57,025 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:35:57,027 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:36:14,454 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:36:14,459 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:36:14,460 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:36:31,530 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:36:31,532 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:36:31,533 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:36:48,935 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that writing a field name without a preceding value throws a JsonGenerationException.
+  test_name: |
+    testWriteFieldNameWithoutValue
+  test_code: |
+    @Test(expected = JsonGenerationException.class)
+    public void testWriteFieldNameWithoutValue() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeFieldName("testField");
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.JsonGenerationException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+
+- test_behavior: |
+    Test that writing a valid field name and value produces the correct JSON output.
+  test_name: |
+    testWriteFieldNameValid
+  test_code: |
+    @Test
+    public void testWriteFieldNameValid() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeFieldName("testField");
+        generator.writeString("testValue");
+        generator.writeEndObject();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{\"testField\":\"testValue\"}", result);
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+
+- test_behavior: |
+    Test that writing a start array and then an end array produces the correct JSON output.
+  test_name: |
+    testWriteStartArray
+  test_code: |
+    @Test
+    public void testWriteStartArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartArray();
+        generator.writeEndArray();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("[]", result);
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+
+- test_behavior: |
+    Test that writing an end array without a start array throws a JsonGenerationException.
+  test_name: |
+    testWriteEndArrayWithoutStart
+  test_code: |
+    @Test(expected = JsonGenerationException.class)
+    public void testWriteEndArrayWithoutStart() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeEndArray();
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.JsonGenerationException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+
+- test_behavior: |
+    Test that writing a start object and then an end object produces the correct JSON output.
+  test_name: |
+    testWriteStartObject
+  test_code: |
+    @Test
+    public void testWriteStartObject() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeEndObject();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{}", result);
+    }
+  new_imports_code: |
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+```2026-04-05 02:37:04,240 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 20082
+2026-04-05 02:37:04,253 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:37:04,254 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:37:21,790 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:37:21,793 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:37:21,794 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:37:39,272 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:37:39,274 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:37:39,274 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:37:57,510 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:37:57,512 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:37:57,513 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:38:15,958 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:38:15,961 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:38:15,961 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:38:34,093 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:38:34,094 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:39:07,253 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-05 02:39:07,747 - panta.panta - INFO - Iteration 1 cannot increase coverage.
+2026-04-05 02:39:07,748 - panta.panta - INFO - Current line Coverage: 0.0%, branch coverage: 0.0%
+2026-04-05 02:39:07,749 - panta.panta - INFO - initial tests generation using baseline type of prompt
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that writeFieldName throws an IOException when trying to write a field name in an invalid context.
+  test_name: |
+    testWriteFieldNameInvalidContext
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testWriteFieldNameInvalidContext() throws IOException {
+        UTF8JsonGenerator generator = createGenerator(); // Assume this method creates a valid generator
+        generator.writeStartObject();
+        generator.writeEndObject(); // Close the object to create an invalid context
+        generator.writeFieldName("field"); // This should throw an IOException
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+- test_behavior: |
+    Test that writeFieldName handles a valid field name correctly and updates the output buffer.
+  test_name: |
+    testWriteFieldNameValid
+  test_code: |
+    @Test
+    public void testWriteFieldNameValid() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(null, outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeFieldName("fieldName");
+        generator.writeEndObject();
+        generator.flush();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{\"fieldName\":", result); // Check if the field name is correctly written
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+- test_behavior: |
+    Test that writeStartArray correctly writes the opening bracket for an array.
+  test_name: |
+    testWriteStartArray
+  test_code: |
+    @Test
+    public void testWriteStartArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(null, outputStream, false), 0, null, outputStream);
+        generator.writeStartArray();
+        generator.writeEndArray();
+        generator.flush();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("[]", result); // Check if the array is correctly opened and closed
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+- test_behavior: |
+    Test that writeEndObject correctly writes the closing brace for an object.
+  test_name: |
+    testWriteEndObject
+  test_code: |
+    @Test
+    public void testWriteEndObject() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(null, outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeEndObject();
+        generator.flush();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{}", result); // Check if the object is correctly opened and closed
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+```2026-04-05 02:39:21,223 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 22039
+2026-04-05 02:39:21,231 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:39:21,232 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:39:39,052 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:39:39,054 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:39:39,054 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:40:00,241 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-05 02:40:00,243 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:40:00,244 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:40:21,401 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-05 02:40:21,403 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:40:21,404 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:40:42,820 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-05 02:40:42,823 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:41:15,366 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testWriteFieldNameValid() throws IOException {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that writing a field name throws an IOException when the context is invalid.
+  test_name: |
+    testWriteFieldNameInvalidContext
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testWriteFieldNameInvalidContext() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(null, outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeEndObject(); // Close the object to create an invalid context
+        generator.writeFieldName("field"); // This should throw an IOException
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+- test_behavior: |
+    Test that writing a valid field name works correctly.
+  test_name: |
+    testWriteFieldNameValid
+  test_code: |
+    @Test
+    public void testWriteFieldNameValid() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(null, outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeFieldName("fieldName");
+        generator.writeEndObject();
+        generator.flush();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{\"fieldName\":", result); // Check if the field name is correctly written
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+- test_behavior: |
+    Test that starting an array works correctly.
+  test_name: |
+    testWriteStartArray
+  test_code: |
+    @Test
+    public void testWriteStartArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(null, outputStream, false), 0, null, outputStream);
+        generator.writeStartArray();
+        generator.writeEndArray();
+        generator.flush();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("[]", result); // Check if the array is correctly opened and closed
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+- test_behavior: |
+    Test that ending an object works correctly.
+  test_name: |
+    testWriteEndObject
+  test_code: |
+    @Test
+    public void testWriteEndObject() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(null, outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeEndObject();
+        generator.flush();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{}", result); // Check if the object is correctly opened and closed
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+```2026-04-05 02:41:28,934 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 19391
+2026-04-05 02:41:28,943 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:41:28,943 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:41:50,115 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-05 02:41:50,117 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:41:50,118 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:42:11,465 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-05 02:42:11,470 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:42:11,471 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:42:33,357 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-05 02:42:33,363 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:42:33,365 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:42:55,333 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that writing a field name after closing an object context throws an IOException
+  test_name: |
+    testWriteFieldNameInvalidContext
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testWriteFieldNameInvalidContext() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(null, outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeEndObject(); // Close the object to create an invalid context
+        generator.writeFieldName("field"); // This should throw an IOException
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+- test_behavior: |
+    Test that writing a valid field name correctly outputs the expected JSON format
+  test_name: |
+    testWriteFieldNameValid
+  test_code: |
+    @Test
+    public void testWriteFieldNameValid() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(null, outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeFieldName("fieldName");
+        generator.writeEndObject();
+        generator.flush();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{\"fieldName\":", result); // Check if the field name is correctly written
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+- test_behavior: |
+    Test that starting and ending an array correctly outputs the expected JSON format
+  test_name: |
+    testWriteStartArray
+  test_code: |
+    @Test
+    public void testWriteStartArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(null, outputStream, false), 0, null, outputStream);
+        generator.writeStartArray();
+        generator.writeEndArray();
+        generator.flush();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("[]", result); // Check if the array is correctly opened and closed
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+- test_behavior: |
+    Test that starting and ending an object correctly outputs the expected JSON format
+  test_name: |
+    testWriteEndObject
+  test_code: |
+    @Test
+    public void testWriteEndObject() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(null, outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeEndObject();
+        generator.flush();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{}", result); // Check if the object is correctly opened and closed
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+```2026-04-05 02:43:08,845 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 19440
+2026-04-05 02:43:08,853 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:43:08,854 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:43:30,318 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-05 02:43:30,321 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:43:30,321 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:43:51,240 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-05 02:43:51,243 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:43:51,244 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:44:13,461 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-05 02:44:13,464 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:44:13,465 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:44:34,839 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testWriteFieldNameValid() throws IOException {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that writing a field name throws an IOException when the context is invalid
+  test_name: |
+    testWriteFieldNameInvalidContext
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testWriteFieldNameInvalidContext() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(null, outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeEndObject(); // Close the object to create an invalid context
+        generator.writeFieldName("field"); // This should throw an IOException
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+- test_behavior: |
+    Test that writing a valid field name produces the correct JSON output
+  test_name: |
+    testWriteFieldNameValid
+  test_code: |
+    @Test
+    public void testWriteFieldNameValid() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(null, outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeFieldName("fieldName");
+        generator.writeEndObject();
+        generator.flush();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{\"fieldName\":", result); // Check if the field name is correctly written
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+- test_behavior: |
+    Test that starting an array produces the correct JSON output
+  test_name: |
+    testWriteStartArray
+  test_code: |
+    @Test
+    public void testWriteStartArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(null, outputStream, false), 0, null, outputStream);
+        generator.writeStartArray();
+        generator.writeEndArray();
+        generator.flush();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("[]", result); // Check if the array is correctly opened and closed
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+- test_behavior: |
+    Test that ending an object produces the correct JSON output
+  test_name: |
+    testWriteEndObject
+  test_code: |
+    @Test
+    public void testWriteEndObject() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(null, outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeEndObject();
+        generator.flush();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{}", result); // Check if the object is correctly opened and closed
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+```2026-04-05 02:44:46,781 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 19437
+2026-04-05 02:44:46,783 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:44:46,783 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:44:52,750 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-05 02:44:52,751 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:44:52,751 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:45:11,845 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-05 02:45:11,846 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:45:11,847 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:45:33,280 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-05 02:45:33,282 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:45:33,283 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:45:53,603 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-05 02:45:53,603 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:46:24,051 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-05 02:46:24,282 - panta.panta - INFO - Iteration 2 cannot increase coverage.
+2026-04-05 02:46:24,283 - panta.panta - INFO - Current line Coverage: 0.0%, branch coverage: 0.0%
+2026-04-05 02:46:24,283 - panta.panta - INFO - initial tests generation using baseline type of prompt
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that writeFieldName throws an exception when trying to write a field name without a preceding value.
+  test_name: |
+    testWriteFieldNameWithoutValue
+  test_code: |
+    @Test(expected = JsonGenerationException.class)
+    public void testWriteFieldNameWithoutValue() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeFieldName("fieldName"); // This should throw an exception
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+- test_behavior: |
+    Test that writeFieldName handles a field name that exceeds the buffer size correctly.
+  test_name: |
+    testWriteFieldNameExceedingBuffer
+  test_code: |
+    @Test
+    public void testWriteFieldNameExceedingBuffer() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        IOContext ctxt = new IOContext(new BufferRecycler(), outputStream, false);
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(ctxt, 0, null, outputStream);
+        String longFieldName = "a".repeat(1000); // Exceeding typical buffer size
+        generator.writeFieldName(longFieldName);
+        assertNotNull(outputStream.toByteArray());
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+- test_behavior: |
+    Test that writeStartArray correctly writes the opening bracket for an array.
+  test_name: |
+    testWriteStartArray
+  test_code: |
+    @Test
+    public void testWriteStartArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartArray();
+        generator.writeEndArray();
+        byte[] result = outputStream.toByteArray();
+        assertArrayEquals(new byte[]{'[', ']'}, result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+- test_behavior: |
+    Test that writeEndArray throws an exception if called when not in an array context.
+  test_name: |
+    testWriteEndArrayWithoutStart
+  test_code: |
+    @Test(expected = JsonGenerationException.class)
+    public void testWriteEndArrayWithoutStart() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeEndArray(); // This should throw an exception
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+```2026-04-05 02:46:37,524 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 22015
+2026-04-05 02:46:37,534 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:46:37,535 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:46:54,826 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:46:54,830 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:46:54,831 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:47:12,587 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:47:12,590 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:47:12,591 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:47:30,140 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:47:30,143 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:47:30,144 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:47:47,231 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:47:47,232 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:48:18,389 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+      assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that writing a field name without a preceding value throws a JsonGenerationException.
+  test_name: |
+    testWriteFieldNameWithoutValue
+  test_code: |
+    @Test(expected = JsonGenerationException.class)
+    public void testWriteFieldNameWithoutValue() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeFieldName("fieldName"); // This should throw an exception
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+    import com.fasterxml.jackson.core.JsonGenerationException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+
+- test_behavior: |
+    Test that writing a field name exceeding the buffer size does not throw an exception.
+  test_name: |
+    testWriteFieldNameExceedingBuffer
+  test_code: |
+    @Test
+    public void testWriteFieldNameExceedingBuffer() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        IOContext ctxt = new IOContext(new BufferRecycler(), outputStream, false);
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(ctxt, 0, null, outputStream);
+        String longFieldName = new String(new char[1000]).replace("\0", "a"); // Exceeding typical buffer size
+        generator.writeFieldName(longFieldName);
+        assertNotNull(outputStream.toByteArray());
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+
+- test_behavior: |
+    Test that writing the start of an array correctly outputs the expected byte representation.
+  test_name: |
+    testWriteStartArray
+  test_code: |
+    @Test
+    public void testWriteStartArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartArray();
+        generator.writeEndArray();
+        byte[] result = outputStream.toByteArray();
+        assertArrayEquals(new byte[]{'[', ']'}, result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+
+- test_behavior: |
+    Test that writing an end array without a corresponding start array throws a JsonGenerationException.
+  test_name: |
+    testWriteEndArrayWithoutStart
+  test_code: |
+    @Test(expected = JsonGenerationException.class)
+    public void testWriteEndArrayWithoutStart() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeEndArray(); // This should throw an exception
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+    import com.fasterxml.jackson.core.JsonGenerationException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+```2026-04-05 02:48:33,110 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 19490
+2026-04-05 02:48:33,124 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:48:33,125 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:48:50,133 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:48:50,137 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:48:50,139 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:49:08,352 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:49:08,355 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:49:08,355 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:49:26,102 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:49:26,104 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:49:26,104 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:49:44,666 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+      assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that writing a field name without a preceding value throws a JsonGenerationException.
+  test_name: |
+    testWriteFieldNameWithoutValue
+  test_code: |
+    @Test(expected = JsonGenerationException.class)
+    public void testWriteFieldNameWithoutValue() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeFieldName("fieldName"); // This should throw an exception
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+    import com.fasterxml.jackson.core.JsonGenerationException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing a field name exceeding the buffer size works correctly.
+  test_name: |
+    testWriteFieldNameExceedingBuffer
+  test_code: |
+    @Test
+    public void testWriteFieldNameExceedingBuffer() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        IOContext ctxt = new IOContext(new BufferRecycler(), outputStream, false);
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(ctxt, 0, null, outputStream);
+        String longFieldName = new String(new char[1000]).replace("\0", "a"); // Exceeding typical buffer size
+        generator.writeFieldName(longFieldName);
+        assertNotNull(outputStream.toByteArray());
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing a start array and then an end array produces the correct byte output.
+  test_name: |
+    testWriteStartArray
+  test_code: |
+    @Test
+    public void testWriteStartArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartArray();
+        generator.writeEndArray();
+        byte[] result = outputStream.toByteArray();
+        assertArrayEquals(new byte[]{'[', ']'}, result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing an end array without a corresponding start array throws a JsonGenerationException.
+  test_name: |
+    testWriteEndArrayWithoutStart
+  test_code: |
+    @Test(expected = JsonGenerationException.class)
+    public void testWriteEndArrayWithoutStart() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeEndArray(); // This should throw an exception
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+    import com.fasterxml.jackson.core.JsonGenerationException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+```2026-04-05 02:49:58,907 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 19792
+2026-04-05 02:49:58,917 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:49:58,918 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:50:16,215 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:50:16,216 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:50:16,217 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:50:34,154 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:50:34,156 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:50:34,157 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:50:51,437 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:50:51,440 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:50:51,441 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:51:08,783 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+      assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that writing a field name without a preceding value throws a JsonGenerationException.
+  test_name: |
+    testWriteFieldNameWithoutValue
+  test_code: |
+    @Test(expected = JsonGenerationException.class)
+    public void testWriteFieldNameWithoutValue() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeFieldName("fieldName"); // This should throw an exception
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+    import com.fasterxml.jackson.core.JsonGenerationException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing a field name exceeding the buffer size works correctly.
+  test_name: |
+    testWriteFieldNameExceedingBuffer
+  test_code: |
+    @Test
+    public void testWriteFieldNameExceedingBuffer() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        IOContext ctxt = new IOContext(new BufferRecycler(), outputStream, false);
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(ctxt, 0, null, outputStream);
+        String longFieldName = new String(new char[1000]).replace("\0", "a"); // Exceeding typical buffer size
+        generator.writeFieldName(longFieldName);
+        assertNotNull(outputStream.toByteArray());
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing a start array and then an end array produces the correct output.
+  test_name: |
+    testWriteStartArray
+  test_code: |
+    @Test
+    public void testWriteStartArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartArray();
+        generator.writeEndArray();
+        byte[] result = outputStream.toByteArray();
+        assertArrayEquals(new byte[]{'[', ']'}, result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing an end array without a corresponding start array throws a JsonGenerationException.
+  test_name: |
+    testWriteEndArrayWithoutStart
+  test_code: |
+    @Test(expected = JsonGenerationException.class)
+    public void testWriteEndArrayWithoutStart() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeEndArray(); // This should throw an exception
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+    import com.fasterxml.jackson.core.JsonGenerationException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+```2026-04-05 02:51:24,086 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 19791
+2026-04-05 02:51:24,095 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:51:24,095 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:51:40,959 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:51:40,962 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:51:40,963 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:51:58,713 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:51:58,716 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:51:58,717 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:52:16,981 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:52:16,983 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:52:16,983 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:52:34,206 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:52:34,209 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:53:05,700 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-05 02:53:05,921 - panta.panta - INFO - Iteration 3 cannot increase coverage.
+2026-04-05 02:53:05,921 - panta.panta - INFO - Current line Coverage: 0.0%, branch coverage: 0.0%
+2026-04-05 02:53:05,921 - panta.panta - INFO - initial tests generation using baseline type of prompt
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that writeFieldName throws an exception when expecting a value.
+  test_name: |
+    testWriteFieldNameExpectingValue
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testWriteFieldNameExpectingValue() throws IOException {
+        UTF8JsonGenerator generator = createGenerator();
+        generator.writeFieldName("test");
+        generator.writeFieldName("test"); // This should trigger an exception
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import java.io.IOException;
+- test_behavior: |
+    Test that writeFieldName correctly writes a field name when context is okay.
+  test_name: |
+    testWriteFieldNameValid
+  test_code: |
+    @Test
+    public void testWriteFieldNameValid() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = createGenerator(outputStream);
+        generator.writeStartObject();
+        generator.writeFieldName("name");
+        generator.writeString("value");
+        generator.writeEndObject();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{\"name\":\"value\"}", result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import java.io.ByteArrayOutputStream;
+    import java.io.IOException;
+- test_behavior: |
+    Test that writeStartArray correctly writes the start of an array.
+  test_name: |
+    testWriteStartArray
+  test_code: |
+    @Test
+    public void testWriteStartArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = createGenerator(outputStream);
+        generator.writeStartArray();
+        generator.writeString("value");
+        generator.writeEndArray();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("[\"value\"]", result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import java.io.ByteArrayOutputStream;
+    import java.io.IOException;
+- test_behavior: |
+    Test that writeEndArray throws an exception if not in an array context.
+  test_name: |
+    testWriteEndArrayNotInArray
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testWriteEndArrayNotInArray() throws IOException {
+        UTF8JsonGenerator generator = createGenerator();
+        generator.writeEndArray(); // This should trigger an exception
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import java.io.IOException;
+- test_behavior: |
+    Test that writeStartObject correctly writes the start of an object.
+  test_name: |
+    testWriteStartObject
+  test_code: |
+    @Test
+    public void testWriteStartObject() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = createGenerator(outputStream);
+        generator.writeStartObject();
+        generator.writeFieldName("name");
+        generator.writeString("value");
+        generator.writeEndObject();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{\"name\":\"value\"}", result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import java.io.ByteArrayOutputStream;
+    import java.io.IOException;
+```2026-04-05 02:53:20,881 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 22079
+2026-04-05 02:53:20,891 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:53:20,892 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:53:39,845 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:53:39,848 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:53:39,849 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:53:56,179 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:53:56,181 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:53:56,181 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:54:13,600 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:54:13,602 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:54:13,602 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:54:30,489 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:54:30,491 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:54:30,492 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:54:48,140 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:54:48,144 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:55:18,579 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that writing a field name when expecting a value throws an IOException.
+  test_name: |
+    testWriteFieldNameExpectingValue
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testWriteFieldNameExpectingValue() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new ByteArrayOutputStream(), false), 0, null, outputStream);
+        generator.writeFieldName("test");
+        generator.writeFieldName("test"); // This should trigger an exception
+    }
+  new_imports_code: |
+    import java.io.ByteArrayOutputStream;
+    import java.io.IOException;
+
+- test_behavior: |
+    Test that writing a valid field name results in the correct JSON output.
+  test_name: |
+    testWriteFieldNameValid
+  test_code: |
+    @Test
+    public void testWriteFieldNameValid() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new ByteArrayOutputStream(), false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeFieldName("name");
+        generator.writeString("value");
+        generator.writeEndObject();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{\"name\":\"value\"}", result);
+    }
+  new_imports_code: |
+    import java.io.ByteArrayOutputStream;
+    import java.io.IOException;
+
+- test_behavior: |
+    Test that starting an array results in the correct JSON output.
+  test_name: |
+    testWriteStartArray
+  test_code: |
+    @Test
+    public void testWriteStartArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new ByteArrayOutputStream(), false), 0, null, outputStream);
+        generator.writeStartArray();
+        generator.writeString("value");
+        generator.writeEndArray();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("[\"value\"]", result);
+    }
+  new_imports_code: |
+    import java.io.ByteArrayOutputStream;
+    import java.io.IOException;
+
+- test_behavior: |
+    Test that writing an end array when not in an array context throws an IOException.
+  test_name: |
+    testWriteEndArrayNotInArray
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testWriteEndArrayNotInArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new ByteArrayOutputStream(), false), 0, null, outputStream);
+        generator.writeEndArray(); // This should trigger an exception
+    }
+  new_imports_code: |
+    import java.io.ByteArrayOutputStream;
+    import java.io.IOException;
+
+- test_behavior: |
+    Test that starting an object results in the correct JSON output.
+  test_name: |
+    testWriteStartObject
+  test_code: |
+    @Test
+    public void testWriteStartObject() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), new ByteArrayOutputStream(), false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeFieldName("name");
+        generator.writeString("value");
+        generator.writeEndObject();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{\"name\":\"value\"}", result);
+    }
+  new_imports_code: |
+    import java.io.ByteArrayOutputStream;
+    import java.io.IOException;
+```2026-04-05 02:55:35,375 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 19688
+2026-04-05 02:55:35,387 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:55:35,388 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:55:53,793 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:55:53,795 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:55:53,796 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:56:12,014 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:56:12,016 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:56:12,017 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:56:30,027 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:56:30,030 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:56:30,031 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:56:48,606 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:56:48,609 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:56:48,610 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:57:07,235 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+      assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that writing a field name when expecting a value throws an IOException.
+  test_name: |
+    testWriteFieldNameExpectingValue
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testWriteFieldNameExpectingValue() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeFieldName("test");
+        generator.writeFieldName("test"); // This should trigger an exception
+    }
+  new_imports_code: |
+    import java.io.ByteArrayOutputStream;
+    import java.io.IOException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing a valid field name produces the correct JSON output.
+  test_name: |
+    testWriteFieldNameValid
+  test_code: |
+    @Test
+    public void testWriteFieldNameValid() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeFieldName("name");
+        generator.writeString("value");
+        generator.writeEndObject();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{\"name\":\"value\"}", result);
+    }
+  new_imports_code: |
+    import java.io.ByteArrayOutputStream;
+    import java.io.IOException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that starting an array produces the correct JSON output.
+  test_name: |
+    testWriteStartArray
+  test_code: |
+    @Test
+    public void testWriteStartArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartArray();
+        generator.writeString("value");
+        generator.writeEndArray();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("[\"value\"]", result);
+    }
+  new_imports_code: |
+    import java.io.ByteArrayOutputStream;
+    import java.io.IOException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing an end array when not in an array context throws an IOException.
+  test_name: |
+    testWriteEndArrayNotInArray
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testWriteEndArrayNotInArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeEndArray(); // This should trigger an exception
+    }
+  new_imports_code: |
+    import java.io.ByteArrayOutputStream;
+    import java.io.IOException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that starting an object produces the correct JSON output.
+  test_name: |
+    testWriteStartObject
+  test_code: |
+    @Test
+    public void testWriteStartObject() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeFieldName("name");
+        generator.writeString("value");
+        generator.writeEndObject();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{\"name\":\"value\"}", result);
+    }
+  new_imports_code: |
+    import java.io.ByteArrayOutputStream;
+    import java.io.IOException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+```2026-04-05 02:57:23,988 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 19835
+2026-04-05 02:57:24,000 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:57:24,000 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:57:41,898 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:57:41,902 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:57:41,902 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:58:00,681 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:58:00,683 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:58:00,684 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:58:18,390 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:58:18,394 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:58:18,395 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:58:36,388 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:58:36,390 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:58:36,391 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:58:55,064 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that writing a field name when expecting a value throws an IOException.
+  test_name: |
+    testWriteFieldNameExpectingValue
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testWriteFieldNameExpectingValue() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeFieldName("test");
+        generator.writeFieldName("test"); // This should trigger an exception
+    }
+  new_imports_code: |
+    import java.io.ByteArrayOutputStream;
+    import java.io.IOException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing a valid field name produces the correct JSON output.
+  test_name: |
+    testWriteFieldNameValid
+  test_code: |
+    @Test
+    public void testWriteFieldNameValid() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeFieldName("name");
+        generator.writeString("value");
+        generator.writeEndObject();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{\"name\":\"value\"}", result);
+    }
+  new_imports_code: |
+    import java.io.ByteArrayOutputStream;
+    import java.io.IOException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that starting an array and writing a string produces the correct JSON output.
+  test_name: |
+    testWriteStartArray
+  test_code: |
+    @Test
+    public void testWriteStartArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartArray();
+        generator.writeString("value");
+        generator.writeEndArray();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("[\"value\"]", result);
+    }
+  new_imports_code: |
+    import java.io.ByteArrayOutputStream;
+    import java.io.IOException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that writing an end array when not in an array context throws an IOException.
+  test_name: |
+    testWriteEndArrayNotInArray
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testWriteEndArrayNotInArray() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeEndArray(); // This should trigger an exception
+    }
+  new_imports_code: |
+    import java.io.ByteArrayOutputStream;
+    import java.io.IOException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+- test_behavior: |
+    Test that starting an object and writing a field name produces the correct JSON output.
+  test_name: |
+    testWriteStartObject
+  test_code: |
+    @Test
+    public void testWriteStartObject() throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        UTF8JsonGenerator generator = new UTF8JsonGenerator(new IOContext(new BufferRecycler(), outputStream, false), 0, null, outputStream);
+        generator.writeStartObject();
+        generator.writeFieldName("name");
+        generator.writeString("value");
+        generator.writeEndObject();
+        String result = outputStream.toString("UTF-8");
+        assertEquals("{\"name\":\"value\"}", result);
+    }
+  new_imports_code: |
+    import java.io.ByteArrayOutputStream;
+    import java.io.IOException;
+    import com.fasterxml.jackson.core.io.BufferRecycler;
+```2026-04-05 02:59:12,453 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 20269
+2026-04-05 02:59:12,465 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:59:12,465 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:59:31,601 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:59:31,605 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:59:31,606 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 02:59:50,018 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 02:59:50,021 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 02:59:50,022 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 03:00:07,434 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 03:00:07,438 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 03:00:07,439 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 03:00:24,994 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 03:00:24,996 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java
+2026-04-05 03:00:24,997 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 03:00:42,654 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 03:00:42,656 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+2026-04-05 03:01:12,347 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-05 03:01:12,568 - panta.panta - INFO - Iteration 4 cannot increase coverage.
+2026-04-05 03:01:12,568 - panta.panta - ERROR - Reached maximum iteration limit without achieving desired coverage. Current Coverage: (0.0%, 0.0%)
+2026-04-05 03:01:12,589 - panta.panta - INFO - Report generated successfully at: ../../result-files/control_gpt-4o-mini/
+
+

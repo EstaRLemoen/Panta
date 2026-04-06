@@ -1,0 +1,24 @@
+# Batch Run R1
+
+- Batch name: jacksoncore26f-utf32reader-2round-complexity
+- Timestamp: 2026-04-06_06:45:06
+- Round: 1 / 2
+- Baseline test file: original `defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java` contents
+- report_filepath: jacksoncore26f_utf32reader_2round_complexity_r1_20260406_064506.html
+- Run status: completed
+- Process exit code: 0
+- Effective config overrides:
+  - code_coverage_report_path = defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+  - enable_advice_feedback = false
+  - enable_fixing = 3
+  - junit_version = 4
+  - llm_advice_activation_line_coverage = 100
+  - llm_advice_activation_no_growth = 3
+  - maximum_iterations = 14
+  - no_coverage_increase_iterations = 3
+  - project_directory = defects4j-subjects-notests/JacksonCore-26f
+  - report_filepath = jacksoncore26f_utf32reader_2round_complexity_r1_20260406_064506.html
+  - source_code_file = defects4j-subjects-notests/JacksonCore-26f/src/main/java/com/fasterxml/jackson/core/io/UTF32Reader.java
+  - test_code_command_dir = defects4j-subjects-notests/JacksonCore-26f
+  - test_code_file = defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java
+  - test_execution_command = mvn clean package -Dtest=UTF32ReaderTest

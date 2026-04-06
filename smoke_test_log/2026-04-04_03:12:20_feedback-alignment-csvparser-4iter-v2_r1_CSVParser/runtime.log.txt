@@ -1,0 +1,149 @@
+2026-04-04 03:12:36,341 - panta.panta - INFO - CFG snapshot directory created: cfg_snapshot_test/intermediate/cfg/CSVParser_20260404_031236_04c31240
+2026-04-04 03:12:41,750 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:12:50,047 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+2026-04-04 03:12:50,104 - panta.panta - INFO - Current line Coverage: 80.2%, branch coverage: 76.79%
+2026-04-04 03:13:16,121 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 11269
+2026-04-04 03:13:16,132 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:13:16,132 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:13:48,843 - panta.unit_test_generator - INFO - Generated test has passed: testParseWithNullFormat
+2026-04-04 03:13:48,846 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:13:48,848 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:14:00,851 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-04 03:14:00,854 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:14:00,854 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:14:06,792 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-04 03:14:06,793 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:14:06,793 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:14:15,279 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-04 03:14:15,279 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:14:15,280 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:14:19,901 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-04 03:14:19,902 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:14:26,654 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+2026-04-04 03:14:37,955 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 10523
+2026-04-04 03:14:37,957 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:14:37,958 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:14:42,597 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-04 03:14:42,598 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:14:42,598 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:14:47,346 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-04 03:14:47,347 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:14:47,347 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:14:53,283 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-04 03:14:53,284 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:14:53,284 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:15:00,646 - panta.unit_test_generator - INFO - Generated test has passed: testGetRecordsWithCommentsFixed
+
+2026-04-04 03:15:09,319 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 10254
+2026-04-04 03:15:09,321 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:15:09,322 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:15:13,713 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-04 03:15:13,714 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:15:13,714 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:15:18,139 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-04 03:15:18,140 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:15:18,141 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:15:23,753 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-04 03:15:33,431 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 10335
+2026-04-04 03:15:33,433 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:15:33,433 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:15:37,788 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-04 03:15:37,790 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:15:37,790 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:15:44,354 - panta.unit_test_generator - INFO - Generated test has passed: testIteratorAfterCloseFixed
+
+2026-04-04 03:15:44,354 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:15:44,354 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:15:50,422 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-04 03:15:50,423 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:15:57,467 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+2026-04-04 03:15:57,475 - panta.panta - INFO - Iteration 0 cannot increase coverage.
+2026-04-04 03:16:17,116 - panta.panta - INFO - Iteration 0 feedback alignment produced 5 design-test match(es), 4 fix link(s), 5 cluster update(s), 9005 token(s)
+2026-04-04 03:16:17,116 - panta.panta - INFO - Iteration 0 feedback fix links: f_0_1:testGetRecordsWithDuplicateHeadersFixed->g_0:testGetRecordsWithDuplicateHeaders (high), f_0_1:testNextAfterCloseFixed->g_0:testNextAfterClose (high), f_0_1:testGetRecordsWithInvalidToken->g_0:testGetRecordsWithInvalidToken (high), f_0_1:testGetRecordsWithCommentsFixed->g_0:testGetRecordsWithComments (high)
+2026-04-04 03:16:17,116 - panta.panta - INFO - Iteration 0 feedback cluster updates: create_cluster:<new-cluster>:Null format handling during CSVParser creation., create_cluster:<new-cluster>:Duplicate header handling in CSV input., create_cluster:<new-cluster>:Behavior when parser is closed and next() is called., create_cluster:<new-cluster>:Invalid token handling in CSV input., create_cluster:<new-cluster>:Comment processing in CSV input.
+2026-04-04 03:16:17,116 - panta.panta - INFO - Current line Coverage: 80.2%, branch coverage: 76.79%
+2026-04-04 03:16:39,779 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 11580
+2026-04-04 03:16:39,786 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:16:46,661 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+2026-04-04 03:16:46,668 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:16:53,677 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+2026-04-04 03:16:53,684 - panta.panta - INFO - Iteration 1 cannot increase coverage.
+2026-04-04 03:17:16,284 - panta.panta - INFO - Iteration 1 feedback alignment produced 5 design-test match(es), 4 fix link(s), 5 cluster update(s), 10764 token(s)
+2026-04-04 03:17:16,284 - panta.panta - INFO - Iteration 1 feedback fix links: f_0_1:testGetRecordsWithDuplicateHeadersFixed->g_0:testGetRecordsWithDuplicateHeaders (high), f_0_1:testNextAfterCloseFixed->g_0:testNextAfterClose (high), f_0_1:testGetRecordsWithInvalidToken->g_0:testGetRecordsWithInvalidToken (high), f_0_1:testGetRecordsWithCommentsFixed->g_0:testGetRecordsWithComments (high)
+2026-04-04 03:17:16,284 - panta.panta - INFO - Iteration 1 feedback cluster updates: merge_design:DC1:Null format handling during CSVParser creation., merge_design:DC2:Duplicate header handling in CSV input., merge_design:DC3:Behavior when parser is closed and next() is called., create_cluster:<new-cluster>:Invalid token handling in CSV input., merge_design:DC5:Comment processing in CSV input.
+2026-04-04 03:17:16,285 - panta.panta - INFO - Current line Coverage: 80.2%, branch coverage: 76.79%
+2026-04-04 03:17:40,429 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 11404
+2026-04-04 03:17:40,438 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:17:40,439 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:17:47,273 - panta.unit_test_generator - INFO - Generated test has passed: testGetRecordsThrowsIOExceptionWhenLexerClosed
+2026-04-04 03:17:47,274 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:17:47,274 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:17:54,131 - panta.unit_test_generator - INFO - Generated test has passed: testGetRecordsWithCaseInsensitiveHeaders
+2026-04-04 03:17:54,131 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:17:54,132 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:18:00,735 - panta.unit_test_generator - INFO - Generated test has passed: testGetRecordsWithCommentBeforeRecord
+2026-04-04 03:18:00,736 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:18:00,736 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:18:06,367 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-04 03:18:06,367 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:18:12,880 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+2026-04-04 03:18:18,164 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 10106
+2026-04-04 03:18:18,165 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:18:18,165 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:18:23,863 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-04 03:18:28,999 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 10149
+2026-04-04 03:18:29,000 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:18:29,000 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:18:34,704 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-04 03:18:39,682 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 10149
+2026-04-04 03:18:39,683 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:18:39,683 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:18:45,373 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-04 03:18:45,373 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:18:51,937 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+2026-04-04 03:18:51,945 - panta.panta - INFO - Iteration 2 increased line coverage 0.0%, branch coverage 1.78%
+2026-04-04 03:18:51,945 - panta.panta - INFO - Current line Coverage: 80.2%, branch coverage: 78.57%
+2026-04-04 03:19:12,262 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 11690
+2026-04-04 03:19:12,271 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:19:12,272 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:19:34,536 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-04 03:19:34,542 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:19:34,543 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:20:01,151 - panta.unit_test_generator - INFO - Generated test has passed: testGetRecordsWithHeaderButNoRecords
+2026-04-04 03:20:01,154 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:20:01,155 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:20:29,392 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-04 03:20:29,396 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:20:29,397 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:20:47,832 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-04 03:20:47,833 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:21:16,029 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+2026-04-04 03:21:24,026 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 11350
+2026-04-04 03:21:24,032 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:21:24,032 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:21:46,231 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-04 03:21:46,233 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:21:46,234 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:22:08,676 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-04 03:22:15,198 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 11005
+2026-04-04 03:22:15,205 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:22:15,205 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:22:37,615 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-04 03:22:37,617 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:22:37,617 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:23:00,348 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-04 03:23:09,796 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 11007
+2026-04-04 03:23:09,802 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:23:09,802 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:23:32,567 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-04 03:23:32,570 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-04 03:23:32,571 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:23:55,098 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-04 03:23:55,100 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-04 03:24:21,486 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+2026-04-04 03:24:21,517 - panta.panta - INFO - Iteration 3 cannot increase coverage.
+2026-04-04 03:24:39,795 - panta.panta - INFO - Iteration 3 feedback alignment produced 4 design-test match(es), 3 fix link(s), 3 cluster update(s), 20159 token(s)
+2026-04-04 03:24:39,795 - panta.panta - INFO - Iteration 3 feedback fix links: f_3_1:testParseFileWithNullCharset->g_3:testParseFileWithNullCharset (high), f_3_1:testGetRecordsWithEmptyHeaderName->g_3:testGetRecordsWithEmptyHeaderName (high), f_3_1:testGetRecordsWithComments->g_3:testGetRecordsWithComments (high)
+2026-04-04 03:24:39,795 - panta.panta - INFO - Iteration 3 feedback cluster updates: merge_design:DC1:Null charset handling during CSVParser creation., merge_design:DC2:Header processing in CSV input., merge_design:DC5:Comment processing in CSV input.
+2026-04-04 03:24:39,796 - panta.panta - ERROR - Reached maximum iteration limit without achieving desired coverage. Current Coverage: (80.2%, 78.57%)
+2026-04-04 03:24:39,809 - panta.panta - INFO - Report generated successfully at: ../../result-files/control_gpt-4o-mini/

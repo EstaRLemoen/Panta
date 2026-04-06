@@ -1,0 +1,28 @@
+2026-04-06 03:01:24,832 - panta.panta - INFO - CFG snapshot directory created: cfg_snapshot_test/intermediate/cfg/PrototypeFactory_20260406_030124_3c335706
+2026-04-06 03:01:33,978 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-06 03:02:33,985 - panta.unit_test_generator - ERROR - Fatal: Error running test command. make sure this build command is correct: "mvn clean package -Dtest=PrototypeFactoryTest"
+Exit code: -1
+Stdout: Timeout
+Stderr: None
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/esta/Panta/Panta/src/panta/main.py", line 81, in <module>
+    main()
+  File "/home/esta/Panta/Panta/src/panta/main.py", line 73, in main
+    panta = Panta(args)
+            ^^^^^^^^^^^
+  File "/home/esta/Panta/Panta/src/panta/panta.py", line 68, in __init__
+    self.test_gen = UnitTestGenerator(
+                    ^^^^^^^^^^^^^^^^^^
+  File "/home/esta/Panta/Panta/src/panta/unit_test_generator.py", line 114, in __init__
+    self.run_coverage()
+  File "/home/esta/Panta/Panta/src/panta/unit_test_generator.py", line 300, in run_coverage
+    raise RuntimeError(
+RuntimeError: Fatal: Error running test command. make sure this build command is correct: "mvn clean package -Dtest=PrototypeFactoryTest"
+Exit code: -1
+Stdout: Timeout
+Stderr: None
+Timeout for mvn clean package -Dtest=PrototypeFactoryTest (60s) expired
+Terminating the whole process group...
+ERROR conda.cli.main_run:execute(47): `conda run python -m panta.main` failed. (See above for error)

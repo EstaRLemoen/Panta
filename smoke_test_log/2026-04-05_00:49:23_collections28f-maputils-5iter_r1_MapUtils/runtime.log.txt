@@ -1,0 +1,920 @@
+2026-04-05 00:49:43,684 - panta.panta - INFO - CFG snapshot directory created: cfg_snapshot_test/intermediate/cfg/MapUtils_20260405_004943_f7baea00
+2026-04-05 00:49:52,750 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 00:50:38,244 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+2026-04-05 00:50:38,348 - panta.panta - INFO - Current line Coverage: 0.0%, branch coverage: 0.0%
+2026-04-05 00:50:38,349 - panta.panta - INFO - initial tests generation using baseline type of prompt
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that getObject returns null when the map is null.
+  test_name: |
+    testGetObjectWithNullMap
+  test_code: |
+    @Test
+    public void testGetObjectWithNullMap() {
+        assertNull(MapUtils.getObject(null, "key"));
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that getString returns null when the map is null.
+  test_name: |
+    testGetStringWithNullMap
+  test_code: |
+    @Test
+    public void testGetStringWithNullMap() {
+        assertNull(MapUtils.getString(null, "key"));
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that getBoolean returns null when the map is null.
+  test_name: |
+    testGetBooleanWithNullMap
+  test_code: |
+    @Test
+    public void testGetBooleanWithNullMap() {
+        assertNull(MapUtils.getBoolean(null, "key"));
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that getNumber returns null when the map is null.
+  test_name: |
+    testGetNumberWithNullMap
+  test_code: |
+    @Test
+    public void testGetNumberWithNullMap() {
+        assertNull(MapUtils.getNumber(null, "key"));
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that getMap returns null when the map is null.
+  test_name: |
+    testGetMapWithNullMap
+  test_code: |
+    @Test
+    public void testGetMapWithNullMap() {
+        assertNull(MapUtils.getMap(null, "key"));
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that safeAddToMap adds an empty string when the value is null.
+  test_name: |
+    testSafeAddToMapWithNullValue
+  test_code: |
+    @Test
+    public void testSafeAddToMapWithNullValue() {
+        Map<String, Object> map = new HashMap<>();
+        MapUtils.safeAddToMap(map, "key", null);
+        assertEquals("", map.get("key"));
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that safeAddToMap adds the actual value when it is not null.
+  test_name: |
+    testSafeAddToMapWithNonNullValue
+  test_code: |
+    @Test
+    public void testSafeAddToMapWithNonNullValue() {
+        Map<String, Object> map = new HashMap<>();
+        MapUtils.safeAddToMap(map, "key", "value");
+        assertEquals("value", map.get("key"));
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that isEmpty returns true for a null map.
+  test_name: |
+    testIsEmptyWithNullMap
+  test_code: |
+    @Test
+    public void testIsEmptyWithNullMap() {
+        assertTrue(MapUtils.isEmpty(null));
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that isNotEmpty returns false for a null map.
+  test_name: |
+    testIsNotEmptyWithNullMap
+  test_code: |
+    @Test
+    public void testIsNotEmptyWithNullMap() {
+        assertFalse(MapUtils.isNotEmpty(null));
+    }
+  new_imports_code: |
+```2026-04-05 00:50:56,922 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 22641
+2026-04-05 00:50:56,935 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 00:50:56,937 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 00:51:33,274 - panta.unit_test_generator - INFO - Generated test has passed: testGetObjectWithNullMap
+
+2026-04-05 00:51:33,274 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 00:51:33,274 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 00:51:54,107 - panta.unit_test_generator - INFO - Generated test has passed: testGetStringWithNullMap
+
+2026-04-05 00:51:54,109 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 00:51:54,109 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 00:52:38,584 - panta.unit_test_generator - INFO - Generated test has passed: testGetBooleanWithNullMap
+
+2026-04-05 00:52:38,585 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 00:52:38,586 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 00:53:21,197 - panta.unit_test_generator - INFO - Generated test has passed: testGetNumberWithNullMap
+
+2026-04-05 00:53:21,199 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 00:53:21,200 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 00:53:57,912 - panta.unit_test_generator - INFO - Generated test has passed: testGetMapWithNullMap
+
+2026-04-05 00:53:57,913 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 00:53:57,914 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 00:54:36,517 - panta.unit_test_generator - INFO - Generated test has passed: testSafeAddToMapWithNullValue
+
+2026-04-05 00:54:36,519 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 00:54:36,520 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 00:55:08,545 - panta.unit_test_generator - INFO - Generated test has passed: testSafeAddToMapWithNonNullValue
+
+2026-04-05 00:55:08,546 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 00:55:08,546 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 00:55:42,328 - panta.unit_test_generator - INFO - Generated test has passed: testIsEmptyWithNullMap
+
+2026-04-05 00:55:42,332 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 00:55:42,332 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 00:56:16,199 - panta.unit_test_generator - INFO - Generated test has passed: testIsNotEmptyWithNullMap
+
+2026-04-05 00:56:16,200 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 00:56:50,068 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+2026-04-05 00:56:50,142 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 00:57:30,528 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+2026-04-05 00:57:30,582 - panta.panta - INFO - Iteration 0 increased line coverage 5.23%, branch coverage 4.79%
+2026-04-05 00:57:30,583 - panta.panta - INFO - Current line Coverage: 5.23%, branch coverage: 4.79%
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test null map handling in getObject method.
+    method_context:
+      method_signature_hint: |
+        public static <K, V> V getObject(final Map<? super K, V> map, final K key)
+      entry_hint: |
+        public static <K, V> V getObject(final Map<K, V> map, final K key, final V defaultValue)
+    execution_flow: |
+      1. Call getObject() with a null map.
+      2. The null check in getObject() is reached.
+      3. The method returns null as expected.
+    input_focus: |
+      Pass a null value for the map parameter.
+    observable_behavior: |
+      Verify that the return value is null when the map is null.
+
+  - design_name: |
+      Test boolean retrieval from map with string representation.
+    method_context:
+      method_signature_hint: |
+        public static <K> Boolean getBoolean(final Map<? super K, ?> map, final K key)
+      entry_hint: |
+        public static <K> Boolean getBoolean(final Map<? super K, ?> map, final K key, final Boolean defaultValue)
+    execution_flow: |
+      1. Call getBoolean() with a map containing a string "true".
+      2. The string check in getBoolean() is reached.
+      3. The method returns true based on the string value.
+    input_focus: |
+      Provide a map with a key that maps to the string "true".
+    observable_behavior: |
+      Check that the returned Boolean value is true when the string representation is "true".
+
+  - design_name: |
+      Test number parsing failure in getNumber method.
+    method_context:
+      method_signature_hint: |
+        public static <K> Number getNumber(final Map<? super K, ?> map, final K key)
+      entry_hint: |
+        public static <K> Number getNumber(final Map<? super K, ?> map, final K key, final Number defaultValue)
+    execution_flow: |
+      1. Call getNumber() with a map containing a key that maps to an invalid number string.
+      2. The parsing attempt in getNumber() is reached and fails.
+      3. The method returns the default value as specified.
+    input_focus: |
+      Use a map with a key that maps to a string that cannot be parsed as a number.
+    observable_behavior: |
+      Verify that the return value matches the provided default value when parsing fails.
+
+  - design_name: |
+      Test empty map handling in isEmpty method.
+    method_context:
+      method_signature_hint: |
+        public static boolean isEmpty(final Map<?,?> map)
+      entry_hint: |
+        public static <K,V> Map<K,V> emptyIfNull(final Map<K,V> map)
+    execution_flow: |
+      1. Call isEmpty() with an empty map.
+      2. The empty check in isEmpty() is reached.
+      3. The method returns true for the empty map.
+    input_focus: |
+      Pass an empty map to the isEmpty() method.
+    observable_behavior: |
+      Check that the return value is true when the map is empty.
+
+  - design_name: |
+      Test handling of null values in safeAddToMap method.
+    method_context:
+      method_signature_hint: |
+        public static <K> void safeAddToMap(final Map<? super K, Object> map, final K key, final Object value)
+      entry_hint: |
+        public static <K, V> V getObject(final Map<K, V> map, final K key, final V defaultValue)
+    execution_flow: |
+      1. Call safeAddToMap() with a null value for the value parameter.
+      2. The null check in safeAddToMap() is reached.
+      3. The method adds an empty string instead of null to the map.
+    input_focus: |
+      Provide a map and a key with a null value to safeAddToMap().
+    observable_behavior: |
+      Verify that the map contains an empty string instead of null for the specified key.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testGetObjectWithNullMap()
+new_tests:
+  - test_behavior: Verify that getObject returns null when the map is null.
+    test_name: testGetObjectReturnsNullForNullMap
+    test_code: |
+      @Test
+      public void testGetObjectReturnsNullForNullMap() {
+          assertNull(MapUtils.getObject(null, "key"));
+      }
+    new_imports_code: ''
+  
+  - test_behavior: Verify that getBoolean returns true when the map contains a string "true".
+    test_name: testGetBooleanReturnsTrueForStringTrue
+    test_code: |
+      @Test
+      public void testGetBooleanReturnsTrueForStringTrue() {
+          Map<String, Object> map = new HashMap<>();
+          map.put("key", "true");
+          assertTrue(MapUtils.getBoolean(map, "key"));
+      }
+    new_imports_code: ''
+  
+  - test_behavior: Verify that getNumber returns the default value when parsing fails.
+    test_name: testGetNumberReturnsDefaultOnParseFailure
+    test_code: |
+      @Test
+      public void testGetNumberReturnsDefaultOnParseFailure() {
+          Map<String, Object> map = new HashMap<>();
+          map.put("key", "invalid_number");
+          assertEquals(Integer.valueOf(42), MapUtils.getNumber(map, "key", 42));
+      }
+    new_imports_code: ''
+  
+  - test_behavior: Verify that isEmpty returns true for an empty map.
+    test_name: testIsEmptyReturnsTrueForEmptyMap
+    test_code: |
+      @Test
+      public void testIsEmptyReturnsTrueForEmptyMap() {
+          Map<String, Object> map = new HashMap<>();
+          assertTrue(MapUtils.isEmpty(map));
+      }
+    new_imports_code: ''
+  
+  - test_behavior: Verify that safeAddToMap adds an empty string instead of null.
+    test_name: testSafeAddToMapAddsEmptyStringForNullValue
+    test_code: |
+      @Test
+      public void testSafeAddToMapAddsEmptyStringForNullValue() {
+          Map<String, Object> map = new HashMap<>();
+          MapUtils.safeAddToMap(map, "key", null);
+          assertEquals("", map.get("key"));
+      }
+    new_imports_code: ''
+```2026-04-05 00:57:58,483 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 23830
+2026-04-05 00:57:58,492 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 00:57:58,493 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 00:58:37,849 - panta.unit_test_generator - INFO - Generated test has passed: testGetObjectReturnsNullForNullMap
+2026-04-05 00:58:37,850 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 00:58:37,850 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 00:59:19,752 - panta.unit_test_generator - INFO - Generated test has passed: testGetBooleanReturnsTrueForStringTrue
+2026-04-05 00:59:19,756 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 00:59:19,757 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:00:02,366 - panta.unit_test_generator - INFO - Generated test has passed: testGetNumberReturnsDefaultOnParseFailure
+2026-04-05 01:00:02,371 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 01:00:02,371 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:00:47,953 - panta.unit_test_generator - INFO - Generated test has passed: testIsEmptyReturnsTrueForEmptyMap
+2026-04-05 01:00:47,955 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 01:00:47,956 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:01:32,085 - panta.unit_test_generator - INFO - Generated test has passed: testSafeAddToMapAddsEmptyStringForNullValue
+2026-04-05 01:01:32,086 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:02:13,335 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+2026-04-05 01:02:13,415 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:02:54,403 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+2026-04-05 01:02:54,483 - panta.panta - INFO - Iteration 1 increased line coverage 4.9%, branch coverage 5.85%
+2026-04-05 01:02:54,484 - panta.panta - INFO - Current line Coverage: 10.13%, branch coverage: 10.64%
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test behavior when retrieving a non-existent key from a map.
+    method_context:
+      method_signature_hint: |
+        private V getObject(Map<? super K, V> map, K key)
+      entry_hint: |
+        public V getObject(Map<K, V> map, K key)
+    execution_flow: |
+      1. Call getObject() with a map that does not contain the specified key.
+      2. The method checks if the map is not null and proceeds to retrieve the value.
+      3. The branch for a non-existent key is taken, returning null.
+    input_focus: |
+      Provide a non-null map and a key that is guaranteed not to be present in the map.
+    observable_behavior: |
+      Verify that the return value is null, indicating that the key was not found.
+
+  - design_name: |
+      Test behavior when a Boolean value is retrieved as a string.
+    method_context:
+      method_signature_hint: |
+        private Boolean getBoolean(Map<? super K, ?> map, K key)
+      entry_hint: |
+        public Boolean getBoolean(Map<? super K, ?> map, K key)
+    execution_flow: |
+      1. Call getBoolean() with a map containing a string value that represents a boolean.
+      2. The method checks if the map is not null and retrieves the value.
+      3. The branch for a string value is taken, converting it to a Boolean.
+    input_focus: |
+      Construct a map with a key that maps to a string value "true".
+    observable_behavior: |
+      Check that the returned Boolean value is true, reflecting the string conversion.
+
+  - design_name: |
+      Test behavior when a Number value is retrieved as a Boolean.
+    method_context:
+      method_signature_hint: |
+        private Boolean getBoolean(Map<? super K, ?> map, K key)
+      entry_hint: |
+        public Boolean getBoolean(Map<? super K, ?> map, K key)
+    execution_flow: |
+      1. Call getBoolean() with a map containing a numeric value.
+      2. The method checks if the map is not null and retrieves the value.
+      3. The branch for a Number value is taken, converting it to a Boolean based on its integer value.
+    input_focus: |
+      Provide a map where the key maps to a numeric value of 1.
+    observable_behavior: |
+      Verify that the returned Boolean value is true, as the numeric value is non-zero.
+
+  - design_name: |
+      Test behavior when retrieving a Number from a map with a string that cannot be parsed.
+    method_context:
+      method_signature_hint: |
+        private Number getNumber(Map<? super K, ?> map, K key)
+      entry_hint: |
+        public Number getNumber(Map<? super K, ?> map, K key)
+    execution_flow: |
+      1. Call getNumber() with a map containing a string that is not a valid number.
+      2. The method checks if the map is not null and retrieves the value.
+      3. The branch for a string value is taken, leading to a parsing failure.
+    input_focus: |
+      Construct a map with a key that maps to a string value "invalidNumber".
+    observable_behavior: |
+      Check that the returned value is null, indicating that the parsing failed.
+
+  - design_name: |
+      Test behavior when converting a null map to properties.
+    method_context:
+      method_signature_hint: |
+        private Properties toProperties(Map<K, V> map)
+      entry_hint: |
+        public Properties toProperties(Map<K, V> map)
+    execution_flow: |
+      1. Call toProperties() with a null map.
+      2. The method checks if the map is null and initializes an empty Properties object.
+      3. The method returns the empty Properties object.
+    input_focus: |
+      Pass a null value as the map argument.
+    observable_behavior: |
+      Verify that the returned Properties object is empty, confirming that null input is handled correctly.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testGetObjectWithNullMap()
+new_tests:
+  - test_behavior: Test behavior when retrieving a non-existent key from a map.
+    test_name: testGetObjectReturnsNullForNonExistentKey
+    test_code: |
+      @Test
+      public void testGetObjectReturnsNullForNonExistentKey() {
+          Map<String, Object> map = new HashMap<>();
+          assertNull(MapUtils.getObject(map, "nonExistentKey"));
+      }
+    new_imports_code: ""
+  
+  - test_behavior: Test behavior when a Boolean value is retrieved as a string.
+    test_name: testGetBooleanReturnsTrueForStringTrue
+    test_code: |
+      @Test
+      public void testGetBooleanReturnsTrueForStringTrue() {
+          Map<String, Object> map = new HashMap<>();
+          map.put("key", "true");
+          assertTrue(MapUtils.getBoolean(map, "key"));
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test behavior when a Number value is retrieved as a Boolean.
+    test_name: testGetBooleanReturnsTrueForNumericValue
+    test_code: |
+      @Test
+      public void testGetBooleanReturnsTrueForNumericValue() {
+          Map<String, Object> map = new HashMap<>();
+          map.put("key", 1);
+          assertTrue(MapUtils.getBoolean(map, "key"));
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test behavior when retrieving a Number from a map with a string that cannot be parsed.
+    test_name: testGetNumberReturnsNullForInvalidString
+    test_code: |
+      @Test
+      public void testGetNumberReturnsNullForInvalidString() {
+          Map<String, Object> map = new HashMap<>();
+          map.put("key", "invalidNumber");
+          assertNull(MapUtils.getNumber(map, "key"));
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test behavior when converting a null map to properties.
+    test_name: testToPropertiesWithNullMap
+    test_code: |
+      @Test
+      public void testToPropertiesWithNullMap() {
+          Properties properties = MapUtils.toProperties(null);
+          assertTrue(properties.isEmpty());
+      }
+    new_imports_code: ""
+```2026-04-05 01:03:20,803 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 23929
+2026-04-05 01:03:20,812 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 01:03:20,813 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:04:03,174 - panta.unit_test_generator - INFO - Generated test has passed: testGetObjectReturnsNullForNonExistentKey
+2026-04-05 01:04:03,176 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 01:04:03,177 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:04:34,058 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 01:04:34,061 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 01:04:34,062 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:05:16,891 - panta.unit_test_generator - INFO - Generated test has passed: testGetBooleanReturnsTrueForNumericValue
+2026-04-05 01:05:16,893 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 01:05:16,894 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:05:59,741 - panta.unit_test_generator - INFO - Generated test has passed: testGetNumberReturnsNullForInvalidString
+2026-04-05 01:05:59,744 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 01:05:59,745 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:06:41,749 - panta.unit_test_generator - INFO - Generated test has passed: testToPropertiesWithNullMap
+2026-04-05 01:06:41,749 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:07:24,059 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetBooleanReturnsTrueForStringTrue() {
+    Map<String, Object> map = new HashMap<>();
+    map.put("key", "true");
+    assertTrue(MapUtils.getBoolean(map, "key"));
+  }
+new_tests:
+- test_behavior: |
+    Test that the function correctly identifies a string "true" as a boolean true.
+  test_name: |
+    testGetBooleanReturnsTrueForStringTrueFixed
+  test_code: |
+    @Test
+    public void testGetBooleanReturnsTrueForStringTrueFixed() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("key", "true");
+        assertTrue(MapUtils.getBoolean(map, "key"));
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+```2026-04-05 01:07:30,244 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 20010
+2026-04-05 01:07:30,248 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 01:07:30,249 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:08:13,031 - panta.unit_test_generator - INFO - Generated test has passed: testGetBooleanReturnsTrueForStringTrueFixed
+
+2026-04-05 01:08:13,032 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:08:55,925 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+2026-04-05 01:08:56,002 - panta.panta - INFO - Iteration 2 increased line coverage 2.29%, branch coverage 2.66%
+2026-04-05 01:08:56,003 - panta.panta - INFO - Current line Coverage: 12.42%, branch coverage: 13.3%
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test retrieval of a String value from a Map.
+    method_context:
+      method_signature_hint: |
+        private String getString(final Map<? super K, ?> map, final K key)
+      entry_hint: |
+        public String getStringValue(final Map<? super K, ?> map, final K key)
+    execution_flow: |
+      1. Call getStringValue() with a Map containing a String value for the specified key.
+      2. Inside getString(), the map is checked for null.
+      3. The value is retrieved and converted to a String if it is not null.
+    input_focus: |
+      Provide a Map with a key that maps to a non-null String value.
+    observable_behavior: |
+      Verify that the returned value is the expected String representation from the Map.
+
+  - design_name: |
+      Test retrieval of a Boolean value from a Map.
+    method_context:
+      method_signature_hint: |
+        private Boolean getBoolean(final Map<? super K, ?> map, final K key)
+      entry_hint: |
+        public boolean getBooleanValue(final Map<? super K, ?> map, final K key)
+    execution_flow: |
+      1. Call getBooleanValue() with a Map containing a Boolean value for the specified key.
+      2. Inside getBoolean(), the map is checked for null.
+      3. The value is retrieved and checked for its type, returning true or false accordingly.
+    input_focus: |
+      Provide a Map with a key that maps to a Boolean value.
+    observable_behavior: |
+      Check that the returned boolean reflects the correct interpretation of the value in the Map.
+
+  - design_name: |
+      Test retrieval of a Number value from a Map.
+    method_context:
+      method_signature_hint: |
+        private Number getNumber(final Map<? super K, ?> map, final K key)
+      entry_hint: |
+        public Number getNumber(final Map<? super K, ?> map, final K key)
+    execution_flow: |
+      1. Call getNumber() with a Map containing a Number value for the specified key.
+      2. Inside getNumber(), the map is checked for null.
+      3. The value is retrieved and returned if it is a Number.
+    input_focus: |
+      Provide a Map with a key that maps to a valid Number value.
+    observable_behavior: |
+      Verify that the returned Number matches the expected value from the Map.
+
+  - design_name: |
+      Test retrieval of a Map value from a Map.
+    method_context:
+      method_signature_hint: |
+        private Map<?, ?> getMap(final Map<? super K, ?> map, final K key)
+      entry_hint: |
+        public Map<?, ?> getMap(final Map<? super K, ?> map, final K key)
+    execution_flow: |
+      1. Call getMap() with a Map containing a Map value for the specified key.
+      2. Inside getMap(), the map is checked for null.
+      3. The value is retrieved and checked for its type to ensure it is a Map.
+    input_focus: |
+      Provide a Map with a key that maps to a non-null Map value.
+    observable_behavior: |
+      Check that the returned value is the expected Map structure from the original Map.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testGetBooleanReturnsTrueForStringTrue()
+new_tests:
+  - test_behavior: Test retrieval of a String value from a Map.
+    test_name: testGetStringReturnsExpectedValue
+    test_code: |
+      @Test
+      public void testGetStringReturnsExpectedValue() {
+          Map<String, Object> map = new HashMap<>();
+          map.put("key", "expectedValue");
+          assertEquals("expectedValue", MapUtils.getStringValue(map, "key"));
+      }
+  
+  - test_behavior: Test retrieval of a Boolean value from a Map.
+    test_name: testGetBooleanReturnsExpectedValue
+    test_code: |
+      @Test
+      public void testGetBooleanReturnsExpectedValue() {
+          Map<String, Object> map = new HashMap<>();
+          map.put("key", Boolean.TRUE);
+          assertTrue(MapUtils.getBooleanValue(map, "key"));
+      }
+  
+  - test_behavior: Test retrieval of a Number value from a Map.
+    test_name: testGetNumberReturnsExpectedValue
+    test_code: |
+      @Test
+      public void testGetNumberReturnsExpectedValue() {
+          Map<String, Object> map = new HashMap<>();
+          map.put("key", 123);
+          assertEquals(Integer.valueOf(123), MapUtils.getNumber(map, "key"));
+      }
+  
+  - test_behavior: Test retrieval of a Map value from a Map.
+    test_name: testGetMapReturnsExpectedValue
+    test_code: |
+      @Test
+      public void testGetMapReturnsExpectedValue() {
+          Map<String, Object> innerMap = new HashMap<>();
+          innerMap.put("innerKey", "innerValue");
+          Map<String, Object> map = new HashMap<>();
+          map.put("key", innerMap);
+          assertEquals(innerMap, MapUtils.getMap(map, "key"));
+      }
+```2026-04-05 01:09:19,311 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 23839
+2026-04-05 01:09:19,319 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 01:09:19,319 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:09:50,896 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 01:09:50,900 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 01:09:50,901 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:10:33,193 - panta.unit_test_generator - INFO - Generated test has passed: testGetBooleanReturnsExpectedValue
+2026-04-05 01:10:33,196 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 01:10:33,197 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:11:15,297 - panta.unit_test_generator - INFO - Generated test has passed: testGetNumberReturnsExpectedValue
+2026-04-05 01:11:15,299 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 01:11:15,300 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:11:58,057 - panta.unit_test_generator - INFO - Generated test has passed: testGetMapReturnsExpectedValue
+2026-04-05 01:11:58,059 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:12:41,565 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetStringReturnsExpectedValue() {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the function returns the correct string value for a given key in the map.
+  test_name: |
+    testGetStringReturnsExpectedValue
+  test_code: |
+    @Test
+    public void testGetStringReturnsExpectedValue() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("key", "expectedValue");
+        assertEquals("expectedValue", MapUtils.getString(map, "key"));
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+```2026-04-05 01:12:46,592 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 20243
+2026-04-05 01:12:46,596 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 01:12:46,597 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:13:29,956 - panta.unit_test_generator - INFO - Generated test has passed: testGetStringReturnsExpectedValue
+
+2026-04-05 01:13:29,957 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:14:12,844 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+2026-04-05 01:14:12,930 - panta.panta - INFO - Iteration 3 increased line coverage 2.94%, branch coverage 3.72%
+2026-04-05 01:14:12,931 - panta.panta - INFO - Current line Coverage: 15.36%, branch coverage: 17.02%
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test retrieval of a non-null string value from a map.
+    method_context:
+      method_signature_hint: |
+        private String getString(final Map<? super K, ?> map, final K key)
+      entry_hint: |
+        public String getStringValue(final Map<? super K, ?> map, final K key)
+    execution_flow: |
+      1. Call getStringValue() with a map that contains a non-null string value for the specified key.
+      2. This leads to getString() where the non-null branch is taken.
+      3. The string value is returned successfully.
+    input_focus: |
+      Provide a map with a key that maps to a non-null string value.
+    observable_behavior: |
+      Verify that the returned string matches the expected non-null value from the map.
+
+  - design_name: |
+      Test conversion of a number to a boolean value.
+    method_context:
+      method_signature_hint: |
+        private Boolean getBoolean(final Map<? super K, ?> map, final K key)
+      entry_hint: |
+        public boolean getBooleanValue(final Map<? super K, ?> map, final K key)
+    execution_flow: |
+      1. Call getBooleanValue() with a map containing a key that maps to a non-zero number.
+      2. This leads to getBoolean() where the number branch is taken.
+      3. The boolean value true is returned.
+    input_focus: |
+      Use a map where the specified key maps to a non-zero number.
+    observable_behavior: |
+      Check that the returned boolean value is true, indicating the conversion from the number was successful.
+
+  - design_name: |
+      Test retrieval of a number from a map that is a string representation.
+    method_context:
+      method_signature_hint: |
+        private Number getNumber(final Map<? super K, ?> map, final K key)
+      entry_hint: |
+        public Number getNumberValue(final Map<? super K, ?> map, final K key)
+    execution_flow: |
+      1. Call getNumberValue() with a map containing a key that maps to a string representation of a number.
+      2. This leads to getNumber() where the string branch is taken.
+      3. The number is parsed and returned successfully.
+    input_focus: |
+      Provide a map where the key maps to a string that can be parsed into a number.
+    observable_behavior: |
+      Verify that the returned number matches the expected parsed value from the string.
+
+  - design_name: |
+      Test handling of a null map input in the getMap method.
+    method_context:
+      method_signature_hint: |
+        private Map<?, ?> getMap(final Map<? super K, ?> map, final K key)
+      entry_hint: |
+        public Map<?, ?> getMapValue(final Map<? super K, ?> map, final K key)
+    execution_flow: |
+      1. Call getMapValue() with a null map.
+      2. This leads to getMap() where the null check is performed.
+      3. The method returns null as expected.
+    input_focus: |
+      Pass a null value as the map argument.
+    observable_behavior: |
+      Check that the returned value is null, confirming the method handles null input correctly.
+
+  - design_name: |
+      Test the behavior of the emptyIfNull method with a null map.
+    method_context:
+      method_signature_hint: |
+        private Map<K,V> emptyIfNull(final Map<K,V> map)
+      entry_hint: |
+        public Map<K,V> getEmptyMap(final Map<K,V> map)
+    execution_flow: |
+      1. Call getEmptyMap() with a null map.
+      2. This leads to emptyIfNull() where the null check is performed.
+      3. An empty map is returned as a result.
+    input_focus: |
+      Provide a null value as the map argument.
+    observable_behavior: |
+      Verify that the returned map is empty, confirming the method correctly substitutes a null input with an empty map.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testGetObjectReturnsNullForNonExistentKey()
+new_tests:
+  - test_behavior: Test retrieval of a non-null string value from a map.
+    test_name: testGetStringReturnsNonNullValue
+    test_code: |
+      @Test
+      public void testGetStringReturnsNonNullValue() {
+          Map<String, Object> map = new HashMap<>();
+          map.put("key", "nonNullValue");
+          assertEquals("nonNullValue", MapUtils.getString(map, "key"));
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test conversion of a number to a boolean value.
+    test_name: testGetBooleanReturnsTrueForNonZeroNumber
+    test_code: |
+      @Test
+      public void testGetBooleanReturnsTrueForNonZeroNumber() {
+          Map<String, Object> map = new HashMap<>();
+          map.put("key", 5);
+          assertTrue(MapUtils.getBoolean(map, "key"));
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test retrieval of a number from a map that is a string representation.
+    test_name: testGetNumberReturnsParsedValue
+    test_code: |
+      @Test
+      public void testGetNumberReturnsParsedValue() {
+          Map<String, Object> map = new HashMap<>();
+          map.put("key", "123");
+          assertEquals(Integer.valueOf(123), MapUtils.getNumber(map, "key"));
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test handling of a null map input in the getMap method.
+    test_name: testGetMapReturnsNullForNullMap
+    test_code: |
+      @Test
+      public void testGetMapReturnsNullForNullMap() {
+          assertNull(MapUtils.getMap(null, "key"));
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test the behavior of the emptyIfNull method with a null map.
+    test_name: testEmptyIfNullReturnsEmptyMapForNull
+    test_code: |
+      @Test
+      public void testEmptyIfNullReturnsEmptyMapForNull() {
+          Map<?, ?> result = MapUtils.emptyIfNull(null);
+          assertTrue(result.isEmpty());
+      }
+    new_imports_code: ""
+```2026-04-05 01:14:39,423 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 24318
+2026-04-05 01:14:39,431 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 01:14:39,432 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:15:23,311 - panta.unit_test_generator - INFO - Generated test has passed: testGetStringReturnsNonNullValue
+2026-04-05 01:15:23,313 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 01:15:23,314 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:16:07,186 - panta.unit_test_generator - INFO - Generated test has passed: testGetBooleanReturnsTrueForNonZeroNumber
+2026-04-05 01:16:07,191 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 01:16:07,191 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:16:42,432 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-05 01:16:42,434 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 01:16:42,434 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:17:24,996 - panta.unit_test_generator - INFO - Generated test has passed: testGetMapReturnsNullForNullMap
+2026-04-05 01:17:24,998 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 01:17:24,999 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:18:07,944 - panta.unit_test_generator - INFO - Generated test has passed: testEmptyIfNullReturnsEmptyMapForNull
+2026-04-05 01:18:07,945 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:18:51,042 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetNumberReturnsParsedValue() {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the function returns the correct Integer value when a valid numeric string is provided.
+  test_name: |
+    testGetNumberReturnsParsedValue
+  test_code: |
+    @Test
+    public void testGetNumberReturnsParsedValue() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("key", "123");
+        assertEquals(Integer.valueOf(123), MapUtils.getNumber(map, "key").intValue());
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+```2026-04-05 01:18:56,184 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 20486
+2026-04-05 01:18:56,188 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 01:18:56,189 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:19:28,401 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetNumberReturnsParsedValue() {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the function returns the parsed value as an Integer from a String input.
+  test_name: |
+    testGetNumberReturnsParsedValue
+  test_code: |
+    @Test
+    public void testGetNumberReturnsParsedValue() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("key", "123");
+        assertEquals(Integer.valueOf(123), MapUtils.getNumber(map, "key").intValue());
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+```2026-04-05 01:19:33,333 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 20496
+2026-04-05 01:19:33,337 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 01:19:33,337 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:20:04,633 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetNumberReturnsParsedValue() {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the function returns the correct parsed number from a string input.
+  test_name: |
+    testGetNumberReturnsParsedValue
+  test_code: |
+    @Test
+    public void testGetNumberReturnsParsedValue() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("key", "123");
+        assertEquals(Integer.valueOf(123), MapUtils.getNumber(map, "key").intValue());
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+```2026-04-05 01:20:09,598 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 20494
+2026-04-05 01:20:09,602 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java
+2026-04-05 01:20:09,603 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:20:41,454 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-05 01:20:41,455 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=MapUtilsTest"
+2026-04-05 01:21:24,787 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+2026-04-05 01:21:24,871 - panta.panta - INFO - Iteration 4 increased line coverage 0.33%, branch coverage 0.53%
+2026-04-05 01:21:24,871 - panta.panta - ERROR - Reached maximum iteration limit without achieving desired coverage. Current Coverage: (15.69%, 17.55%)
+2026-04-05 01:21:24,885 - panta.panta - INFO - Report generated successfully at: ../../result-files/control_gpt-4o-mini/
+
+

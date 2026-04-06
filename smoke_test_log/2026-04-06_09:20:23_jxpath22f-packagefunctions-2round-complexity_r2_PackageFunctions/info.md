@@ -1,0 +1,24 @@
+# Batch Run R2
+
+- Batch name: jxpath22f-packagefunctions-2round-complexity
+- Timestamp: 2026-04-06_09:20:23
+- Round: 2 / 2
+- Baseline test file: original `defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java` contents
+- report_filepath: jxpath22f_packagefunctions_2round_complexity_r2_20260406_092023.html
+- Run status: completed
+- Process exit code: 0
+- Effective config overrides:
+  - code_coverage_report_path = defects4j-subjects-notests/JxPath-22f/target/jacoco/jacoco.csv
+  - enable_advice_feedback = false
+  - enable_fixing = 3
+  - junit_version = 4
+  - llm_advice_activation_line_coverage = 100
+  - llm_advice_activation_no_growth = 3
+  - maximum_iterations = 18
+  - no_coverage_increase_iterations = 3
+  - project_directory = defects4j-subjects-notests/JxPath-22f
+  - report_filepath = jxpath22f_packagefunctions_2round_complexity_r2_20260406_092023.html
+  - source_code_file = defects4j-subjects-notests/JxPath-22f/src/java/org/apache/commons/jxpath/PackageFunctions.java
+  - test_code_command_dir = defects4j-subjects-notests/JxPath-22f
+  - test_code_file = defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+  - test_execution_command = mvn clean package -Dtest=PackageFunctionsTest

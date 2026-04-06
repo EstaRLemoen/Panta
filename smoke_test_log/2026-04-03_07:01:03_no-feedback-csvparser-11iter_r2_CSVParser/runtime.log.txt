@@ -1,0 +1,3539 @@
+2026-04-03 07:01:20,104 - panta.panta - INFO - CFG snapshot directory created: cfg_snapshot_test/intermediate/cfg/CSVParser_20260403_070120_bc8c97ee
+2026-04-03 07:01:28,358 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:01:52,651 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+2026-04-03 07:01:52,701 - panta.panta - INFO - Current line Coverage: 0.0%, branch coverage: 0.0%
+2026-04-03 07:01:52,701 - panta.panta - INFO - initial tests generation using baseline type of prompt
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+      assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that parsing a valid CSV string returns the correct records.
+  test_name: |
+    testParseValidCSVString
+  test_code: |
+    @Test
+    public void testParseValidCSVString() throws IOException {
+        String csvData = "name,age\nAlice,30\nBob,25";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("Alice", records.get(0).get(0));
+        assertEquals("30", records.get(0).get(1));
+        assertEquals("Bob", records.get(1).get(0));
+        assertEquals("25", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+- test_behavior: |
+    Test that parsing an empty CSV string returns an empty list of records.
+  test_name: |
+    testParseEmptyCSVString
+  test_code: |
+    @Test
+    public void testParseEmptyCSVString() throws IOException {
+        String csvData = "";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertTrue(records.isEmpty());
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertTrue;
+- test_behavior: |
+    Test that parsing a CSV string with trailing delimiters handles them correctly.
+  test_name: |
+    testParseCSVWithTrailingDelimiter
+  test_code: |
+    @Test
+    public void testParseCSVWithTrailingDelimiter() throws IOException {
+        String csvData = "name,age,\nAlice,30,\nBob,25,";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("Alice", records.get(0).get(0));
+        assertEquals("30", records.get(0).get(1));
+        assertNull(records.get(0).get(2)); // Check for trailing null
+        assertEquals("Bob", records.get(1).get(0));
+        assertEquals("25", records.get(1).get(1));
+        assertNull(records.get(1).get(2)); // Check for trailing null
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertNull;
+- test_behavior: |
+    Test that an exception is thrown when parsing a malformed CSV string.
+  test_name: |
+    testParseMalformedCSVString
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testParseMalformedCSVString() throws IOException {
+        String csvData = "name,age\nAlice,30\nBob,25,";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+        parser.getRecords(); // This should trigger the exception
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertThrows;
+```2026-04-03 07:02:11,237 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 7660
+2026-04-03 07:02:11,246 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:02:11,246 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:02:32,253 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:02:32,256 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:02:32,256 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:02:56,345 - panta.unit_test_generator - INFO - Generated test has passed: testParseEmptyCSVString
+
+2026-04-03 07:02:56,347 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:02:56,348 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:03:17,867 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:03:17,870 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:03:17,870 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:03:35,268 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:03:35,270 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:04:01,045 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testParseEmptyCSVString() throws IOException {
+    String csvData = "";
+    CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+    List<CSVRecord> records = parser.getRecords();
+    
+    assertTrue(records.isEmpty());
+  }
+new_tests:
+- test_behavior: |
+    Test that the function correctly parses a valid CSV string and returns the expected number of records and values.
+  test_name: |
+    testParseValidCSVString
+  test_code: |
+    @Test
+    public void testParseValidCSVString() throws IOException {
+        String csvData = "name,age\nAlice,30\nBob,25";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("Alice", records.get(0).get(0));
+        assertEquals("30", records.get(0).get(1));
+        assertEquals("Bob", records.get(1).get(0));
+        assertEquals("25", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+- test_behavior: |
+    Test that the function correctly handles a CSV string with a trailing delimiter and returns the expected number of records and values, including nulls for trailing empty fields.
+  test_name: |
+    testParseCSVWithTrailingDelimiter
+  test_code: |
+    @Test
+    public void testParseCSVWithTrailingDelimiter() throws IOException {
+        String csvData = "name,age,\nAlice,30,\nBob,25,";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("Alice", records.get(0).get(0));
+        assertEquals("30", records.get(0).get(1));
+        assertNull(records.get(0).get(2)); // Check for trailing null
+        assertEquals("Bob", records.get(1).get(0));
+        assertEquals("25", records.get(1).get(1));
+        assertNull(records.get(1).get(2)); // Check for trailing null
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertNull;
+- test_behavior: |
+    Test that the function throws an IOException when parsing a malformed CSV string.
+  test_name: |
+    testParseMalformedCSVString
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testParseMalformedCSVString() throws IOException {
+        String csvData = "name,age\nAlice,30\nBob,25,";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+        parser.getRecords(); // This should trigger the exception
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertThrows;
+```2026-04-03 07:04:13,222 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8365
+2026-04-03 07:04:13,230 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:04:13,230 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:04:35,753 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:04:35,755 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:04:35,756 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:04:57,879 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:04:57,881 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:04:57,882 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:05:14,771 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testParseEmptyCSVString() throws IOException {
+    String csvData = "";
+    CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+    List<CSVRecord> records = parser.getRecords();
+    
+    assertTrue(records.isEmpty());
+  }
+new_tests:
+- test_behavior: |
+    Test that the parser correctly parses a valid CSV string with multiple records.
+  test_name: |
+    testParseValidCSVString
+  test_code: |
+    @Test
+    public void testParseValidCSVString() throws IOException {
+        String csvData = "name,age\nAlice,30\nBob,25";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("Alice", records.get(0).get(0));
+        assertEquals("30", records.get(0).get(1));
+        assertEquals("Bob", records.get(1).get(0));
+        assertEquals("25", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+- test_behavior: |
+    Test that the parser correctly handles a CSV string with a trailing delimiter.
+  test_name: |
+    testParseCSVWithTrailingDelimiter
+  test_code: |
+    @Test
+    public void testParseCSVWithTrailingDelimiter() throws IOException {
+        String csvData = "name,age,\nAlice,30,\nBob,25,";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("Alice", records.get(0).get(0));
+        assertEquals("30", records.get(0).get(1));
+        assertNull(records.get(0).get(2)); // Check for trailing null
+        assertEquals("Bob", records.get(1).get(0));
+        assertEquals("25", records.get(1).get(1));
+        assertNull(records.get(1).get(2)); // Check for trailing null
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertNull;
+- test_behavior: |
+    Test that the parser throws an IOException when parsing a malformed CSV string.
+  test_name: |
+    testParseMalformedCSVString
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testParseMalformedCSVString() throws IOException {
+        String csvData = "name,age\nAlice,30\nBob,25,";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+        parser.getRecords(); // This should trigger the exception
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertThrows;
+```2026-04-03 07:05:27,072 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8342
+2026-04-03 07:05:27,078 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:05:27,078 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:05:48,123 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:05:48,126 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:05:48,126 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:06:09,871 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:06:09,873 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:06:09,873 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:06:26,398 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testParseEmptyCSVString() throws IOException {
+    String csvData = "";
+    CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+    List<CSVRecord> records = parser.getRecords();
+    
+    assertTrue(records.isEmpty());
+  }
+new_tests:
+- test_behavior: |
+    Test that the parser correctly parses a valid CSV string with two records.
+  test_name: |
+    testParseValidCSVString
+  test_code: |
+    @Test
+    public void testParseValidCSVString() throws IOException {
+        String csvData = "name,age\nAlice,30\nBob,25";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("Alice", records.get(0).get(0));
+        assertEquals("30", records.get(0).get(1));
+        assertEquals("Bob", records.get(1).get(0));
+        assertEquals("25", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+- test_behavior: |
+    Test that the parser correctly handles a CSV string with a trailing delimiter.
+  test_name: |
+    testParseCSVWithTrailingDelimiter
+  test_code: |
+    @Test
+    public void testParseCSVWithTrailingDelimiter() throws IOException {
+        String csvData = "name,age,\nAlice,30,\nBob,25,";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("Alice", records.get(0).get(0));
+        assertEquals("30", records.get(0).get(1));
+        assertNull(records.get(0).get(2)); // Check for trailing null
+        assertEquals("Bob", records.get(1).get(0));
+        assertEquals("25", records.get(1).get(1));
+        assertNull(records.get(1).get(2)); // Check for trailing null
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertNull;
+- test_behavior: |
+    Test that the parser throws an IOException for a malformed CSV string.
+  test_name: |
+    testParseMalformedCSVString
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testParseMalformedCSVString() throws IOException {
+        String csvData = "name,age\nAlice,30\nBob,25,";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+        parser.getRecords(); // This should trigger the exception
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertThrows;
+```2026-04-03 07:06:37,962 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8341
+2026-04-03 07:06:37,967 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:06:37,967 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:06:58,500 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:06:58,502 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:06:58,503 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:07:20,381 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:07:20,384 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:07:20,384 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:07:37,649 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:07:37,650 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:08:03,122 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+2026-04-03 07:08:03,155 - panta.panta - INFO - Iteration 0 increased line coverage 34.65%, branch coverage 10.71%
+2026-04-03 07:08:03,155 - panta.panta - INFO - Current line Coverage: 34.65%, branch coverage: 10.71%
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test trimming behavior for input records.
+    method_context:
+      method_signature_hint: |
+        private void addRecordValue(boolean lastRecord)
+      entry_hint: |
+        public List<CSVRecord> getRecords()
+    execution_flow: |
+      1. Call getRecords() with a CSV input that includes records with leading and trailing spaces.
+      2. During record processing, addRecordValue(...) is reached where trimming logic is applied.
+      3. The trimmed values are added to the record list.
+    input_focus: |
+      Provide a CSV input string such as "  value1; value2;  \n  value3; value4;  ".
+    observable_behavior: |
+      Verify that the records in the output list have leading and trailing spaces removed from their values.
+
+  - design_name: |
+      Test handling of trailing delimiters in records.
+    method_context:
+      method_signature_hint: |
+        private void addRecordValue(boolean lastRecord)
+      entry_hint: |
+        public List<CSVRecord> getRecords()
+    execution_flow: |
+      1. Call getRecords() with a CSV input that ends with a trailing delimiter.
+      2. During record processing, addRecordValue(...) is reached where the last record handling is evaluated.
+      3. The behavior for empty trailing values is executed based on the format settings.
+    input_focus: |
+      Provide a CSV input string such as "value1;value2;\nvalue3;value4;\n".
+    observable_behavior: |
+      Check that the output correctly reflects the handling of the trailing delimiter according to the format settings.
+
+  - design_name: |
+      Test case sensitivity in header mapping.
+    method_context:
+      method_signature_hint: |
+        private Map<String, Integer> initializeHeader()
+      entry_hint: |
+        public Map<String, Integer> getHeaderMap()
+    execution_flow: |
+      1. Call getHeaderMap() after parsing a CSV input with mixed-case headers.
+      2. During header initialization, initializeHeader(...) is reached where case sensitivity is evaluated.
+      3. The header map is constructed based on the format's case sensitivity setting.
+    input_focus: |
+      Provide a CSV input string with headers like "Name;Age\nAlice;30\nBOB;25" and set the format to ignore case.
+    observable_behavior: |
+      Verify that the header map correctly maps the headers regardless of their case.
+
+  - design_name: |
+      Test behavior when skipping header records.
+    method_context:
+      method_signature_hint: |
+        private Map<String, Integer> initializeHeader()
+      entry_hint: |
+        public List<CSVRecord> getRecords()
+    execution_flow: |
+      1. Call getRecords() with a CSV input that includes a header and the skip header flag set.
+      2. During header initialization, initializeHeader(...) is reached where the skip logic is applied.
+      3. The first record is skipped based on the format settings.
+    input_focus: |
+      Provide a CSV input string such as "Header1;Header2\nValue1;Value2\nValue3;Value4" with the format set to skip the header.
+    observable_behavior: |
+      Check that the first record is skipped and the subsequent records are returned correctly.
+
+  - design_name: |
+      Test handling of invalid tokens during parsing.
+    method_context:
+      method_signature_hint: |
+        CSVRecord nextRecord()
+      entry_hint: |
+        public List<CSVRecord> getRecords()
+    execution_flow: |
+      1. Call getRecords() with a CSV input that includes an invalid token.
+      2. During record parsing, nextRecord() is reached where invalid token handling is evaluated.
+      3. An IOException is thrown due to the invalid token.
+    input_focus: |
+      Provide a CSV input string such as "valid;data;invalid_token\nvalid;data;more_data" where "invalid_token" is not parsable.
+    observable_behavior: |
+      Verify that an IOException is thrown indicating an invalid parse sequence.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testParseEmptyCSVString() throws IOException
+new_tests:
+  - test_behavior: Test trimming behavior for input records.
+    test_name: testTrimmedValuesInRecords
+    test_code: |
+      @Test
+      public void testTrimmedValuesInRecords() throws IOException {
+          String csvData = "  value1; value2;  \n  value3; value4;  ";
+          CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT);
+          List<CSVRecord> records = parser.getRecords();
+          
+          assertEquals(2, records.size());
+          assertEquals("value1", records.get(0).get(0));
+          assertEquals("value2", records.get(0).get(1));
+          assertEquals("value3", records.get(1).get(0));
+          assertEquals("value4", records.get(1).get(1));
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test handling of trailing delimiters in records.
+    test_name: testTrailingDelimiterHandling
+    test_code: |
+      @Test
+      public void testTrailingDelimiterHandling() throws IOException {
+          String csvData = "value1;value2;\nvalue3;value4;\n";
+          CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT);
+          List<CSVRecord> records = parser.getRecords();
+          
+          assertEquals(2, records.size());
+          assertEquals("value1", records.get(0).get(0));
+          assertEquals("value2", records.get(0).get(1));
+          assertEquals("value3", records.get(1).get(0));
+          assertEquals("value4", records.get(1).get(1));
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test case sensitivity in header mapping.
+    test_name: testCaseSensitivityInHeaderMapping
+    test_code: |
+      @Test
+      public void testCaseSensitivityInHeaderMapping() throws IOException {
+          String csvData = "Name;Age\nAlice;30\nBOB;25";
+          CSVFormat format = CSVFormat.DEFAULT.withIgnoreHeaderCase(true);
+          CSVParser parser = CSVParser.parse(new StringReader(csvData), format);
+          Map<String, Integer> headerMap = parser.getHeaderMap();
+          
+          assertEquals(2, headerMap.size());
+          assertEquals(Integer.valueOf(0), headerMap.get("name"));
+          assertEquals(Integer.valueOf(1), headerMap.get("age"));
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test behavior when skipping header records.
+    test_name: testSkipHeaderRecords
+    test_code: |
+      @Test
+      public void testSkipHeaderRecords() throws IOException {
+          String csvData = "Header1;Header2\nValue1;Value2\nValue3;Value4";
+          CSVFormat format = CSVFormat.DEFAULT.withSkipHeaderRecord(true);
+          CSVParser parser = CSVParser.parse(new StringReader(csvData), format);
+          List<CSVRecord> records = parser.getRecords();
+          
+          assertEquals(2, records.size());
+          assertEquals("Value1", records.get(0).get(0));
+          assertEquals("Value2", records.get(0).get(1));
+          assertEquals("Value3", records.get(1).get(0));
+          assertEquals("Value4", records.get(1).get(1));
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test handling of invalid tokens during parsing.
+    test_name: testInvalidTokenHandling
+    test_code: |
+      @Test(expected = IOException.class)
+      public void testInvalidTokenHandling() throws IOException {
+          String csvData = "valid;data;invalid_token\nvalid;data;more_data";
+          CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT);
+          parser.getRecords();
+      }
+    new_imports_code: ""
+```2026-04-03 07:08:34,117 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 9189
+2026-04-03 07:08:34,128 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:08:34,129 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:08:56,805 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:08:56,808 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:08:56,808 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:09:18,518 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:09:18,521 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:09:18,522 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:09:39,454 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:09:39,457 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:09:39,457 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:10:00,540 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:10:00,542 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:10:00,542 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:10:21,752 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:10:21,753 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:10:46,042 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testParseEmptyCSVString() throws IOException {
+    String csvData = "";
+    CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+    List<CSVRecord> records = parser.getRecords();
+    
+    assertTrue(records.isEmpty());
+  }
+new_tests:
+- test_behavior: |
+    Test that the parser trims whitespace from values in records.
+  test_name: |
+    testTrimmedValuesInRecords
+  test_code: |
+    @Test
+    public void testTrimmedValuesInRecords() throws IOException {
+        String csvData = "  value1; value2;  \n  value3; value4;  ";
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withTrim(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertEquals("value3", records.get(1).get(0));
+        assertEquals("value4", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser correctly handles trailing delimiters in records.
+  test_name: |
+    testTrailingDelimiterHandling
+  test_code: |
+    @Test
+    public void testTrailingDelimiterHandling() throws IOException {
+        String csvData = "value1;value2;\nvalue3;value4;\n";
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertEquals("value3", records.get(1).get(0));
+        assertEquals("value4", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser correctly maps headers in a case-insensitive manner.
+  test_name: |
+    testCaseSensitivityInHeaderMapping
+  test_code: |
+    @Test
+    public void testCaseSensitivityInHeaderMapping() throws IOException {
+        String csvData = "Name;Age\nAlice;30\nBOB;25";
+        CSVFormat format = CSVFormat.DEFAULT.withIgnoreHeaderCase(true);
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), format);
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        
+        assertEquals(2, headerMap.size());
+        assertEquals(Integer.valueOf(0), headerMap.get("name"));
+        assertEquals(Integer.valueOf(1), headerMap.get("age"));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser skips the header records as specified.
+  test_name: |
+    testSkipHeaderRecords
+  test_code: |
+    @Test
+    public void testSkipHeaderRecords() throws IOException {
+        String csvData = "Header1;Header2\nValue1;Value2\nValue3;Value4";
+        CSVFormat format = CSVFormat.DEFAULT.withSkipHeaderRecord(true);
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), format);
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("Value1", records.get(0).get(0));
+        assertEquals("Value2", records.get(0).get(1));
+        assertEquals("Value3", records.get(1).get(0));
+        assertEquals("Value4", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser throws an IOException for invalid tokens.
+  test_name: |
+    testInvalidTokenHandling
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testInvalidTokenHandling() throws IOException {
+        String csvData = "valid;data;invalid_token\nvalid;data;more_data";
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT);
+        parser.getRecords();
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+```2026-04-03 07:11:03,531 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 10434
+2026-04-03 07:11:03,542 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:11:03,543 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:11:20,891 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:11:20,893 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:11:20,893 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:11:38,121 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:11:38,122 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:11:38,122 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:11:55,348 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:11:55,350 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:11:55,351 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:12:12,799 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:12:12,801 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:12:12,802 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:12:30,206 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testParseEmptyCSVString() throws IOException {
+    String csvData = "";
+    CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+    List<CSVRecord> records = parser.getRecords();
+    
+    assertTrue(records.isEmpty());
+  }
+new_tests:
+- test_behavior: |
+    Test that the parser trims whitespace from values in records.
+  test_name: |
+    testTrimmedValuesInRecords
+  test_code: |
+    @Test
+    public void testTrimmedValuesInRecords() throws IOException {
+        String csvData = "  value1; value2;  \n  value3; value4;  ";
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withTrim(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertEquals("value3", records.get(1).get(0));
+        assertEquals("value4", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser correctly handles trailing delimiters in CSV data.
+  test_name: |
+    testTrailingDelimiterHandling
+  test_code: |
+    @Test
+    public void testTrailingDelimiterHandling() throws IOException {
+        String csvData = "value1;value2;\nvalue3;value4;\n";
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertEquals("value3", records.get(1).get(0));
+        assertEquals("value4", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser correctly maps headers in a case-insensitive manner.
+  test_name: |
+    testCaseSensitivityInHeaderMapping
+  test_code: |
+    @Test
+    public void testCaseSensitivityInHeaderMapping() throws IOException {
+        String csvData = "Name;Age\nAlice;30\nBOB;25";
+        CSVFormat format = CSVFormat.DEFAULT.withIgnoreHeaderCase(true);
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), format);
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        
+        assertEquals(2, headerMap.size());
+        assertEquals(Integer.valueOf(0), headerMap.get("name"));
+        assertEquals(Integer.valueOf(1), headerMap.get("age"));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser skips header records as specified.
+  test_name: |
+    testSkipHeaderRecords
+  test_code: |
+    @Test
+    public void testSkipHeaderRecords() throws IOException {
+        String csvData = "Header1;Header2\nValue1;Value2\nValue3;Value4";
+        CSVFormat format = CSVFormat.DEFAULT.withSkipHeaderRecord(true);
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), format);
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("Value1", records.get(0).get(0));
+        assertEquals("Value2", records.get(0).get(1));
+        assertEquals("Value3", records.get(1).get(0));
+        assertEquals("Value4", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser throws an IOException for invalid tokens.
+  test_name: |
+    testInvalidTokenHandling
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testInvalidTokenHandling() throws IOException {
+        String csvData = "valid;data;invalid_token\nvalid;data;more_data";
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT);
+        parser.getRecords();
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+```2026-04-03 07:12:48,411 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8394
+2026-04-03 07:12:48,422 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:12:48,423 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:13:05,638 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:13:05,639 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:13:05,640 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:13:22,284 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:13:22,287 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:13:22,287 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:13:38,827 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:13:38,829 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:13:38,829 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:13:55,673 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:13:55,675 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:13:55,675 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:14:12,244 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testParseEmptyCSVString() throws IOException {
+    String csvData = "";
+    CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+    List<CSVRecord> records = parser.getRecords();
+    
+    assertTrue(records.isEmpty());
+  }
+new_tests:
+- test_behavior: |
+    Test that the parser trims values in records correctly.
+  test_name: |
+    testTrimmedValuesInRecords
+  test_code: |
+    @Test
+    public void testTrimmedValuesInRecords() throws IOException {
+        String csvData = "  value1; value2;  \n  value3; value4;  ";
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withTrim(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertEquals("value3", records.get(1).get(0));
+        assertEquals("value4", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser handles trailing delimiters correctly.
+  test_name: |
+    testTrailingDelimiterHandling
+  test_code: |
+    @Test
+    public void testTrailingDelimiterHandling() throws IOException {
+        String csvData = "value1;value2;\nvalue3;value4;\n";
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertEquals("value3", records.get(1).get(0));
+        assertEquals("value4", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser correctly maps headers in a case-insensitive manner.
+  test_name: |
+    testCaseSensitivityInHeaderMapping
+  test_code: |
+    @Test
+    public void testCaseSensitivityInHeaderMapping() throws IOException {
+        String csvData = "Name;Age\nAlice;30\nBOB;25";
+        CSVFormat format = CSVFormat.DEFAULT.withIgnoreHeaderCase(true);
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), format);
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        
+        assertEquals(2, headerMap.size());
+        assertEquals(Integer.valueOf(0), headerMap.get("name"));
+        assertEquals(Integer.valueOf(1), headerMap.get("age"));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser skips header records correctly.
+  test_name: |
+    testSkipHeaderRecords
+  test_code: |
+    @Test
+    public void testSkipHeaderRecords() throws IOException {
+        String csvData = "Header1;Header2\nValue1;Value2\nValue3;Value4";
+        CSVFormat format = CSVFormat.DEFAULT.withSkipHeaderRecord(true);
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), format);
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("Value1", records.get(0).get(0));
+        assertEquals("Value2", records.get(0).get(1));
+        assertEquals("Value3", records.get(1).get(0));
+        assertEquals("Value4", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser throws an IOException for invalid tokens.
+  test_name: |
+    testInvalidTokenHandling
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testInvalidTokenHandling() throws IOException {
+        String csvData = "valid;data;invalid_token\nvalid;data;more_data";
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT);
+        parser.getRecords();
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+```2026-04-03 07:14:30,991 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8389
+2026-04-03 07:14:31,001 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:14:31,002 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:14:47,471 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:14:47,472 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:14:47,472 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:15:03,963 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:15:03,965 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:15:03,965 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:15:20,936 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:15:20,938 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:15:20,938 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:15:38,685 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:15:38,687 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:15:38,688 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:15:56,267 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:15:56,267 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:16:21,566 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+2026-04-03 07:16:21,596 - panta.panta - INFO - Iteration 1 cannot increase coverage.
+2026-04-03 07:16:21,597 - panta.panta - INFO - Current line Coverage: 34.65%, branch coverage: 10.71%
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test trimming behavior for input values.
+    method_context:
+      method_signature_hint: |
+        private void addRecordValue(boolean lastRecord)
+      entry_hint: |
+        public List<CSVRecord> getRecords()
+    execution_flow: |
+      1. Call getRecords() with a CSV input containing values with leading and trailing spaces.
+      2. During record processing, addRecordValue(...) is reached and the trimming logic is executed.
+      3. The trimmed values are added to the record list.
+    input_focus: |
+      Provide a CSV input string like "  value1 ; value2 ;  " where values have spaces.
+    observable_behavior: |
+      Verify that the resulting CSVRecord contains values without leading or trailing spaces.
+
+  - design_name: |
+      Test handling of trailing delimiters in records.
+    method_context:
+      method_signature_hint: |
+        private void addRecordValue(boolean lastRecord)
+      entry_hint: |
+        public List<CSVRecord> getRecords()
+    execution_flow: |
+      1. Call getRecords() with a CSV input that ends with a delimiter.
+      2. During record processing, addRecordValue(...) is reached and the logic for trailing delimiters is executed.
+      3. The last record is processed correctly based on the trailing delimiter setting.
+    input_focus: |
+      Provide a CSV input string like "value1;value2;" to test trailing delimiter behavior.
+    observable_behavior: |
+      Check that the resulting CSVRecord correctly reflects the presence or absence of the last value based on the trailing delimiter setting.
+
+  - design_name: |
+      Test case sensitivity in header mapping.
+    method_context:
+      method_signature_hint: |
+        private Map<String, Integer> initializeHeader()
+      entry_hint: |
+        public Map<String, Integer> getHeaderMap()
+    execution_flow: |
+      1. Call getHeaderMap() after parsing a CSV input with mixed-case headers.
+      2. During header initialization, initializeHeader(...) is reached and case sensitivity logic is executed.
+      3. The header map is populated based on the case sensitivity setting.
+    input_focus: |
+      Provide a CSV input string with headers like "Header1;header2;HEADER3" and set ignoreHeaderCase to true.
+    observable_behavior: |
+      Verify that the header map correctly maps all headers regardless of case.
+
+  - design_name: |
+      Test behavior when the parser is closed during iteration.
+    method_context:
+      method_signature_hint: |
+        private CSVRecord nextRecord()
+      entry_hint: |
+        public Iterator<CSVRecord> iterator()
+    execution_flow: |
+      1. Call iterator() to get a CSVRecord iterator.
+      2. Close the parser before iterating through records.
+      3. Attempt to call next() on the iterator, which should handle the closed state.
+    input_focus: |
+      Create a CSVParser instance, parse a sample input, and then close the parser before iterating.
+    observable_behavior: |
+      Check that calling next() on the iterator throws a NoSuchElementException due to the closed parser state.
+
+  - design_name: |
+      Test handling of empty headers in CSV input.
+    method_context:
+      method_signature_hint: |
+        private Map<String, Integer> initializeHeader()
+      entry_hint: |
+        public Map<String, Integer> getHeaderMap()
+    execution_flow: |
+      1. Call getHeaderMap() after parsing a CSV input with empty header fields.
+      2. During header initialization, initializeHeader(...) is reached and the empty header logic is executed.
+      3. The header map is populated or an exception is thrown based on the allowMissingColumnNames setting.
+    input_focus: |
+      Provide a CSV input string with headers like ";header2;;header4" and set allowMissingColumnNames to false.
+    observable_behavior: |
+      Verify that the appropriate exception is thrown for duplicate or empty headers based on the configuration.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testParseEmptyCSVString() throws IOException
+new_tests:
+  - test_behavior: Test trimming behavior for input values.
+    test_name: testTrimmedValuesInCSV
+    test_code: |
+      @Test
+      public void testTrimmedValuesInCSV() throws IOException {
+          String csvData = "  value1 ; value2 ;  ";
+          CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+          List<CSVRecord> records = parser.getRecords();
+          
+          assertEquals(1, records.size());
+          CSVRecord record = records.get(0);
+          assertEquals("value1", record.get(0));
+          assertEquals("value2", record.get(1));
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test handling of trailing delimiters in records.
+    test_name: testTrailingDelimiterBehavior
+    test_code: |
+      @Test
+      public void testTrailingDelimiterBehavior() throws IOException {
+          String csvData = "value1;value2;";
+          CSVParser parser = CSVParser.parse(csvData, CSVFormat.EXCEL);
+          List<CSVRecord> records = parser.getRecords();
+          
+          assertEquals(1, records.size());
+          CSVRecord record = records.get(0);
+          assertEquals("value1", record.get(0));
+          assertEquals("value2", record.get(1));
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test case sensitivity in header mapping.
+    test_name: testCaseSensitivityInHeaders
+    test_code: |
+      @Test
+      public void testCaseSensitivityInHeaders() throws IOException {
+          String csvData = "Header1;header2;HEADER3\nvalue1;value2;value3";
+          CSVFormat format = CSVFormat.DEFAULT.withIgnoreHeaderCase(true);
+          CSVParser parser = CSVParser.parse(csvData, format);
+          Map<String, Integer> headerMap = parser.getHeaderMap();
+          
+          assertEquals(3, headerMap.size());
+          assertTrue(headerMap.containsKey("header1"));
+          assertTrue(headerMap.containsKey("header2"));
+          assertTrue(headerMap.containsKey("header3"));
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test behavior when the parser is closed during iteration.
+    test_name: testClosedParserIteration
+    test_code: |
+      @Test(expected = NoSuchElementException.class)
+      public void testClosedParserIteration() throws IOException {
+          String csvData = "value1;value2";
+          CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+          parser.close();
+          Iterator<CSVRecord> iterator = parser.iterator();
+          iterator.next(); // This should throw NoSuchElementException
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test handling of empty headers in CSV input.
+    test_name: testEmptyHeaders
+    test_code: |
+      @Test(expected = IllegalArgumentException.class)
+      public void testEmptyHeaders() throws IOException {
+          String csvData = ";header2;;header4";
+          CSVFormat format = CSVFormat.DEFAULT.withAllowMissingColumnNames(false);
+          CSVParser parser = CSVParser.parse(csvData, format);
+          parser.getHeaderMap(); // This should throw an IllegalArgumentException
+      }
+    new_imports_code: ''
+```2026-04-03 07:16:50,172 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 9037
+2026-04-03 07:16:50,184 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:16:50,185 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:17:12,058 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:17:12,061 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:17:12,061 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:17:32,864 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:17:32,867 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:17:32,868 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:17:53,715 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:17:53,718 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:17:53,718 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:18:17,628 - panta.unit_test_generator - INFO - Generated test has passed: testClosedParserIteration
+2026-04-03 07:18:17,630 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:18:17,631 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:18:38,489 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:18:38,491 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:19:03,564 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testClosedParserIteration() throws IOException {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the parser trims whitespace from values in a CSV string.
+  test_name: |
+    testTrimmedValuesInCSV
+  test_code: |
+    @Test
+    public void testTrimmedValuesInCSV() throws IOException {
+        String csvData = "  value1 ; value2 ;  ";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrim(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        CSVRecord record = records.get(0);
+        assertEquals("value1", record.get(0));
+        assertEquals("value2", record.get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser correctly handles trailing delimiters in a CSV string.
+  test_name: |
+    testTrailingDelimiterBehavior
+  test_code: |
+    @Test
+    public void testTrailingDelimiterBehavior() throws IOException {
+        String csvData = "value1;value2;";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.EXCEL.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        CSVRecord record = records.get(0);
+        assertEquals("value1", record.get(0));
+        assertEquals("value2", record.get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser correctly handles case sensitivity in headers.
+  test_name: |
+    testCaseSensitivityInHeaders
+  test_code: |
+    @Test
+    public void testCaseSensitivityInHeaders() throws IOException {
+        String csvData = "Header1;header2;HEADER3\nvalue1;value2;value3";
+        CSVFormat format = CSVFormat.DEFAULT.withIgnoreHeaderCase(true);
+        CSVParser parser = CSVParser.parse(csvData, format);
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        
+        assertEquals(3, headerMap.size());
+        assertTrue(headerMap.containsKey("header1"));
+        assertTrue(headerMap.containsKey("header2"));
+        assertTrue(headerMap.containsKey("header3"));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser throws an exception for empty headers when configured to disallow them.
+  test_name: |
+    testEmptyHeaders
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testEmptyHeaders() throws IOException {
+        String csvData = ";header2;;header4";
+        CSVFormat format = CSVFormat.DEFAULT.withAllowMissingColumnNames(false);
+        CSVParser parser = CSVParser.parse(csvData, format);
+        parser.getHeaderMap(); // This should throw an IllegalArgumentException
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+```2026-04-03 07:19:16,263 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 9363
+2026-04-03 07:19:16,271 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:19:16,272 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:19:33,530 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:19:33,532 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:19:33,533 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:19:50,391 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:19:50,393 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:19:50,393 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:20:07,481 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:20:07,483 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:20:07,483 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:20:24,269 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testParseEmptyCSVString() throws IOException {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the parser trims whitespace from values in a CSV string.
+  test_name: |
+    testTrimmedValuesInCSV
+  test_code: |
+    @Test
+    public void testTrimmedValuesInCSV() throws IOException {
+        String csvData = "  value1 ; value2 ;  ";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrim(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        CSVRecord record = records.get(0);
+        assertEquals("value1", record.get(0));
+        assertEquals("value2", record.get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser correctly handles trailing delimiters in a CSV string.
+  test_name: |
+    testTrailingDelimiterBehavior
+  test_code: |
+    @Test
+    public void testTrailingDelimiterBehavior() throws IOException {
+        String csvData = "value1;value2;";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.EXCEL.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        CSVRecord record = records.get(0);
+        assertEquals("value1", record.get(0));
+        assertEquals("value2", record.get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser correctly handles case sensitivity in headers.
+  test_name: |
+    testCaseSensitivityInHeaders
+  test_code: |
+    @Test
+    public void testCaseSensitivityInHeaders() throws IOException {
+        String csvData = "Header1;header2;HEADER3\nvalue1;value2;value3";
+        CSVFormat format = CSVFormat.DEFAULT.withIgnoreHeaderCase(true);
+        CSVParser parser = CSVParser.parse(csvData, format);
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        
+        assertEquals(3, headerMap.size());
+        assertTrue(headerMap.containsKey("header1"));
+        assertTrue(headerMap.containsKey("header2"));
+        assertTrue(headerMap.containsKey("header3"));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser throws an exception for empty headers when not allowed.
+  test_name: |
+    testEmptyHeaders
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testEmptyHeaders() throws IOException {
+        String csvData = ";header2;;header4";
+        CSVFormat format = CSVFormat.DEFAULT.withAllowMissingColumnNames(false);
+        CSVParser parser = CSVParser.parse(csvData, format);
+        parser.getHeaderMap(); // This should throw an IllegalArgumentException
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+```2026-04-03 07:20:36,842 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 7785
+2026-04-03 07:20:36,851 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:20:36,851 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:20:53,885 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:20:53,887 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:20:53,888 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:21:11,010 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:21:11,014 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:21:11,015 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:21:27,923 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:21:27,925 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:21:27,926 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:21:45,096 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testParseEmptyCSVString() throws IOException {
+    String csvData = "";
+    CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+    List<CSVRecord> records = parser.getRecords();
+    
+    assertTrue(records.isEmpty());
+  }
+new_tests:
+- test_behavior: |
+    Test that the parser trims whitespace from values in a CSV string.
+  test_name: |
+    testTrimmedValuesInCSV
+  test_code: |
+    @Test
+    public void testTrimmedValuesInCSV() throws IOException {
+        String csvData = "  value1 ; value2 ;  ";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrim(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        CSVRecord record = records.get(0);
+        assertEquals("value1", record.get(0));
+        assertEquals("value2", record.get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser correctly handles trailing delimiters in a CSV string.
+  test_name: |
+    testTrailingDelimiterBehavior
+  test_code: |
+    @Test
+    public void testTrailingDelimiterBehavior() throws IOException {
+        String csvData = "value1;value2;";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.EXCEL.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        CSVRecord record = records.get(0);
+        assertEquals("value1", record.get(0));
+        assertEquals("value2", record.get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser correctly handles case sensitivity in headers.
+  test_name: |
+    testCaseSensitivityInHeaders
+  test_code: |
+    @Test
+    public void testCaseSensitivityInHeaders() throws IOException {
+        String csvData = "Header1;header2;HEADER3\nvalue1;value2;value3";
+        CSVFormat format = CSVFormat.DEFAULT.withIgnoreHeaderCase(true);
+        CSVParser parser = CSVParser.parse(csvData, format);
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        
+        assertEquals(3, headerMap.size());
+        assertTrue(headerMap.containsKey("header1"));
+        assertTrue(headerMap.containsKey("header2"));
+        assertTrue(headerMap.containsKey("header3"));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser throws an exception for empty headers when not allowed.
+  test_name: |
+    testEmptyHeaders
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testEmptyHeaders() throws IOException {
+        String csvData = ";header2;;header4";
+        CSVFormat format = CSVFormat.DEFAULT.withAllowMissingColumnNames(false);
+        CSVParser parser = CSVParser.parse(csvData, format);
+        parser.getHeaderMap(); // This should throw an IllegalArgumentException
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+```2026-04-03 07:21:58,142 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 7820
+2026-04-03 07:21:58,150 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:21:58,150 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:22:14,450 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:22:14,452 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:22:14,452 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:22:30,939 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:22:30,940 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:22:30,941 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:22:47,670 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:22:47,671 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:22:47,672 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:23:04,399 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:23:04,401 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:23:29,516 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+2026-04-03 07:23:29,557 - panta.panta - INFO - Iteration 2 increased line coverage 4.95%, branch coverage 1.79%
+2026-04-03 07:23:29,557 - panta.panta - INFO - Current line Coverage: 39.6%, branch coverage: 12.5%
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test trimming behavior for input values.
+    method_context:
+      method_signature_hint: |
+        private void addRecordValue(boolean lastRecord)
+      entry_hint: |
+        public List<CSVRecord> getRecords()
+    execution_flow: |
+      1. Call getRecords() with a CSV input containing values with leading and trailing spaces.
+      2. During record processing, addRecordValue(...) is reached, triggering the trimming logic.
+      3. The trimmed values are added to the record list.
+    input_focus: |
+      Provide a CSV input string like "  value1 ; value2  \n  value3 ;  " to test trimming behavior.
+    observable_behavior: |
+      Verify that the values in the resulting records do not contain leading or trailing whitespace.
+
+  - design_name: |
+      Test handling of trailing delimiters in records.
+    method_context:
+      method_signature_hint: |
+        private void addRecordValue(boolean lastRecord)
+      entry_hint: |
+        public List<CSVRecord> getRecords()
+    execution_flow: |
+      1. Call getRecords() with a CSV input that ends with a delimiter.
+      2. During record processing, addRecordValue(...) is reached, checking for trailing delimiters.
+      3. The last record is processed, potentially adding an empty value.
+    input_focus: |
+      Use a CSV input string like "value1,value2,\nvalue3," to ensure trailing delimiters are handled.
+    observable_behavior: |
+      Check that the resulting records reflect the correct handling of trailing delimiters, including empty values.
+
+  - design_name: |
+      Test duplicate header handling in CSV input.
+    method_context:
+      method_signature_hint: |
+        private Map<String, Integer> initializeHeader()
+      entry_hint: |
+        public List<CSVRecord> getRecords()
+    execution_flow: |
+      1. Call getRecords() with a CSV input that contains duplicate headers.
+      2. During header initialization, initializeHeader() is reached, checking for duplicates.
+      3. An exception is thrown due to the duplicate header.
+    input_focus: |
+      Provide a CSV input string like "header1,header2,header1\nvalue1,value2,value3" to trigger the duplicate check.
+    observable_behavior: |
+      Verify that an IllegalArgumentException is thrown indicating a duplicate header.
+
+  - design_name: |
+      Test behavior when the parser is closed during iteration.
+    method_context:
+      method_signature_hint: |
+        private CSVRecord nextRecord()
+      entry_hint: |
+        public Iterator<CSVRecord> iterator()
+    execution_flow: |
+      1. Call iterator() to get a CSVRecord iterator.
+      2. Close the parser before calling next() on the iterator.
+      3. Attempt to call next() and observe the behavior.
+    input_focus: |
+      Create a CSVParser instance, call iterator(), and then close the parser before iterating.
+    observable_behavior: |
+      Check that calling next() after closing the parser throws a NoSuchElementException.
+
+  - design_name: |
+      Test handling of empty header records.
+    method_context:
+      method_signature_hint: |
+        private Map<String, Integer> initializeHeader()
+      entry_hint: |
+        public List<CSVRecord> getRecords()
+    execution_flow: |
+      1. Call getRecords() with a CSV input that has an empty header record.
+      2. During header initialization, initializeHeader() is reached, checking for empty headers.
+      3. The header is processed, potentially leading to an empty header map.
+    input_focus: |
+      Use a CSV input string like ",\nvalue1,value2" to simulate an empty header.
+    observable_behavior: |
+      Verify that the resulting header map is handled correctly, potentially being null or empty.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testClosedParserIteration() throws IOException
+new_tests:
+  - test_behavior: Test trimming behavior for input values.
+    test_name: testTrimmingBehaviorInCSVInput
+    test_code: |
+      @Test
+      public void testTrimmingBehaviorInCSVInput() throws IOException {
+          String csvData = "  value1 ; value2  \n  value3 ;  ";
+          CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+          List<CSVRecord> records = parser.getRecords();
+          
+          assertEquals(3, records.get(0).size());
+          assertEquals("value1", records.get(0).get(0));
+          assertEquals("value2", records.get(0).get(1));
+          assertEquals("value3", records.get(1).get(0));
+          assertNull(records.get(1).get(1)); // Check for empty value
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test handling of trailing delimiters in records.
+    test_name: testTrailingDelimiterHandling
+    test_code: |
+      @Test
+      public void testTrailingDelimiterHandling() throws IOException {
+          String csvData = "value1,value2,\nvalue3,";
+          CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+          List<CSVRecord> records = parser.getRecords();
+          
+          assertEquals(3, records.get(0).size());
+          assertEquals("value1", records.get(0).get(0));
+          assertEquals("value2", records.get(0).get(1));
+          assertNull(records.get(0).get(2)); // Check for empty value due to trailing delimiter
+          assertEquals(2, records.get(1).size());
+          assertEquals("value3", records.get(1).get(0));
+          assertNull(records.get(1).get(1)); // Check for empty value due to trailing delimiter
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test duplicate header handling in CSV input.
+    test_name: testDuplicateHeaderHandling
+    test_code: |
+      @Test(expected = IllegalArgumentException.class)
+      public void testDuplicateHeaderHandling() throws IOException {
+          String csvData = "header1,header2,header1\nvalue1,value2,value3";
+          CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+          parser.getRecords(); // This should trigger the duplicate header check
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test behavior when the parser is closed during iteration.
+    test_name: testClosedParserDuringIteration
+    test_code: |
+      @Test(expected = NoSuchElementException.class)
+      public void testClosedParserDuringIteration() throws IOException {
+          String csvData = "value1;value2";
+          CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+          Iterator<CSVRecord> iterator = parser.iterator();
+          parser.close(); // Close the parser before iterating
+          iterator.next(); // This should throw NoSuchElementException
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test handling of empty header records.
+    test_name: testEmptyHeaderRecordHandling
+    test_code: |
+      @Test
+      public void testEmptyHeaderRecordHandling() throws IOException {
+          String csvData = ",\nvalue1,value2";
+          CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+          List<CSVRecord> records = parser.getRecords();
+          
+          Map<String, Integer> headerMap = parser.getHeaderMap();
+          assertNull(headerMap); // Check that the header map is null or empty
+          assertEquals(2, records.size());
+          assertEquals("value1", records.get(0).get(0));
+          assertEquals("value2", records.get(0).get(1));
+      }
+    new_imports_code: ''
+```2026-04-03 07:24:00,157 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 9166
+2026-04-03 07:24:00,167 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:24:00,168 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:24:21,386 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:24:21,388 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:24:21,388 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:24:42,847 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:24:42,849 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:24:42,850 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:25:04,914 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:25:04,917 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:25:04,918 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:25:28,707 - panta.unit_test_generator - INFO - Generated test has passed: testClosedParserDuringIteration
+2026-04-03 07:25:28,708 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:25:28,709 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:25:50,154 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:25:50,155 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:26:14,037 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testParseEmptyCSVString() throws IOException {
+    String csvData = "";
+    CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+    List<CSVRecord> records = parser.getRecords();
+    
+    assertTrue(records.isEmpty());
+  }
+new_tests:
+- test_behavior: |
+    Test that the parser trims whitespace from values in CSV input.
+  test_name: |
+    testTrimmingBehaviorInCSVInput
+  test_code: |
+    @Test
+    public void testTrimmingBehaviorInCSVInput() throws IOException {
+        String csvData = "  value1 ; value2  \n  value3 ;  ";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrim(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertEquals("value3", records.get(1).get(0));
+        assertNull(records.get(1).get(1)); // Check for empty value
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser correctly handles trailing delimiters in CSV input.
+  test_name: |
+    testTrailingDelimiterHandling
+  test_code: |
+    @Test
+    public void testTrailingDelimiterHandling() throws IOException {
+        String csvData = "value1,value2,\nvalue3,";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(3, records.get(0).size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertNull(records.get(0).get(2)); // Check for empty value due to trailing delimiter
+        assertEquals(2, records.get(1).size());
+        assertEquals("value3", records.get(1).get(0));
+        assertNull(records.get(1).get(1)); // Check for empty value due to trailing delimiter
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser throws an exception for duplicate headers in CSV input.
+  test_name: |
+    testDuplicateHeaderHandling
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testDuplicateHeaderHandling() throws IOException {
+        String csvData = "header1,header2,header1\nvalue1,value2,value3";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withIgnoreHeaderCase(true));
+        parser.getRecords(); // This should trigger the duplicate header check
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser correctly handles empty header records in CSV input.
+  test_name: |
+    testEmptyHeaderRecordHandling
+  test_code: |
+    @Test
+    public void testEmptyHeaderRecordHandling() throws IOException {
+        String csvData = ",\nvalue1,value2";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+        List<CSVRecord> records = parser.getRecords();
+        
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        assertNull(headerMap); // Check that the header map is null or empty
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+```2026-04-03 07:26:29,433 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 9799
+2026-04-03 07:26:29,443 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:26:29,443 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:26:46,456 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:26:46,458 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:26:46,458 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:27:03,325 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:27:03,326 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:27:03,327 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:27:20,448 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:27:20,450 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:27:20,450 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:27:38,039 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testParseEmptyCSVString() throws IOException {
+      String csvData = "";
+      CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+      List<CSVRecord> records = parser.getRecords();
+      
+      assertTrue(records.isEmpty());
+  }
+new_tests:
+- test_behavior: |
+    Test trimming behavior in CSV input to ensure leading and trailing spaces are removed.
+  test_name: |
+    testTrimmingBehaviorInCSVInput
+  test_code: |
+    @Test
+    public void testTrimmingBehaviorInCSVInput() throws IOException {
+        String csvData = "  value1 ; value2  \n  value3 ;  ";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrim(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertEquals("value3", records.get(1).get(0));
+        assertNull(records.get(1).get(1)); // Check for empty value
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test handling of trailing delimiters in CSV input to ensure empty values are correctly parsed.
+  test_name: |
+    testTrailingDelimiterHandling
+  test_code: |
+    @Test
+    public void testTrailingDelimiterHandling() throws IOException {
+        String csvData = "value1,value2,\nvalue3,";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(3, records.get(0).size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertNull(records.get(0).get(2)); // Check for empty value due to trailing delimiter
+        assertEquals(2, records.get(1).size());
+        assertEquals("value3", records.get(1).get(0));
+        assertNull(records.get(1).get(1)); // Check for empty value due to trailing delimiter
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that an IllegalArgumentException is thrown when duplicate headers are present in the CSV input.
+  test_name: |
+    testDuplicateHeaderHandling
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testDuplicateHeaderHandling() throws IOException {
+        String csvData = "header1,header2,header1\nvalue1,value2,value3";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withIgnoreHeaderCase(true));
+        parser.getRecords(); // This should trigger the duplicate header check
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test handling of an empty header record in CSV input to ensure the header map is null or empty.
+  test_name: |
+    testEmptyHeaderRecordHandling
+  test_code: |
+    @Test
+    public void testEmptyHeaderRecordHandling() throws IOException {
+        String csvData = ",\nvalue1,value2";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+        List<CSVRecord> records = parser.getRecords();
+        
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        assertNull(headerMap); // Check that the header map is null or empty
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+```2026-04-03 07:27:54,928 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8176
+2026-04-03 07:27:54,936 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:27:54,936 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:28:12,387 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:28:12,389 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:28:12,389 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:28:29,841 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:28:29,843 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:28:29,844 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:28:47,336 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:28:47,338 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:28:47,338 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:29:02,739 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testParseEmptyCSVString() throws IOException {
+      String csvData = "";
+      CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+      List<CSVRecord> records = parser.getRecords();
+      
+      assertTrue(records.isEmpty());
+  }
+new_tests:
+- test_behavior: |
+    Test trimming behavior in CSV input to ensure leading and trailing spaces are removed.
+  test_name: |
+    testTrimmingBehaviorInCSVInput
+  test_code: |
+    @Test
+    public void testTrimmingBehaviorInCSVInput() throws IOException {
+        String csvData = "  value1 ; value2  \n  value3 ;  ";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrim(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertEquals("value3", records.get(1).get(0));
+        assertNull(records.get(1).get(1)); // Check for empty value
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test handling of trailing delimiters in CSV input to ensure empty values are correctly parsed.
+  test_name: |
+    testTrailingDelimiterHandling
+  test_code: |
+    @Test
+    public void testTrailingDelimiterHandling() throws IOException {
+        String csvData = "value1,value2,\nvalue3,";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(3, records.get(0).size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertNull(records.get(0).get(2)); // Check for empty value due to trailing delimiter
+        assertEquals(2, records.get(1).size());
+        assertEquals("value3", records.get(1).get(0));
+        assertNull(records.get(1).get(1)); // Check for empty value due to trailing delimiter
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that duplicate headers in CSV input trigger an IllegalArgumentException.
+  test_name: |
+    testDuplicateHeaderHandling
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testDuplicateHeaderHandling() throws IOException {
+        String csvData = "header1,header2,header1\nvalue1,value2,value3";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withIgnoreHeaderCase(true));
+        parser.getRecords(); // This should trigger the duplicate header check
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that an empty header record results in a null header map and correct record parsing.
+  test_name: |
+    testEmptyHeaderRecordHandling
+  test_code: |
+    @Test
+    public void testEmptyHeaderRecordHandling() throws IOException {
+        String csvData = ",\nvalue1,value2";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+        List<CSVRecord> records = parser.getRecords();
+        
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        assertNull(headerMap); // Check that the header map is null or empty
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+```2026-04-03 07:29:17,209 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8168
+2026-04-03 07:29:17,217 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:29:17,218 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:29:33,437 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:29:33,439 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:29:33,440 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:29:49,795 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:29:49,797 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:29:49,797 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:30:06,474 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:30:06,476 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:30:06,477 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:30:22,963 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:30:22,964 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:30:47,027 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+2026-04-03 07:30:47,069 - panta.panta - INFO - Iteration 3 cannot increase coverage.
+2026-04-03 07:30:47,069 - panta.panta - INFO - Current line Coverage: 39.6%, branch coverage: 12.5%
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test behavior when input string is empty with trailing delimiter.
+    method_context:
+      method_signature_hint: |
+        private void addRecordValue(boolean lastRecord)
+      entry_hint: |
+        public List<CSVRecord> getRecords()
+    execution_flow: |
+      1. Call getRecords() with a CSV input string that ends with a trailing delimiter.
+      2. During record processing, addRecordValue(...) is reached for the last record.
+      3. The branch handling empty input with a trailing delimiter is executed.
+    input_focus: |
+      Provide a CSV input string like "value1,value2," to simulate a trailing delimiter.
+    observable_behavior: |
+      Verify that the resulting record list reflects the correct handling of the empty value after the delimiter.
+
+  - design_name: |
+      Test handling of duplicate headers in CSV input.
+    method_context:
+      method_signature_hint: |
+        private Map<String, Integer> initializeHeader()
+      entry_hint: |
+        public CSVParser parse(Reader reader, CSVFormat format)
+    execution_flow: |
+      1. Call parse() with a Reader containing CSV data with duplicate headers.
+      2. During header initialization, initializeHeader(...) is reached.
+      3. The branch that checks for duplicate headers is executed.
+    input_focus: |
+      Use a Reader that provides CSV data like "header1,header2,header1" to trigger the duplicate check.
+    observable_behavior: |
+      Check that an IllegalArgumentException is thrown due to the duplicate header names.
+
+  - design_name: |
+      Test behavior when the parser is closed and next record is requested.
+    method_context:
+      method_signature_hint: |
+        private CSVRecord nextRecord()
+      entry_hint: |
+        public Iterator<CSVRecord> iterator()
+    execution_flow: |
+      1. Call iterator() to get an iterator for CSV records.
+      2. Close the CSVParser instance.
+      3. Attempt to call next() on the iterator, which should trigger the closed check.
+    input_focus: |
+      Create a CSVParser instance, call iterator(), and then close the parser before calling next().
+    observable_behavior: |
+      Verify that calling next() after closing the parser throws a NoSuchElementException.
+
+  - design_name: |
+      Test behavior when the CSV input has comments.
+    method_context:
+      method_signature_hint: |
+        private CSVRecord nextRecord()
+      entry_hint: |
+        public List<CSVRecord> getRecords()
+    execution_flow: |
+      1. Call getRecords() with a CSV input string that includes comments.
+      2. During record parsing, nextRecord(...) is reached and comments are processed.
+      3. The branch that handles comments in the input is executed.
+    input_focus: |
+      Provide a CSV input string like "# This is a comment\nvalue1,value2" to include comments.
+    observable_behavior: |
+      Check that the resulting records do not include the comment lines and are parsed correctly.
+
+  - design_name: |
+      Test behavior when the header is skipped in the CSV format.
+    method_context:
+      method_signature_hint: |
+        private Map<String, Integer> initializeHeader()
+      entry_hint: |
+        public CSVParser parse(Reader reader, CSVFormat format)
+    execution_flow: |
+      1. Call parse() with a Reader containing CSV data and a format that specifies to skip the header.
+      2. During header initialization, initializeHeader(...) is reached and the skip logic is executed.
+      3. The branch that skips the header record is taken.
+    input_focus: |
+      Use a Reader that provides CSV data like "header1,header2\nvalue1,value2" with a format that has skipHeaderRecord set to true.
+    observable_behavior: |
+      Verify that the records returned do not include the header and start from the first data row.
+```
+
+```yaml
+language: Java
+existing_test_function_signature: public void testPlaceHolder()
+new_tests:
+  - test_behavior: Test behavior when input string is empty with trailing delimiter.
+    test_name: testGetRecordsWithTrailingDelimiter
+    test_code: |
+      @Test
+      public void testGetRecordsWithTrailingDelimiter() throws IOException {
+          String csvData = "value1,value2,";
+          CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+          List<CSVRecord> records = parser.getRecords();
+          
+          assertEquals(1, records.size());
+          assertEquals(3, records.get(0).size());
+          assertEquals("value1", records.get(0).get(0));
+          assertEquals("value2", records.get(0).get(1));
+          assertNull(records.get(0).get(2)); // The last value should be null due to trailing delimiter
+      }
+  - test_behavior: Test handling of duplicate headers in CSV input.
+    test_name: testParseWithDuplicateHeaders
+    test_code: |
+      @Test(expected = IllegalArgumentException.class)
+      public void testParseWithDuplicateHeaders() throws IOException {
+          String csvData = "header1,header2,header1\nvalue1,value2,value3";
+          CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT);
+          parser.getRecords(); // This should trigger the header initialization and throw an exception
+      }
+  - test_behavior: Test behavior when the parser is closed and next record is requested.
+    test_name: testNextRecordAfterClose
+    test_code: |
+      @Test(expected = NoSuchElementException.class)
+      public void testNextRecordAfterClose() throws IOException {
+          String csvData = "value1,value2";
+          CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+          Iterator<CSVRecord> iterator = parser.iterator();
+          parser.close(); // Close the parser before calling next
+          iterator.next(); // This should throw NoSuchElementException
+      }
+  - test_behavior: Test behavior when the CSV input has comments.
+    test_name: testGetRecordsWithComments
+    test_code: |
+      @Test
+      public void testGetRecordsWithComments() throws IOException {
+          String csvData = "# This is a comment\nvalue1,value2";
+          CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+          List<CSVRecord> records = parser.getRecords();
+          
+          assertEquals(1, records.size());
+          assertEquals(2, records.get(0).size());
+          assertEquals("value1", records.get(0).get(0));
+          assertEquals("value2", records.get(0).get(1));
+      }
+  - test_behavior: Test behavior when the header is skipped in the CSV format.
+    test_name: testParseWithSkipHeader
+    test_code: |
+      @Test
+      public void testParseWithSkipHeader() throws IOException {
+          String csvData = "header1,header2\nvalue1,value2";
+          CSVFormat format = CSVFormat.DEFAULT.withSkipHeaderRecord(true);
+          CSVParser parser = CSVParser.parse(new StringReader(csvData), format);
+          List<CSVRecord> records = parser.getRecords();
+          
+          assertEquals(1, records.size());
+          assertEquals(2, records.get(0).size());
+          assertEquals("value1", records.get(0).get(0));
+          assertEquals("value2", records.get(0).get(1));
+      }
+```2026-04-03 07:31:15,258 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 9174
+2026-04-03 07:31:15,267 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:31:15,267 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:31:37,651 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:31:37,654 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:31:37,655 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:31:59,749 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:31:59,752 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:31:59,752 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:32:25,168 - panta.unit_test_generator - INFO - Generated test has passed: testNextRecordAfterClose
+2026-04-03 07:32:25,170 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:32:25,170 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:32:48,095 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:32:48,099 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:32:48,099 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:33:10,416 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:33:10,417 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:33:34,370 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testParseEmptyCSVString() throws IOException {
+    String csvData = "";
+    CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+    List<CSVRecord> records = parser.getRecords();
+    
+    assertTrue(records.isEmpty());
+  }
+new_tests:
+- test_behavior: |
+    Test that the parser correctly handles a CSV string with a trailing delimiter.
+  test_name: |
+    testGetRecordsWithTrailingDelimiter
+  test_code: |
+    @Test
+    public void testGetRecordsWithTrailingDelimiter() throws IOException {
+        String csvData = "value1,value2,";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        assertEquals(3, records.get(0).size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertNull(records.get(0).get(2)); // The last value should be null due to trailing delimiter
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertNull;
+- test_behavior: |
+    Test that the parser throws an exception when duplicate headers are present.
+  test_name: |
+    testParseWithDuplicateHeaders
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseWithDuplicateHeaders() throws IOException {
+        String csvData = "header1,header2,header1\nvalue1,value2,value3";
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withHeader());
+        parser.getRecords(); // This should trigger the header initialization and throw an exception
+    }
+  new_imports_code: |
+    import java.io.StringReader;
+- test_behavior: |
+    Test that the parser correctly ignores comments in the CSV data.
+  test_name: |
+    testGetRecordsWithComments
+  test_code: |
+    @Test
+    public void testGetRecordsWithComments() throws IOException {
+        String csvData = "# This is a comment\nvalue1,value2";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withCommentMarker('#'));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        assertEquals(2, records.get(0).size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+- test_behavior: |
+    Test that the parser skips the header when configured to do so.
+  test_name: |
+    testParseWithSkipHeader
+  test_code: |
+    @Test
+    public void testParseWithSkipHeader() throws IOException {
+        String csvData = "header1,header2\nvalue1,value2";
+        CSVFormat format = CSVFormat.DEFAULT.withSkipHeaderRecord(true);
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), format);
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        assertEquals(2, records.get(0).size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+    }
+  new_imports_code: |
+    import java.io.StringReader;
+```2026-04-03 07:33:48,437 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 9769
+2026-04-03 07:33:48,446 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:33:48,447 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:34:10,910 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:34:10,913 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:34:10,913 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:34:35,402 - panta.unit_test_generator - INFO - Generated test has passed: testParseWithDuplicateHeaders
+
+2026-04-03 07:34:35,405 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:34:35,405 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:35:00,298 - panta.unit_test_generator - INFO - Generated test has passed: testGetRecordsWithComments
+
+2026-04-03 07:35:00,300 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:35:00,301 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:35:23,132 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetRecordsWithComments() throws IOException {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the parser correctly handles a CSV string with a trailing delimiter.
+  test_name: |
+    testGetRecordsWithTrailingDelimiter
+  test_code: |
+    @Test
+    public void testGetRecordsWithTrailingDelimiter() throws IOException {
+        String csvData = "value1,value2,";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        assertEquals(3, records.get(0).size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertNull(records.get(0).get(2)); // The last value should be null due to trailing delimiter
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertNull;
+- test_behavior: |
+    Test that the parser correctly skips the header when specified.
+  test_name: |
+    testParseWithSkipHeader
+  test_code: |
+    @Test
+    public void testParseWithSkipHeader() throws IOException {
+        String csvData = "header1,header2\nvalue1,value2";
+        CSVFormat format = CSVFormat.DEFAULT.withSkipHeaderRecord(true);
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), format);
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        assertEquals(2, records.get(0).size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+    }
+  new_imports_code: |
+    import java.io.StringReader;
+```2026-04-03 07:35:32,923 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8408
+2026-04-03 07:35:32,929 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:35:32,930 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:35:55,797 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:35:55,800 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:35:55,800 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:36:18,991 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetRecordsWithComments() throws IOException {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the parser correctly handles a CSV with a trailing delimiter.
+  test_name: |
+    testGetRecordsWithTrailingDelimiter
+  test_code: |
+    @Test
+    public void testGetRecordsWithTrailingDelimiter() throws IOException {
+        String csvData = "value1,value2,";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        assertEquals(3, records.get(0).size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertNull(records.get(0).get(2)); // The last value should be null due to trailing delimiter
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertNull;
+- test_behavior: |
+    Test that the parser skips the header correctly when specified.
+  test_name: |
+    testParseWithSkipHeader
+  test_code: |
+    @Test
+    public void testParseWithSkipHeader() throws IOException {
+        String csvData = "header1,header2\nvalue1,value2";
+        CSVFormat format = CSVFormat.DEFAULT.withSkipHeaderRecord(true);
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), format);
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        assertEquals(2, records.get(0).size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+    }
+  new_imports_code: |
+    import java.io.StringReader;
+```2026-04-03 07:36:27,968 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8407
+2026-04-03 07:36:27,972 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:36:27,973 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:36:52,558 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:36:52,561 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:36:52,561 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:37:13,415 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:37:13,416 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:37:39,112 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+2026-04-03 07:37:39,145 - panta.panta - INFO - Iteration 4 increased line coverage 35.65%, branch coverage 46.43%
+2026-04-03 07:37:39,145 - panta.panta - INFO - Current line Coverage: 75.25%, branch coverage: 58.93%
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test trimming behavior for input with trailing delimiters.
+    method_context:
+      method_signature_hint: |
+        private void addRecordValue(boolean lastRecord)
+      entry_hint: |
+        public List<CSVRecord> getRecords()
+    execution_flow: |
+      1. Call getRecords() with a CSV input that has trailing delimiters.
+      2. During record processing, addRecordValue(...) is reached.
+      3. The trimming logic for the last record is executed.
+    input_focus: |
+      Provide a CSV string with trailing delimiters, ensuring the format has trimming enabled.
+    observable_behavior: |
+      Verify that the resulting records do not include empty strings for the trailing delimiters.
+
+  - design_name: |
+      Test handling of empty header names in CSV format.
+    method_context:
+      method_signature_hint: |
+        private Map<String, Integer> initializeHeader()
+      entry_hint: |
+        public CSVParser parse(Reader reader, CSVFormat format)
+    execution_flow: |
+      1. Call parse() with a Reader containing CSV data with empty header names.
+      2. During header initialization, initializeHeader() is reached.
+      3. The logic for handling empty headers is executed.
+    input_focus: |
+      Use a CSV input with empty header names and a format that allows missing column names.
+    observable_behavior: |
+      Check that the header map is populated correctly without throwing an exception for empty headers.
+
+  - design_name: |
+      Test behavior when the parser is closed during iteration.
+    method_context:
+      method_signature_hint: |
+        private CSVRecord nextRecord()
+      entry_hint: |
+        public Iterator<CSVRecord> iterator()
+    execution_flow: |
+      1. Call iterator() to get an iterator over records.
+      2. Close the parser before calling next() on the iterator.
+      3. The closed state is checked when next() is called.
+    input_focus: |
+      Create a CSVParser instance and close it immediately before iterating.
+    observable_behavior: |
+      Verify that calling next() on the iterator throws a NoSuchElementException due to the closed parser.
+
+  - design_name: |
+      Test duplicate header name handling in CSV format.
+    method_context:
+      method_signature_hint: |
+        private Map<String, Integer> initializeHeader()
+      entry_hint: |
+        public CSVParser parse(Reader reader, CSVFormat format)
+    execution_flow: |
+      1. Call parse() with a Reader containing CSV data with duplicate header names.
+      2. During header initialization, initializeHeader() is reached.
+      3. The logic for checking duplicate headers is executed.
+    input_focus: |
+      Provide a CSV input with duplicate header names and a format that does not allow duplicates.
+    observable_behavior: |
+      Check that an IllegalArgumentException is thrown indicating a duplicate header name.
+
+  - design_name: |
+      Test comment handling in CSV records.
+    method_context:
+      method_signature_hint: |
+        private CSVRecord nextRecord()
+      entry_hint: |
+        public List<CSVRecord> getRecords()
+    execution_flow: |
+      1. Call getRecords() with a CSV input that includes comments.
+      2. During record parsing, nextRecord() is reached and comments are processed.
+      3. The logic for ignoring comments is executed.
+    input_focus: |
+      Use a CSV string that includes comment lines and ensure the format allows comments.
+    observable_behavior: |
+      Verify that the returned records do not include any comment lines and are parsed correctly.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testGetRecordsWithComments() throws IOException
+new_tests:
+  - test_behavior: Test trimming behavior for input with trailing delimiters.
+    test_name: testGetRecordsWithTrailingDelimiters
+    test_code: |
+      @Test
+      public void testGetRecordsWithTrailingDelimiters() throws IOException {
+          String csvData = "value1,value2,";
+          CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrim());
+          List<CSVRecord> records = parser.getRecords();
+          
+          assertEquals(1, records.size());
+          assertEquals(2, records.get(0).size());
+          assertEquals("value1", records.get(0).get(0));
+          assertEquals("value2", records.get(0).get(1));
+      }
+    new_imports_code: ''
+  
+  - test_behavior: Test handling of empty header names in CSV format.
+    test_name: testParseWithEmptyHeaderNames
+    test_code: |
+      @Test
+      public void testParseWithEmptyHeaderNames() throws IOException {
+          String csvData = ",header2\nvalue1,value2";
+          CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withAllowMissingColumnNames());
+          Map<String, Integer> headerMap = parser.getHeaderMap();
+          
+          assertNotNull(headerMap);
+          assertTrue(headerMap.containsKey(""));
+          assertEquals(Integer.valueOf(0), headerMap.get(""));
+          assertEquals(Integer.valueOf(1), headerMap.get("header2"));
+      }
+    new_imports_code: ''
+  
+  - test_behavior: Test behavior when the parser is closed during iteration.
+    test_name: testClosedParserDuringIteration
+    test_code: |
+      @Test(expected = NoSuchElementException.class)
+      public void testClosedParserDuringIteration() throws IOException {
+          String csvData = "value1,value2";
+          CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+          Iterator<CSVRecord> iterator = parser.iterator();
+          parser.close(); // Close the parser before iterating
+          iterator.next(); // This should throw NoSuchElementException
+      }
+    new_imports_code: ''
+  
+  - test_behavior: Test duplicate header name handling in CSV format.
+    test_name: testParseWithDuplicateHeaders
+    test_code: |
+      @Test(expected = IllegalArgumentException.class)
+      public void testParseWithDuplicateHeaders() throws IOException {
+          String csvData = "header1,header2,header1\nvalue1,value2,value3";
+          CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withHeader());
+          parser.getRecords(); // This should trigger the header initialization and throw an exception
+      }
+    new_imports_code: ''
+```2026-04-03 07:38:04,359 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 9008
+2026-04-03 07:38:04,368 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:38:04,368 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:38:26,427 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:38:26,429 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:38:26,429 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:38:48,470 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:38:48,473 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:38:48,474 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:39:06,213 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:39:06,215 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:39:06,216 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:39:23,837 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:39:23,838 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:39:49,952 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testClosedParserDuringIteration() throws IOException {
+    String csvData = "value1,value2";
+    CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+    Iterator<CSVRecord> iterator = parser.iterator();
+    parser.close(); // Close the parser before iterating
+    iterator.next(); // This should throw NoSuchElementException
+  }
+new_tests:
+- test_behavior: |
+    Test that the parser correctly handles CSV strings with trailing delimiters.
+  test_name: |
+    testGetRecordsWithTrailingDelimiters
+  test_code: |
+    @Test
+    public void testGetRecordsWithTrailingDelimiters() throws IOException {
+        String csvData = "value1,value2,";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrim());
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        assertEquals(3, records.get(0).size()); // Expecting 3 due to trailing delimiter
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertNull(records.get(0).get(2)); // Last value should be null due to trailing delimiter
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertNull;
+- test_behavior: |
+    Test that the parser correctly handles CSV strings with empty header names.
+  test_name: |
+    testParseWithEmptyHeaderNames
+  test_code: |
+    @Test
+    public void testParseWithEmptyHeaderNames() throws IOException {
+        String csvData = ",header2\nvalue1,value2";
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withAllowMissingColumnNames());
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        
+        assertNotNull(headerMap);
+        assertTrue(headerMap.containsKey(""));
+        assertEquals(Integer.valueOf(0), headerMap.get(""));
+        assertEquals(Integer.valueOf(1), headerMap.get("header2"));
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertNotNull;
+    import static org.junit.Assert.assertTrue;
+- test_behavior: |
+    Test that the parser throws an exception when duplicate headers are present.
+  test_name: |
+    testParseWithDuplicateHeaders
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseWithDuplicateHeaders() throws IOException {
+        String csvData = "header1,header2,header1\nvalue1,value2,value3";
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withHeader());
+        parser.getRecords(); // This should trigger the header initialization and throw an exception
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+```2026-04-03 07:40:03,548 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8893
+2026-04-03 07:40:03,556 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:40:03,556 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:40:25,695 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:40:25,696 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:40:25,696 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:40:48,192 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:40:48,195 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:40:48,195 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:41:06,253 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test(expected = IllegalArgumentException.class)
+  public void testParseWithDuplicateHeaders() throws IOException {
+    String csvData = "header1,header2,header1\nvalue1,value2,value3";
+    CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withHeader());
+    parser.getRecords(); // This should trigger the header initialization and throw an exception
+  }
+new_tests:
+- test_behavior: |
+    Test that the parser correctly handles trailing delimiters in CSV input.
+  test_name: |
+    testGetRecordsWithTrailingDelimiters
+  test_code: |
+    @Test
+    public void testGetRecordsWithTrailingDelimiters() throws IOException {
+        String csvData = "value1,value2,";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrim().withTrailingDelimiter());
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        assertEquals(3, records.get(0).size()); // Expecting 3 due to trailing delimiter
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertNull(records.get(0).get(2)); // Last value should be null due to trailing delimiter
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertNull;
+- test_behavior: |
+    Test that the parser correctly handles empty header names in CSV input.
+  test_name: |
+    testParseWithEmptyHeaderNames
+  test_code: |
+    @Test
+    public void testParseWithEmptyHeaderNames() throws IOException {
+        String csvData = ",header2\nvalue1,value2";
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withAllowMissingColumnNames());
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        
+        assertNotNull(headerMap);
+        assertTrue(headerMap.containsKey(""));
+        assertEquals(Integer.valueOf(0), headerMap.get(""));
+        assertEquals(Integer.valueOf(1), headerMap.get("header2"));
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertNotNull;
+    import static org.junit.Assert.assertTrue;
+- test_behavior: |
+    Test that the parser throws an exception when duplicate headers are present.
+  test_name: |
+    testParseWithDuplicateHeaders
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseWithDuplicateHeaders() throws IOException {
+        String csvData = "header1,header2,header1\nvalue1,value2,value3";
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withHeader());
+        parser.getRecords(); // This should trigger the header initialization and throw an exception
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+```2026-04-03 07:41:17,726 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8790
+2026-04-03 07:41:17,734 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:41:17,734 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:41:39,898 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:41:39,901 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:41:39,901 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:42:02,158 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:42:02,161 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:42:02,162 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:42:19,852 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test(expected = IllegalArgumentException.class)
+  public void testParseWithDuplicateHeaders() throws IOException {
+    String csvData = "header1,header2,header1\nvalue1,value2,value3";
+    CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withHeader());
+    parser.getRecords(); // This should trigger the header initialization and throw an exception
+}
+new_tests:
+- test_behavior: |
+    Test that the parser correctly handles CSV with trailing delimiters.
+  test_name: |
+    testGetRecordsWithTrailingDelimiters
+  test_code: |
+    @Test
+    public void testGetRecordsWithTrailingDelimiters() throws IOException {
+        String csvData = "value1,value2,";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrim().withTrailingDelimiter());
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        assertEquals(3, records.get(0).size()); // Expecting 3 due to trailing delimiter
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertNull(records.get(0).get(2)); // Last value should be null due to trailing delimiter
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertNull;
+- test_behavior: |
+    Test that the parser correctly handles CSV with empty header names.
+  test_name: |
+    testParseWithEmptyHeaderNames
+  test_code: |
+    @Test
+    public void testParseWithEmptyHeaderNames() throws IOException {
+        String csvData = ",header2\nvalue1,value2";
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withAllowMissingColumnNames());
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        
+        assertNotNull(headerMap);
+        assertTrue(headerMap.containsKey(""));
+        assertEquals(Integer.valueOf(0), headerMap.get(""));
+        assertEquals(Integer.valueOf(1), headerMap.get("header2"));
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertNotNull;
+    import static org.junit.Assert.assertTrue;
+```2026-04-03 07:42:29,330 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8658
+2026-04-03 07:42:29,373 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:42:54,392 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+2026-04-03 07:42:54,423 - panta.panta - INFO - Iteration 5 cannot increase coverage.
+2026-04-03 07:42:54,423 - panta.panta - INFO - Current line Coverage: 75.25%, branch coverage: 58.93%
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test trimming behavior for input records.
+    method_context:
+      method_signature_hint: |
+        private void addRecordValue(boolean lastRecord)
+      entry_hint: |
+        public List<CSVRecord> getRecords()
+    execution_flow: |
+      1. Call getRecords() with a CSV input containing records with leading and trailing spaces.
+      2. During record processing, addRecordValue(...) is reached where trimming logic is applied.
+      3. The trimmed values are added to the record list.
+    input_focus: |
+      Provide a CSV input string like "  value1; value2;  \n  value3; value4;  " to test trimming.
+    observable_behavior: |
+      Verify that the resulting CSVRecords contain values without leading or trailing spaces.
+
+  - design_name: |
+      Test handling of trailing delimiters in records.
+    method_context:
+      method_signature_hint: |
+        private void addRecordValue(boolean lastRecord)
+      entry_hint: |
+        public List<CSVRecord> getRecords()
+    execution_flow: |
+      1. Call getRecords() with a CSV input that ends with a delimiter.
+      2. During record processing, addRecordValue(...) is reached where the last record is evaluated.
+      3. The logic for handling trailing delimiters is exercised.
+    input_focus: |
+      Use a CSV input string like "value1;value2;\nvalue3;value4;\n" to test trailing delimiter behavior.
+    observable_behavior: |
+      Check that the last record is processed correctly, ensuring no empty values are added if trailing delimiters are present.
+
+  - design_name: |
+      Test case sensitivity in header mapping.
+    method_context:
+      method_signature_hint: |
+        private Map<String, Integer> initializeHeader()
+      entry_hint: |
+        public Map<String, Integer> getHeaderMap()
+    execution_flow: |
+      1. Call getHeaderMap() after parsing a CSV input with mixed-case headers.
+      2. During header initialization, initializeHeader(...) is reached where case sensitivity is evaluated.
+      3. The header map is built based on the specified case sensitivity setting.
+    input_focus: |
+      Provide a CSV input string with headers like "Header1;header2;HEADER3" and set the format to ignore case.
+    observable_behavior: |
+      Verify that the header map correctly maps all headers to their respective indices, regardless of case.
+
+  - design_name: |
+      Test behavior when skipping header records.
+    method_context:
+      method_signature_hint: |
+        private Map<String, Integer> initializeHeader()
+      entry_hint: |
+        public List<CSVRecord> getRecords()
+    execution_flow: |
+      1. Call getRecords() with a CSV input where the header should be skipped.
+      2. During header initialization, initializeHeader(...) is reached and the skip logic is evaluated.
+      3. The first record is processed as data instead of a header.
+    input_focus: |
+      Use a CSV input string like "value1;value2\nvalue3;value4" and set the format to skip the header.
+    observable_behavior: |
+      Check that the first record is treated as data and not as header values.
+
+  - design_name: |
+      Test handling of invalid tokens during parsing.
+    method_context:
+      method_signature_hint: |
+        private CSVRecord nextRecord()
+      entry_hint: |
+        public List<CSVRecord> getRecords()
+    execution_flow: |
+      1. Call getRecords() with a CSV input that includes invalid tokens.
+      2. During record parsing, nextRecord(...) is reached where invalid token handling is evaluated.
+      3. An IOException is thrown due to the invalid token.
+    input_focus: |
+      Provide a CSV input string like "value1;value2;invalid_token\nvalue3;value4" to trigger an error.
+    observable_behavior: |
+      Verify that the appropriate exception is thrown when encountering invalid tokens during parsing.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testGetRecordsWithComments() throws IOException
+new_tests:
+  - test_behavior: Test trimming behavior for input records.
+    test_name: testTrimmedInputRecords
+    test_code: |
+      @Test
+      public void testTrimmedInputRecords() throws IOException {
+          String csvData = "  value1; value2;  \n  value3; value4;  ";
+          CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+          List<CSVRecord> records = parser.getRecords();
+          
+          assertEquals(2, records.size());
+          assertEquals("value1", records.get(0).get(0));
+          assertEquals("value2", records.get(0).get(1));
+          assertEquals("value3", records.get(1).get(0));
+          assertEquals("value4", records.get(1).get(1));
+      }
+    new_imports_code: ''
+  
+  - test_behavior: Test handling of trailing delimiters in records.
+    test_name: testTrailingDelimiters
+    test_code: |
+      @Test
+      public void testTrailingDelimiters() throws IOException {
+          String csvData = "value1;value2;\nvalue3;value4;\n";
+          CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+          List<CSVRecord> records = parser.getRecords();
+          
+          assertEquals(2, records.size());
+          assertEquals("value1", records.get(0).get(0));
+          assertEquals("value2", records.get(0).get(1));
+          assertEquals("value3", records.get(1).get(0));
+          assertEquals("value4", records.get(1).get(1));
+      }
+    new_imports_code: ''
+  
+  - test_behavior: Test case sensitivity in header mapping.
+    test_name: testCaseSensitivityInHeaderMapping
+    test_code: |
+      @Test
+      public void testCaseSensitivityInHeaderMapping() throws IOException {
+          String csvData = "Header1;header2;HEADER3\nvalue1;value2;value3";
+          CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withHeader().withIgnoreHeaderCase(true));
+          Map<String, Integer> headerMap = parser.getHeaderMap();
+          
+          assertEquals(0, (int) headerMap.get("header1"));
+          assertEquals(1, (int) headerMap.get("header2"));
+          assertEquals(2, (int) headerMap.get("header3"));
+      }
+    new_imports_code: ''
+  
+  - test_behavior: Test behavior when skipping header records.
+    test_name: testSkipHeaderRecords
+    test_code: |
+      @Test
+      public void testSkipHeaderRecords() throws IOException {
+          String csvData = "header1;header2\nvalue1;value2\nvalue3;value4";
+          CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withSkipHeaderRecord(true));
+          List<CSVRecord> records = parser.getRecords();
+          
+          assertEquals(2, records.size());
+          assertEquals("value1", records.get(0).get(0));
+          assertEquals("value2", records.get(0).get(1));
+          assertEquals("value3", records.get(1).get(0));
+          assertEquals("value4", records.get(1).get(1));
+      }
+    new_imports_code: ''
+  
+  - test_behavior: Test handling of invalid tokens during parsing.
+    test_name: testInvalidTokenHandling
+    test_code: |
+      @Test(expected = IOException.class)
+      public void testInvalidTokenHandling() throws IOException {
+          String csvData = "value1;value2;invalid_token\nvalue3;value4";
+          CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+          parser.getRecords(); // This should trigger an IOException due to invalid token
+      }
+    new_imports_code: ''
+```2026-04-03 07:43:24,500 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 9381
+2026-04-03 07:43:24,509 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:43:24,510 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:43:46,511 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:43:46,513 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:43:46,514 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:44:09,795 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:44:09,797 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:44:09,798 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:44:32,843 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:44:32,845 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:44:32,845 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:44:56,160 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:44:56,162 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:44:56,163 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:45:18,752 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:45:18,753 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:45:43,614 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testParseEmptyCSVString() throws IOException {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the parser trims whitespace from input records correctly.
+  test_name: |
+    testTrimmedInputRecords
+  test_code: |
+    @Test
+    public void testTrimmedInputRecords() throws IOException {
+        String csvData = "  value1; value2;  \n  value3; value4;  ";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrim());
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertEquals("value3", records.get(1).get(0));
+        assertEquals("value4", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser correctly handles trailing delimiters in records.
+  test_name: |
+    testTrailingDelimiters
+  test_code: |
+    @Test
+    public void testTrailingDelimiters() throws IOException {
+        String csvData = "value1;value2;\nvalue3;value4;\n";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertEquals("value3", records.get(1).get(0));
+        assertEquals("value4", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser correctly maps headers in a case-insensitive manner.
+  test_name: |
+    testCaseSensitivityInHeaderMapping
+  test_code: |
+    @Test
+    public void testCaseSensitivityInHeaderMapping() throws IOException {
+        String csvData = "Header1;header2;HEADER3\nvalue1;value2;value3";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withHeader().withIgnoreHeaderCase(true));
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        
+        assertEquals(0, (int) headerMap.get("header1"));
+        assertEquals(1, (int) headerMap.get("header2"));
+        assertEquals(2, (int) headerMap.get("header3"));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser skips header records correctly.
+  test_name: |
+    testSkipHeaderRecords
+  test_code: |
+    @Test
+    public void testSkipHeaderRecords() throws IOException {
+        String csvData = "header1;header2\nvalue1;value2\nvalue3;value4";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withSkipHeaderRecord(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertEquals("value3", records.get(1).get(0));
+        assertEquals("value4", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+- test_behavior: |
+    Test that the parser throws an exception for invalid tokens.
+  test_name: |
+    testInvalidTokenHandling
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testInvalidTokenHandling() throws IOException {
+        String csvData = "value1;value2;invalid_token\nvalue3;value4";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+        parser.getRecords(); // This should trigger an IOException due to invalid token
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+```2026-04-03 07:46:01,432 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 10859
+2026-04-03 07:46:01,442 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:46:01,443 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:46:18,804 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:46:18,814 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:46:18,815 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:46:36,185 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:46:36,187 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:46:36,188 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:46:53,699 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:46:53,701 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:46:53,701 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:47:11,107 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:47:11,109 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:47:11,109 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:47:28,602 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testParseEmptyCSVString() throws IOException {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the parser correctly trims whitespace from input records.
+  test_name: |
+    testTrimmedInputRecords
+  test_code: |
+    @Test
+    public void testTrimmedInputRecords() throws IOException {
+        String csvData = "  value1; value2;  \n  value3; value4;  ";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrim());
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertEquals("value3", records.get(1).get(0));
+        assertEquals("value4", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+
+- test_behavior: |
+    Test that the parser correctly handles trailing delimiters in records.
+  test_name: |
+    testTrailingDelimiters
+  test_code: |
+    @Test
+    public void testTrailingDelimiters() throws IOException {
+        String csvData = "value1;value2;\nvalue3;value4;\n";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertEquals("value3", records.get(1).get(0));
+        assertEquals("value4", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+
+- test_behavior: |
+    Test that the parser correctly maps headers in a case-insensitive manner.
+  test_name: |
+    testCaseSensitivityInHeaderMapping
+  test_code: |
+    @Test
+    public void testCaseSensitivityInHeaderMapping() throws IOException {
+        String csvData = "Header1;header2;HEADER3\nvalue1;value2;value3";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withHeader().withIgnoreHeaderCase(true));
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        
+        assertEquals(0, (int) headerMap.get("header1"));
+        assertEquals(1, (int) headerMap.get("header2"));
+        assertEquals(2, (int) headerMap.get("header3"));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+
+- test_behavior: |
+    Test that the parser correctly skips header records when specified.
+  test_name: |
+    testSkipHeaderRecords
+  test_code: |
+    @Test
+    public void testSkipHeaderRecords() throws IOException {
+        String csvData = "header1;header2\nvalue1;value2\nvalue3;value4";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withSkipHeaderRecord(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertEquals("value3", records.get(1).get(0));
+        assertEquals("value4", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+
+- test_behavior: |
+    Test that the parser throws an IOException for invalid tokens in the input.
+  test_name: |
+    testInvalidTokenHandling
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testInvalidTokenHandling() throws IOException {
+        String csvData = "value1;value2;invalid_token\nvalue3;value4";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+        parser.getRecords(); // This should trigger an IOException due to invalid token
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+```2026-04-03 07:47:48,145 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8823
+2026-04-03 07:47:48,155 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:47:48,155 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:48:06,493 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:48:06,495 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:48:06,495 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:48:24,441 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:48:24,443 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:48:24,443 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:48:42,383 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:48:42,385 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:48:42,385 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:49:00,821 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:49:00,824 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:49:00,824 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:49:17,701 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testParseEmptyCSVString() throws IOException {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the parser trims whitespace from input records correctly.
+  test_name: |
+    testTrimmedInputRecords
+  test_code: |
+    @Test
+    public void testTrimmedInputRecords() throws IOException {
+        String csvData = "  value1; value2;  \n  value3; value4;  ";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrim());
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertEquals("value3", records.get(1).get(0));
+        assertEquals("value4", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+
+- test_behavior: |
+    Test that the parser correctly handles trailing delimiters in the input.
+  test_name: |
+    testTrailingDelimiters
+  test_code: |
+    @Test
+    public void testTrailingDelimiters() throws IOException {
+        String csvData = "value1;value2;\nvalue3;value4;\n";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertEquals("value3", records.get(1).get(0));
+        assertEquals("value4", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+
+- test_behavior: |
+    Test that the parser correctly maps headers in a case-insensitive manner.
+  test_name: |
+    testCaseSensitivityInHeaderMapping
+  test_code: |
+    @Test
+    public void testCaseSensitivityInHeaderMapping() throws IOException {
+        String csvData = "Header1;header2;HEADER3\nvalue1;value2;value3";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withHeader().withIgnoreHeaderCase(true));
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        
+        assertEquals(0, (int) headerMap.get("header1"));
+        assertEquals(1, (int) headerMap.get("header2"));
+        assertEquals(2, (int) headerMap.get("header3"));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+
+- test_behavior: |
+    Test that the parser skips the header records correctly.
+  test_name: |
+    testSkipHeaderRecords
+  test_code: |
+    @Test
+    public void testSkipHeaderRecords() throws IOException {
+        String csvData = "header1;header2\nvalue1;value2\nvalue3;value4";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withSkipHeaderRecord(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(2, records.size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertEquals("value3", records.get(1).get(0));
+        assertEquals("value4", records.get(1).get(1));
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+
+- test_behavior: |
+    Test that the parser throws an IOException for invalid tokens in the input.
+  test_name: |
+    testInvalidTokenHandling
+  test_code: |
+    @Test(expected = IOException.class)
+    public void testInvalidTokenHandling() throws IOException {
+        String csvData = "value1;value2;invalid_token\nvalue3;value4";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT);
+        parser.getRecords(); // This should trigger an IOException due to invalid token
+    }
+  new_imports_code: |
+    import static org.apache.commons.csv.CSVFormat;
+```2026-04-03 07:49:34,654 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8823
+2026-04-03 07:49:34,665 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:49:34,666 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:49:51,300 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:49:51,302 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:49:51,302 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:50:08,144 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:50:08,147 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:50:08,147 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:50:24,731 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:50:24,733 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:50:24,733 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:50:41,256 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:50:41,258 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:50:41,258 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:50:57,822 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:50:57,823 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:51:23,332 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+2026-04-03 07:51:23,362 - panta.panta - INFO - Iteration 6 cannot increase coverage.
+2026-04-03 07:51:23,362 - panta.panta - INFO - Current line Coverage: 75.25%, branch coverage: 58.93%
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test trimming behavior for input with trailing delimiters.
+    method_context:
+      method_signature_hint: |
+        private void addRecordValue(boolean lastRecord)
+      entry_hint: |
+        public List<CSVRecord> getRecords()
+    execution_flow: |
+      1. Call getRecords() with a CSV input containing trailing delimiters.
+      2. During record processing, addRecordValue(...) is reached.
+      3. The trimming logic for the last record is executed based on the trailing delimiter setting.
+    input_focus: |
+      Provide a CSV input string like "value1,value2," with the format set to allow trailing delimiters.
+    observable_behavior: |
+      Verify that the last record is processed correctly, ensuring that trailing empty values are handled according to the format settings.
+
+  - design_name: |
+      Test handling of duplicate headers in the CSV format.
+    method_context:
+      method_signature_hint: |
+        private Map<String, Integer> initializeHeader()
+      entry_hint: |
+        public CSVParser parse(Reader reader, CSVFormat format)
+    execution_flow: |
+      1. Call parse() with a Reader containing CSV data with duplicate headers.
+      2. During header initialization, initializeHeader() is reached.
+      3. The logic for checking duplicate headers is executed.
+    input_focus: |
+      Use a Reader that provides CSV data like "header1,header2,header1" with a format that does not allow duplicates.
+    observable_behavior: |
+      Check that an IllegalArgumentException is thrown due to the duplicate header names.
+
+  - design_name: |
+      Test behavior when the CSV format specifies case-insensitive headers.
+    method_context:
+      method_signature_hint: |
+        private Map<String, Integer> initializeHeader()
+      entry_hint: |
+        public CSVParser parse(Reader reader, CSVFormat format)
+    execution_flow: |
+      1. Call parse() with a Reader containing CSV data with mixed-case headers.
+      2. During header initialization, initializeHeader() is reached.
+      3. The logic for handling case-insensitive headers is executed.
+    input_focus: |
+      Provide a Reader with CSV data like "Header1,header2" and set the format to ignore case.
+    observable_behavior: |
+      Verify that the header map correctly maps both "Header1" and "header1" to the same index.
+
+  - design_name: |
+      Test the behavior of the parser when it encounters comments in the CSV input.
+    method_context:
+      method_signature_hint: |
+        private CSVRecord nextRecord()
+      entry_hint: |
+        public List<CSVRecord> getRecords()
+    execution_flow: |
+      1. Call getRecords() with a CSV input that includes comments.
+      2. During record parsing, nextRecord() is reached.
+      3. The logic for ignoring comments is executed.
+    input_focus: |
+      Use a CSV string like "# This is a comment\nvalue1,value2" to test comment handling.
+    observable_behavior: |
+      Check that the resulting records do not include any data from the comment lines.
+
+  - design_name: |
+      Test the behavior of the parser when the input stream is closed prematurely.
+    method_context:
+      method_signature_hint: |
+        private CSVRecord nextRecord()
+      entry_hint: |
+        public List<CSVRecord> getRecords()
+    execution_flow: |
+      1. Call getRecords() with a Reader that simulates an early closure.
+      2. During record parsing, nextRecord() is reached.
+      3. The logic for handling EOF and closed streams is executed.
+    input_focus: |
+      Provide a Reader that throws an IOException when read after a certain point.
+    observable_behavior: |
+      Verify that the appropriate exception is thrown when attempting to read past the closed stream.
+```
+
+```yaml
+language: Java
+existing_test_function_signature: public void testGetRecordsWithComments() throws IOException
+new_tests:
+  - test_behavior: Test trimming behavior for input with trailing delimiters.
+    test_name: testGetRecordsWithTrailingDelimiter
+    test_code: |
+      @Test
+      public void testGetRecordsWithTrailingDelimiter() throws IOException {
+          String csvData = "value1,value2,";
+          CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrailingDelimiter(true));
+          List<CSVRecord> records = parser.getRecords();
+          
+          assertEquals(1, records.size());
+          assertEquals(3, records.get(0).size());
+          assertEquals("value1", records.get(0).get(0));
+          assertEquals("value2", records.get(0).get(1));
+          assertNull(records.get(0).get(2)); // The last value should be null due to trailing delimiter
+      }
+  - test_behavior: Test handling of duplicate headers in the CSV format.
+    test_name: testParseWithDuplicateHeaders
+    test_code: |
+      @Test(expected = IllegalArgumentException.class)
+      public void testParseWithDuplicateHeaders() throws IOException {
+          String csvData = "header1,header2,header1\nvalue1,value2,value3";
+          CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withHeader());
+          parser.getRecords(); // This should trigger the header initialization and throw an exception
+      }
+  - test_behavior: Test behavior when the CSV format specifies case-insensitive headers.
+    test_name: testCaseInsensitiveHeaders
+    test_code: |
+      @Test
+      public void testCaseInsensitiveHeaders() throws IOException {
+          String csvData = "Header1,value1\nheader1,value2";
+          CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withHeader().withIgnoreHeaderCase(true));
+          Map<String, Integer> headerMap = parser.getHeaderMap();
+          
+          assertEquals(1, headerMap.get("Header1").intValue());
+          assertEquals(1, headerMap.get("header1").intValue()); // Both should map to the same index
+      }
+  - test_behavior: Test the behavior of the parser when it encounters comments in the CSV input.
+    test_name: testGetRecordsWithComments
+    test_code: |
+      @Test
+      public void testGetRecordsWithComments() throws IOException {
+          String csvData = "# This is a comment\nvalue1,value2";
+          CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withCommentMarker('#'));
+          List<CSVRecord> records = parser.getRecords();
+          
+          assertEquals(1, records.size());
+          assertEquals(2, records.get(0).size());
+          assertEquals("value1", records.get(0).get(0));
+          assertEquals("value2", records.get(0).get(1));
+      }
+```2026-04-03 07:51:49,387 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 9115
+2026-04-03 07:51:49,394 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:51:49,395 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:52:11,918 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:52:11,921 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:52:11,921 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:52:28,969 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:52:28,971 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:52:28,972 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:52:50,917 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:52:50,920 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:52:50,920 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:53:07,982 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:53:07,983 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:53:32,156 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test(expected = IllegalArgumentException.class)
+  public void testParseWithDuplicateHeaders() throws IOException {
+    String csvData = "header1,header2,header1\nvalue1,value2,value3";
+    CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withHeader());
+    parser.getRecords(); // This should trigger the header initialization and throw an exception
+  }
+new_tests:
+- test_behavior: |
+    Test that the parser correctly handles CSV strings with trailing delimiters.
+  test_name: |
+    testGetRecordsWithTrailingDelimiter
+  test_code: |
+    @Test
+    public void testGetRecordsWithTrailingDelimiter() throws IOException {
+        String csvData = "value1,value2,";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        assertEquals(3, records.get(0).size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertNull(records.get(0).get(2)); // The last value should be null due to trailing delimiter
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertNull;
+- test_behavior: |
+    Test that the parser throws an exception when duplicate headers are present.
+  test_name: |
+    testParseWithDuplicateHeaders
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseWithDuplicateHeaders() throws IOException {
+        String csvData = "header1,header2,header1\nvalue1,value2,value3";
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withHeader());
+        parser.getRecords(); // This should trigger the header initialization and throw an exception
+    }
+  new_imports_code: |
+    import java.io.StringReader;
+- test_behavior: |
+    Test that the parser correctly handles case insensitive headers.
+  test_name: |
+    testCaseInsensitiveHeaders
+  test_code: |
+    @Test
+    public void testCaseInsensitiveHeaders() throws IOException {
+        String csvData = "Header1,value1\nheader1,value2";
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withHeader().withIgnoreHeaderCase(true));
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        
+        assertEquals(0, headerMap.get("Header1").intValue());
+        assertEquals(0, headerMap.get("header1").intValue()); // Both should map to the same index
+    }
+  new_imports_code: |
+    import java.io.StringReader;
+- test_behavior: |
+    Test that the parser correctly handles comments in CSV data.
+  test_name: |
+    testGetRecordsWithComments
+  test_code: |
+    @Test
+    public void testGetRecordsWithComments() throws IOException {
+        String csvData = "# This is a comment\nvalue1,value2";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withCommentMarker('#'));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        assertEquals(2, records.get(0).size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+    }
+  new_imports_code: |
+    import java.io.StringReader;
+```2026-04-03 07:53:47,471 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 9087
+2026-04-03 07:53:47,479 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:53:47,479 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:54:08,701 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:54:08,703 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:54:08,703 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:54:25,035 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:54:25,037 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:54:25,037 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:54:46,604 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:54:46,606 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:54:46,607 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:55:03,215 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test(expected = IllegalArgumentException.class)
+  public void testParseWithDuplicateHeaders() throws IOException {
+    String csvData = "header1,header2,header1\nvalue1,value2,value3";
+    CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withHeader());
+    parser.getRecords(); // This should trigger the header initialization and throw an exception
+  }
+new_tests:
+- test_behavior: |
+    Test that the parser correctly handles CSV strings with trailing delimiters.
+  test_name: |
+    testGetRecordsWithTrailingDelimiter
+  test_code: |
+    @Test
+    public void testGetRecordsWithTrailingDelimiter() throws IOException {
+        String csvData = "value1,value2,";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        assertEquals(3, records.get(0).size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertNull(records.get(0).get(2)); // The last value should be null due to trailing delimiter
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertNull;
+- test_behavior: |
+    Test that the parser throws an exception when duplicate headers are present.
+  test_name: |
+    testParseWithDuplicateHeaders
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseWithDuplicateHeaders() throws IOException {
+        String csvData = "header1,header2,header1\nvalue1,value2,value3";
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withHeader());
+        parser.getRecords(); // This should trigger the header initialization and throw an exception
+    }
+  new_imports_code: |
+    import java.io.StringReader;
+- test_behavior: |
+    Test that the parser correctly handles case insensitive headers.
+  test_name: |
+    testCaseInsensitiveHeaders
+  test_code: |
+    @Test
+    public void testCaseInsensitiveHeaders() throws IOException {
+        String csvData = "Header1,value1\nheader1,value2";
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withHeader().withIgnoreHeaderCase(true));
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        
+        assertEquals(0, headerMap.get("Header1").intValue());
+        assertEquals(0, headerMap.get("header1").intValue()); // Both should map to the same index
+    }
+  new_imports_code: |
+    import java.io.StringReader;
+- test_behavior: |
+    Test that the parser correctly handles comments in CSV input.
+  test_name: |
+    testGetRecordsWithComments
+  test_code: |
+    @Test
+    public void testGetRecordsWithComments() throws IOException {
+        String csvData = "# This is a comment\nvalue1,value2";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withCommentMarker('#'));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        assertEquals(2, records.get(0).size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+    }
+  new_imports_code: |
+    import java.io.StringReader;
+```2026-04-03 07:55:19,477 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 9052
+2026-04-03 07:55:19,487 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:55:19,488 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:55:41,394 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:55:41,397 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:55:41,397 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:55:58,489 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:55:58,491 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:55:58,491 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:56:20,850 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:56:20,854 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:56:20,854 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:56:38,196 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test(expected = IllegalArgumentException.class)
+  public void testParseWithDuplicateHeaders() throws IOException {
+    String csvData = "header1,header2,header1\nvalue1,value2,value3";
+    CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withHeader());
+    parser.getRecords(); // This should trigger the header initialization and throw an exception
+  }
+new_tests:
+- test_behavior: |
+    Test that the parser correctly handles CSV strings with trailing delimiters.
+  test_name: |
+    testGetRecordsWithTrailingDelimiter
+  test_code: |
+    @Test
+    public void testGetRecordsWithTrailingDelimiter() throws IOException {
+        String csvData = "value1,value2,";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withTrailingDelimiter(true));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        assertEquals(3, records.get(0).size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+        assertNull(records.get(0).get(2)); // The last value should be null due to trailing delimiter
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertNull;
+- test_behavior: |
+    Test that the parser throws an exception when duplicate headers are present.
+  test_name: |
+    testParseWithDuplicateHeaders
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseWithDuplicateHeaders() throws IOException {
+        String csvData = "header1,header2,header1\nvalue1,value2,value3";
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withHeader());
+        parser.getRecords(); // This should trigger the header initialization and throw an exception
+    }
+  new_imports_code: |
+    import java.io.StringReader;
+- test_behavior: |
+    Test that the parser correctly handles case insensitive headers.
+  test_name: |
+    testCaseInsensitiveHeaders
+  test_code: |
+    @Test
+    public void testCaseInsensitiveHeaders() throws IOException {
+        String csvData = "Header1,value1\nheader1,value2";
+        CSVParser parser = CSVParser.parse(new StringReader(csvData), CSVFormat.DEFAULT.withHeader().withIgnoreHeaderCase(true));
+        Map<String, Integer> headerMap = parser.getHeaderMap();
+        
+        assertEquals(0, headerMap.get("Header1").intValue());
+        assertEquals(0, headerMap.get("header1").intValue()); // Both should map to the same index
+    }
+  new_imports_code: |
+    import java.io.StringReader;
+- test_behavior: |
+    Test that the parser correctly handles comments in the CSV.
+  test_name: |
+    testGetRecordsWithComments
+  test_code: |
+    @Test
+    public void testGetRecordsWithComments() throws IOException {
+        String csvData = "# This is a comment\nvalue1,value2";
+        CSVParser parser = CSVParser.parse(csvData, CSVFormat.DEFAULT.withCommentMarker('#'));
+        List<CSVRecord> records = parser.getRecords();
+        
+        assertEquals(1, records.size());
+        assertEquals(2, records.get(0).size());
+        assertEquals("value1", records.get(0).get(0));
+        assertEquals("value2", records.get(0).get(1));
+    }
+  new_imports_code: |
+    import java.io.StringReader;
+```2026-04-03 07:56:52,135 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 9052
+2026-04-03 07:56:52,145 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:56:52,146 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:57:13,191 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:57:13,193 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:57:13,193 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:57:29,569 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:57:29,570 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:57:29,571 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:57:50,920 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-03 07:57:50,922 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVParserTest.java
+2026-04-03 07:57:50,923 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:58:07,337 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-03 07:58:07,338 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=CSVParserTest"
+2026-04-03 07:58:31,797 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+2026-04-03 07:58:31,829 - panta.panta - INFO - Iteration 7 cannot increase coverage.
+2026-04-03 07:58:31,829 - panta.panta - ERROR - Reached maximum iteration limit without improving coverage. Current Coverage: (75.25%, 58.93%)
+2026-04-03 07:58:31,851 - panta.panta - INFO - Report generated successfully at: ../../result-files/control_gpt-4o-mini/
+
+

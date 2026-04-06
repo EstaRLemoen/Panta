@@ -1,0 +1,2688 @@
+2026-04-06 09:20:38,386 - panta.panta - INFO - CFG snapshot directory created: cfg_snapshot_test/intermediate/cfg/PackageFunctions_20260406_092038_853abfa1
+2026-04-06 09:20:46,227 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:21:13,116 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JxPath-22f/target/jacoco/jacoco.csv
+2026-04-06 09:21:13,151 - panta.panta - INFO - Current line Coverage: 0.0%, branch coverage: 0.0%
+2026-04-06 09:21:13,152 - panta.panta - INFO - initial tests generation using baseline type of prompt
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the function returns null when the namespace does not match.
+  test_name: |
+    testGetFunctionWithDifferentNamespace
+  test_code: |
+    @Test
+    public void testGetFunctionWithDifferentNamespace() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("differentNamespace", "Date.new", null);
+        assertNull(result);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.Function;
+- test_behavior: |
+    Test that the function returns null when the method name does not exist.
+  test_name: |
+    testGetFunctionWithInvalidMethodName
+  test_code: |
+    @Test
+    public void testGetFunctionWithInvalidMethodName() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "InvalidMethodName", null);
+        assertNull(result);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.Function;
+- test_behavior: |
+    Test that the function throws JXPathException when the class cannot be found.
+  test_name: |
+    testGetFunctionThrowsExceptionOnClassNotFound
+  test_code: |
+    @Test(expected = JXPathException.class)
+    public void testGetFunctionThrowsExceptionOnClassNotFound() {
+        PackageFunctions packageFunctions = new PackageFunctions("invalid.package.", "util");
+        packageFunctions.getFunction("util", "SomeClass.new", null);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.JXPathException;
+- test_behavior: |
+    Test that the function returns a MethodFunction when a valid static method is found.
+  test_name: |
+    testGetFunctionReturnsMethodFunction
+  test_code: |
+    @Test
+    public void testGetFunctionReturnsMethodFunction() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{"foo"});
+        assertNotNull(result);
+        assertTrue(result instanceof MethodFunction);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.Function;
+    import org.apache.commons.jxpath.functions.MethodFunction;
+```2026-04-06 09:21:27,328 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 3595
+2026-04-06 09:21:27,338 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:21:27,339 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:21:52,072 - panta.unit_test_generator - INFO - Generated test has passed: testGetFunctionWithDifferentNamespace
+
+2026-04-06 09:21:52,074 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:21:52,074 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:22:12,394 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:22:12,397 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:22:12,398 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:22:37,203 - panta.unit_test_generator - INFO - Generated test has passed: testGetFunctionThrowsExceptionOnClassNotFound
+
+2026-04-06 09:22:37,205 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:22:37,205 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:23:03,361 - panta.unit_test_generator - INFO - Generated test has passed: testGetFunctionReturnsMethodFunction
+
+2026-04-06 09:23:03,362 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:23:29,657 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JxPath-22f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetFunctionWithInvalidMethodName() {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the function returns null when an invalid method name is provided.
+  test_name: |
+    testGetFunctionWithInvalidMethodName
+  test_code: |
+    @Test
+    public void testGetFunctionWithInvalidMethodName() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "InvalidMethodName", null);
+        assertNull(result);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.Function;
+```2026-04-06 09:23:35,756 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 3844
+2026-04-06 09:23:35,760 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:23:35,760 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:23:57,162 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetFunctionWithDifferentNamespace() {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the function returns null when an invalid method name is provided.
+  test_name: |
+    testGetFunctionWithInvalidMethodName
+  test_code: |
+    @Test
+    public void testGetFunctionWithInvalidMethodName() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "InvalidMethodName", null);
+        assertNull(result);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.Function;
+```2026-04-06 09:24:01,318 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 3843
+2026-04-06 09:24:01,322 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:24:01,323 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:24:22,260 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetFunctionWithInvalidMethodName() {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the function returns null when an invalid method name is provided.
+  test_name: |
+    testGetFunctionWithInvalidMethodName
+  test_code: |
+    @Test
+    public void testGetFunctionWithInvalidMethodName() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "InvalidMethodName", null);
+        assertNull(result);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.Function;
+```2026-04-06 09:24:27,888 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 3844
+2026-04-06 09:24:27,892 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:24:27,892 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:24:49,313 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:24:49,315 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:25:15,436 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JxPath-22f/target/jacoco/jacoco.csv
+2026-04-06 09:25:15,454 - panta.panta - INFO - Iteration 0 increased line coverage 70.0%, branch coverage 47.5%
+2026-04-06 09:25:15,455 - panta.panta - INFO - Current line Coverage: 70.0%, branch coverage: 47.5%
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test behavior when namespace is null but class prefix is set.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a null namespace and a valid class prefix.
+      2. The branch checking the namespace condition is reached.
+      3. The method returns null due to the namespace mismatch.
+    input_focus: |
+      Provide a valid name and parameters while setting the namespace argument to null.
+    observable_behavior: |
+      Verify that the return value is null, indicating that the function was not found due to the namespace condition.
+
+  - design_name: |
+      Test method lookup when target is a NodeSet.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and name.
+      2. Pass a NodeSet as the first parameter.
+      3. The branch checking if the target is a NodeSet is taken.
+    input_focus: |
+      Create a NodeSet instance and pass it as the first parameter along with a valid method name.
+    observable_behavior: |
+      Check that the correct method is looked up and returned based on the NodeSet's pointers.
+
+  - design_name: |
+      Test method lookup when target is a Collection with no elements.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and name.
+      2. Pass an empty Collection as the first parameter.
+      3. The branch checking if the target is a Collection is taken, leading to an empty target.
+    input_focus: |
+      Provide an empty Collection as the first parameter along with a valid method name.
+    observable_behavior: |
+      Verify that the method lookup does not proceed further and returns null due to the empty Collection.
+
+  - design_name: |
+      Test exception handling for class not found during method lookup.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and name.
+      2. Provide parameters that will lead to a ClassNotFoundException.
+      3. The exception handling branch is reached, throwing a JXPathException.
+    input_focus: |
+      Use a name that corresponds to a non-existent class and provide valid parameters.
+    observable_behavior: |
+      Check that a JXPathException is thrown, indicating that the class could not be found during the method lookup.
+
+  - design_name: |
+      Test behavior when method name is "new" and constructor is not found.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and name set to "new".
+      2. Provide parameters that do not match any constructor.
+      3. The branch checking for constructor existence is reached.
+    input_focus: |
+      Provide a valid class prefix and parameters that do not correspond to any constructor.
+    observable_behavior: |
+      Verify that the method returns null, indicating that no constructor was found for the specified parameters.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testGetFunctionReturnsMethodFunction()
+new_tests:
+  - test_behavior: Test behavior when namespace is null but class prefix is set.
+    test_name: testGetFunctionWithNullNamespace
+    test_code: |
+      @Test
+      public void testGetFunctionWithNullNamespace() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          Function result = packageFunctions.getFunction(null, "Date.new", null);
+          assertNull(result);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test method lookup when target is a NodeSet.
+    test_name: testGetFunctionWithNodeSetTarget
+    test_code: |
+      @Test
+      public void testGetFunctionWithNodeSetTarget() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          NodeSet nodeSet = new NodeSet(); // Assuming NodeSet is a valid class
+          Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{nodeSet});
+          assertNotNull(result);
+          assertTrue(result instanceof MethodFunction);
+      }
+    new_imports_code: 'import org.apache.commons.jxpath.NodeSet;'
+
+  - test_behavior: Test method lookup when target is a Collection with no elements.
+    test_name: testGetFunctionWithEmptyCollection
+    test_code: |
+      @Test
+      public void testGetFunctionWithEmptyCollection() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          Collection<Object> emptyCollection = Collections.emptyList();
+          Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{emptyCollection});
+          assertNull(result);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test exception handling for class not found during method lookup.
+    test_name: testGetFunctionThrowsExceptionOnClassNotFound
+    test_code: |
+      @Test(expected = JXPathException.class)
+      public void testGetFunctionThrowsExceptionOnClassNotFound() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          packageFunctions.getFunction("util", "NonExistentClass.new", null);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test behavior when method name is "new" and constructor is not found.
+    test_name: testGetFunctionWithNewMethodAndNoConstructor
+    test_code: |
+      @Test
+      public void testGetFunctionWithNewMethodAndNoConstructor() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          Function result = packageFunctions.getFunction("util", "SomeClass.new", new Object[]{});
+          assertNull(result);
+      }
+    new_imports_code: ''
+```2026-04-06 09:25:41,465 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5259
+2026-04-06 09:25:41,473 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:25:41,474 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:26:06,711 - panta.unit_test_generator - INFO - Generated test has passed: testGetFunctionWithNullNamespace
+2026-04-06 09:26:06,713 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:26:06,713 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:26:22,388 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:26:22,392 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:26:22,392 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:26:42,436 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:26:42,437 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:26:42,438 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:26:57,948 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:26:57,951 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:26:57,952 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:27:19,952 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:27:19,954 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:27:46,465 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JxPath-22f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test(expected = JXPathException.class)
+  public void testGetFunctionThrowsExceptionOnClassNotFound() {
+      PackageFunctions packageFunctions = new PackageFunctions("invalid.package.", "util");
+      packageFunctions.getFunction("util", "SomeClass.new", null);
+  }
+new_tests:
+- test_behavior: |
+    Test that the function handles a NodeSet target correctly.
+  test_name: |
+    testGetFunctionWithNodeSetTarget
+  test_code: |
+    @Test
+    public void testGetFunctionWithNodeSetTarget() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        // Create a mock NodeSet since NodeSet is abstract and cannot be instantiated directly
+        NodeSet nodeSet = new NodeSet() {
+            // Implement necessary methods for the test
+        };
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{nodeSet});
+        assertNotNull(result);
+        assertTrue(result instanceof MethodFunction);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.NodeSet;
+- test_behavior: |
+    Test that the function returns null when an empty collection is passed.
+  test_name: |
+    testGetFunctionWithEmptyCollection
+  test_code: |
+    @Test
+    public void testGetFunctionWithEmptyCollection() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Collection<Object> emptyCollection = Collections.emptyList();
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{emptyCollection});
+        assertNull(result);
+    }
+  new_imports_code: |
+- test_behavior: |
+    Test that the function throws an exception when trying to access a non-existent class.
+  test_name: |
+    testGetFunctionThrowsExceptionOnClassNotFound
+  test_code: |
+    @Test(expected = JXPathException.class)
+    public void testGetFunctionThrowsExceptionOnClassNotFound() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        packageFunctions.getFunction("util", "NonExistentClass.new", null);
+    }
+  new_imports_code: |
+- test_behavior: |
+    Test that the function returns null when trying to create an instance of a class that does not exist.
+  test_name: |
+    testGetFunctionWithNewMethodAndNoConstructor
+  test_code: |
+    @Test
+    public void testGetFunctionWithNewMethodAndNoConstructor() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "SomeClass.new", new Object[]{});
+        assertNull(result);
+    }
+  new_imports_code: |
+```2026-04-06 09:27:57,273 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5411
+2026-04-06 09:27:57,282 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:27:57,282 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:28:14,128 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:28:14,129 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:28:14,129 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:28:35,929 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:28:35,932 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:28:35,932 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:28:53,444 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:28:53,447 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:28:53,447 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:29:14,330 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test(expected = JXPathException.class)
+  public void testGetFunctionThrowsExceptionOnClassNotFound() {
+      PackageFunctions packageFunctions = new PackageFunctions("invalid.package.", "util");
+      packageFunctions.getFunction("util", "SomeClass.new", null);
+  }
+new_tests:
+- test_behavior: |
+    Test that the function returns null when a NodeSet is passed as a target and does not have a valid method.
+  test_name: |
+    testGetFunctionWithNodeSetTarget
+  test_code: |
+    @Test
+    public void testGetFunctionWithNodeSetTarget() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        // Create a mock NodeSet since NodeSet is abstract and cannot be instantiated directly
+        NodeSet nodeSet = new NodeSet() {
+            @Override
+            public Set getValues() {
+                return Collections.emptySet(); // Implementing the abstract method
+            }
+        };
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{nodeSet});
+        assertNotNull(result);
+        assertTrue(result instanceof MethodFunction);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.NodeSet;
+- test_behavior: |
+    Test that the function returns null when an empty collection is passed.
+  test_name: |
+    testGetFunctionWithEmptyCollection
+  test_code: |
+    @Test
+    public void testGetFunctionWithEmptyCollection() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Collection<Object> emptyCollection = Collections.emptyList();
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{emptyCollection});
+        assertNull(result);
+    }
+  new_imports_code: |
+- test_behavior: |
+    Test that the function throws a JXPathException when trying to invoke a non-existent class.
+  test_name: |
+    testGetFunctionThrowsExceptionOnClassNotFound
+  test_code: |
+    @Test(expected = JXPathException.class)
+    public void testGetFunctionThrowsExceptionOnClassNotFound() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        packageFunctions.getFunction("util", "NonExistentClass.new", null);
+    }
+  new_imports_code: |
+- test_behavior: |
+    Test that the function returns null when trying to create an instance of a class that does not exist.
+  test_name: |
+    testGetFunctionWithNewMethodAndNoConstructor
+  test_code: |
+    @Test
+    public void testGetFunctionWithNewMethodAndNoConstructor() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "SomeClass.new", new Object[]{});
+        assertNull(result);
+    }
+  new_imports_code: |
+```2026-04-06 09:29:25,727 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5483
+2026-04-06 09:29:25,735 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:29:25,736 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:29:41,620 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:29:41,622 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:29:41,623 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:30:02,463 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:30:02,464 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:30:02,465 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:30:17,960 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:30:17,962 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:30:17,962 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:30:38,225 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test(expected = JXPathException.class)
+  public void testGetFunctionThrowsExceptionOnClassNotFound() {
+      PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+      packageFunctions.getFunction("util", "NonExistentClass.new", null);
+  }
+new_tests:
+- test_behavior: |
+    Test that the function can handle a NodeSet target correctly.
+  test_name: |
+    testGetFunctionWithNodeSetTarget
+  test_code: |
+    @Test
+    public void testGetFunctionWithNodeSetTarget() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        NodeSet nodeSet = new NodeSet() {
+            @Override
+            public List getValues() {
+                return Collections.emptyList(); // Implementing the abstract method
+            }
+        };
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{nodeSet});
+        assertNotNull(result);
+        assertTrue(result instanceof MethodFunction);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.NodeSet;
+- test_behavior: |
+    Test that the function returns null when an empty collection is passed.
+  test_name: |
+    testGetFunctionWithEmptyCollection
+  test_code: |
+    @Test
+    public void testGetFunctionWithEmptyCollection() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Collection<Object> emptyCollection = Collections.emptyList();
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{emptyCollection});
+        assertNull(result);
+    }
+  new_imports_code: |
+- test_behavior: |
+    Test that the function throws an exception when a non-existent class is requested.
+  test_name: |
+    testGetFunctionThrowsExceptionOnClassNotFound
+  test_code: |
+    @Test(expected = JXPathException.class)
+    public void testGetFunctionThrowsExceptionOnClassNotFound() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        packageFunctions.getFunction("util", "NonExistentClass.new", null);
+    }
+  new_imports_code: |
+- test_behavior: |
+    Test that the function returns null when trying to invoke a constructor for a non-existent class.
+  test_name: |
+    testGetFunctionWithNewMethodAndNoConstructor
+  test_code: |
+    @Test
+    public void testGetFunctionWithNewMethodAndNoConstructor() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "SomeClass.new", new Object[]{});
+        assertNull(result);
+    }
+  new_imports_code: |
+```2026-04-06 09:30:50,024 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5611
+2026-04-06 09:30:50,032 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:30:50,033 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:31:05,842 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:31:05,845 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:31:05,845 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:31:26,804 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:31:26,806 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:31:26,806 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:31:43,255 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:31:43,257 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:31:43,259 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:32:04,577 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:32:04,578 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:32:30,460 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JxPath-22f/target/jacoco/jacoco.csv
+2026-04-06 09:32:30,485 - panta.panta - INFO - Iteration 1 increased line coverage 0.0%, branch coverage 5.0%
+2026-04-06 09:32:30,486 - panta.panta - INFO - Current line Coverage: 70.0%, branch coverage: 52.5%
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test behavior when namespace is null but class prefix is set.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a null namespace and a valid class prefix.
+      2. The branch checking the namespace is reached and should return null.
+    input_focus: |
+      Use a valid class prefix (e.g., "java.util.") and set namespace to null.
+    observable_behavior: |
+      Verify that the returned function is null, indicating that the namespace check is functioning correctly.
+
+  - design_name: |
+      Test behavior when target is a NodeSet.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and method name.
+      2. Pass a NodeSet as the first parameter.
+      3. The branch handling NodeSet is reached, and the method lookup occurs.
+    input_focus: |
+      Provide a NodeSet as the first parameter and a valid method name that exists in the NodeSet's context.
+    observable_behavior: |
+      Check that the correct method function is returned based on the NodeSet's content.
+
+  - design_name: |
+      Test behavior when the target is a Collection with no elements.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and method name.
+      2. Pass an empty Collection as the first parameter.
+      3. The branch checking if the Collection has elements is reached.
+    input_focus: |
+      Use an empty Collection as the first parameter and a valid method name.
+    observable_behavior: |
+      Verify that the method lookup does not proceed and that the function returned is null.
+
+  - design_name: |
+      Test behavior when the method name is "new" and constructor is not found.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and "Classname.new" as the method name.
+      2. Pass parameters that do not match any constructor.
+      3. The branch for constructor lookup is reached, and the constructor is not found.
+    input_focus: |
+      Use a valid namespace, "Classname.new" as the method name, and parameters that do not match any constructor.
+    observable_behavior: |
+      Check that the returned function is null, indicating that the constructor lookup handled the absence correctly.
+
+  - design_name: |
+      Test exception handling when the class cannot be found.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and a method name that leads to a non-existent class.
+      2. The branch attempting to load the class is reached, resulting in a ClassNotFoundException.
+    input_focus: |
+      Use a valid namespace and a method name that corresponds to a non-existent class.
+    observable_behavior: |
+      Verify that a JXPathException is thrown, indicating that the exception handling for class loading is functioning as expected.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testGetFunctionWithDifferentNamespace()
+new_tests:
+  - test_behavior: Test behavior when namespace is null but class prefix is set.
+    test_name: testGetFunctionWithNullNamespaceAndValidPrefix
+    test_code: |
+      @Test
+      public void testGetFunctionWithNullNamespaceAndValidPrefix() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          Function result = packageFunctions.getFunction(null, "Date.new", null);
+          assertNull(result);
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test behavior when target is a NodeSet.
+    test_name: testGetFunctionWithNodeSetAsFirstParameter
+    test_code: |
+      @Test
+      public void testGetFunctionWithNodeSetAsFirstParameter() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          NodeSet nodeSet = new NodeSet(); // Assuming NodeSet is a valid class
+          Function result = packageFunctions.getFunction("util", "someMethod", new Object[]{nodeSet});
+          assertNotNull(result); // Assuming someMethod exists in the context of NodeSet
+          assertTrue(result instanceof MethodFunction);
+      }
+    new_imports_code: "import org.apache.commons.jxpath.NodeSet;"
+
+  - test_behavior: Test behavior when the target is a Collection with no elements.
+    test_name: testGetFunctionWithEmptyCollection
+    test_code: |
+      @Test
+      public void testGetFunctionWithEmptyCollection() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          Collection<Object> emptyCollection = Collections.emptyList();
+          Function result = packageFunctions.getFunction("util", "someMethod", new Object[]{emptyCollection});
+          assertNull(result);
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test behavior when the method name is "new" and constructor is not found.
+    test_name: testGetFunctionWithInvalidConstructor
+    test_code: |
+      @Test
+      public void testGetFunctionWithInvalidConstructor() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          Function result = packageFunctions.getFunction("util", "NonExistentClass.new", new Object[]{});
+          assertNull(result);
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test exception handling when the class cannot be found.
+    test_name: testGetFunctionThrowsExceptionOnClassNotFound
+    test_code: |
+      @Test(expected = JXPathException.class)
+      public void testGetFunctionThrowsExceptionOnClassNotFound() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          packageFunctions.getFunction("util", "InvalidClass.new", null);
+      }
+    new_imports_code: ""
+```2026-04-06 09:32:57,218 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5311
+2026-04-06 09:32:57,230 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:32:57,231 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:33:21,698 - panta.unit_test_generator - INFO - Generated test has passed: testGetFunctionWithNullNamespaceAndValidPrefix
+2026-04-06 09:33:21,700 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:33:21,700 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:33:37,494 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:33:37,498 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:33:37,498 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:33:58,299 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:33:58,303 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:33:58,303 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:34:16,196 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:34:16,198 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:34:16,198 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:34:30,016 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:34:30,017 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:34:54,759 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JxPath-22f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test(expected = JXPathException.class)
+  public void testGetFunctionThrowsExceptionOnClassNotFound() {
+      PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+      packageFunctions.getFunction("util", "InvalidClass.new", null);
+  }
+new_tests:
+- test_behavior: |
+    Test that the function handles NodeSet as the first parameter correctly.
+  test_name: |
+    testGetFunctionWithNodeSetAsFirstParameter
+  test_code: |
+    @Test
+    public void testGetFunctionWithNodeSetAsFirstParameter() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        // Create a mock NodeSet since NodeSet is abstract
+        NodeSet nodeSet = new MockNodeSet(); // Assuming MockNodeSet is a valid implementation of NodeSet
+        Function result = packageFunctions.getFunction("util", "someMethod", new Object[]{nodeSet});
+        assertNotNull(result); // Assuming someMethod exists in the context of NodeSet
+        assertTrue(result instanceof MethodFunction);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.NodeSet;
+    import org.apache.commons.jxpath.MockNodeSet; // Assuming this is a valid mock implementation
+
+- test_behavior: |
+    Test that the function returns null when an empty collection is passed.
+  test_name: |
+    testGetFunctionWithEmptyCollection
+  test_code: |
+    @Test
+    public void testGetFunctionWithEmptyCollection() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Collection<Object> emptyCollection = Collections.emptyList();
+        Function result = packageFunctions.getFunction("util", "someMethod", new Object[]{emptyCollection});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import java.util.Collection;
+    import java.util.Collections;
+
+- test_behavior: |
+    Test that the function returns null for an invalid constructor.
+  test_name: |
+    testGetFunctionWithInvalidConstructor
+  test_code: |
+    @Test
+    public void testGetFunctionWithInvalidConstructor() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "NonExistentClass.new", new Object[]{});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.Function;
+
+- test_behavior: |
+    Test that the function throws an exception when an invalid class is requested.
+  test_name: |
+    testGetFunctionThrowsExceptionOnInvalidClass
+  test_code: |
+    @Test(expected = JXPathException.class)
+    public void testGetFunctionThrowsExceptionOnInvalidClass() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        packageFunctions.getFunction("util", "InvalidClass.new", null);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.JXPathException;
+```2026-04-06 09:35:06,291 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5647
+2026-04-06 09:35:06,300 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:35:06,300 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:35:23,184 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:35:23,186 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:35:23,186 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:35:44,080 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:35:44,083 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:35:44,083 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:36:05,798 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:36:05,800 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:36:05,802 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:36:33,091 - panta.unit_test_generator - INFO - Generated test has passed: testGetFunctionThrowsExceptionOnInvalidClass
+
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetFunctionWithDifferentNamespace() {
+      PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+      Function result = packageFunctions.getFunction("differentNamespace", "Date.new", null);
+      assertNull(result);
+  }
+new_tests:
+- test_behavior: |
+    Test that the function can handle a NodeSet as the first parameter correctly.
+  test_name: |
+    testGetFunctionWithNodeSetAsFirstParameter
+  test_code: |
+    @Test
+    public void testGetFunctionWithNodeSetAsFirstParameter() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        NodeSet nodeSet = new MockNodeSet(); // Assuming MockNodeSet is a valid implementation of NodeSet
+        Function result = packageFunctions.getFunction("util", "someMethod", new Object[]{nodeSet});
+        assertNotNull(result); // Assuming someMethod exists in the context of NodeSet
+        assertTrue(result instanceof MethodFunction);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.NodeSet;
+    import org.apache.commons.jxpath.MockNodeSet; // Assuming this is a valid mock implementation
+- test_behavior: |
+    Test that the function returns null when an empty collection is passed.
+  test_name: |
+    testGetFunctionWithEmptyCollection
+  test_code: |
+    @Test
+    public void testGetFunctionWithEmptyCollection() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Collection<Object> emptyCollection = Collections.emptyList();
+        Function result = packageFunctions.getFunction("util", "someMethod", new Object[]{emptyCollection});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import java.util.Collection;
+    import java.util.Collections;
+- test_behavior: |
+    Test that the function handles an invalid constructor call gracefully.
+  test_name: |
+    testGetFunctionWithInvalidConstructor
+  test_code: |
+    @Test
+    public void testGetFunctionWithInvalidConstructor() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "NonExistentClass.new", new Object[]{});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.Function;
+```2026-04-06 09:36:42,644 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5571
+2026-04-06 09:36:42,651 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:36:42,651 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:36:59,146 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:36:59,148 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:36:59,149 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:37:19,603 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:37:19,606 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:37:19,607 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:37:39,530 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetFunctionWithDifferentNamespace() {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the function works with a NodeSet as the first parameter.
+  test_name: |
+    testGetFunctionWithNodeSetAsFirstParameter
+  test_code: |
+    @Test
+    public void testGetFunctionWithNodeSetAsFirstParameter() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        NodeSet nodeSet = new MockNodeSet(); // Assuming MockNodeSet is a valid implementation of NodeSet
+        Function result = packageFunctions.getFunction("util", "someMethod", new Object[]{nodeSet});
+        assertNotNull(result); // Assuming someMethod exists in the context of NodeSet
+        assertTrue(result instanceof MethodFunction);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.NodeSet;
+    import org.apache.commons.jxpath.MockNodeSet; // Assuming this is a valid mock implementation
+- test_behavior: |
+    Test that the function returns null when an empty collection is passed.
+  test_name: |
+    testGetFunctionWithEmptyCollection
+  test_code: |
+    @Test
+    public void testGetFunctionWithEmptyCollection() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Collection<Object> emptyCollection = Collections.emptyList();
+        Function result = packageFunctions.getFunction("util", "someMethod", new Object[]{emptyCollection});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import java.util.Collection;
+    import java.util.Collections;
+- test_behavior: |
+    Test that the function handles an invalid constructor gracefully.
+  test_name: |
+    testGetFunctionWithInvalidConstructor
+  test_code: |
+    @Test
+    public void testGetFunctionWithInvalidConstructor() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "NonExistentClass.new", new Object[]{});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.Function;
+```2026-04-06 09:37:48,602 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5523
+2026-04-06 09:37:48,609 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:37:48,610 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:38:04,411 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:38:04,414 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:38:04,415 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:38:24,766 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:38:24,768 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:38:24,769 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:38:45,320 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:38:45,322 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:39:10,663 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JxPath-22f/target/jacoco/jacoco.csv
+2026-04-06 09:39:10,687 - panta.panta - INFO - Iteration 2 cannot increase coverage.
+2026-04-06 09:39:10,688 - panta.panta - INFO - Current line Coverage: 70.0%, branch coverage: 52.5%
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test behavior when namespace is null but expected.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a null namespace while the instance has a non-null namespace.
+      2. The branch checking for namespace equality is reached.
+      3. The method returns null due to the namespace mismatch.
+    input_focus: |
+      Pass null as the namespace argument and provide a valid method name and parameters.
+    observable_behavior: |
+      Verify that the return value is null, indicating that the function lookup failed due to namespace mismatch.
+
+  - design_name: |
+      Test method lookup failure for a non-existent method.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and a method name that does not exist.
+      2. The method attempts to look up the method and reaches the failure branch.
+      3. The method returns null as the method is not found.
+    input_focus: |
+      Use a valid namespace and a method name that is guaranteed not to exist, along with any parameters.
+    observable_behavior: |
+      Check that the return value is null, confirming that the method lookup correctly identified the absence of the method.
+
+  - design_name: |
+      Test handling of empty collections during method invocation.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and a method name.
+      2. Pass an empty collection as the first parameter.
+      3. The branch checking if the collection has elements is reached, leading to a null target.
+    input_focus: |
+      Provide an empty collection as the first parameter and a valid method name.
+    observable_behavior: |
+      Verify that the method returns null, indicating that no method could be invoked due to the empty collection.
+
+  - design_name: |
+      Test constructor invocation failure due to missing constructor.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and a constructor name that does not exist.
+      2. The method attempts to look up the constructor and reaches the failure branch.
+      3. The method returns null as the constructor is not found.
+    input_focus: |
+      Use a valid namespace and a constructor name that is guaranteed not to exist, along with any parameters.
+    observable_behavior: |
+      Check that the return value is null, confirming that the constructor lookup correctly identified the absence of the constructor.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public Function getFunction(String namespace, String name, Object[] parameters)
+new_tests:
+  - test_behavior: Test behavior when namespace is null but expected.
+    test_name: testGetFunctionWithNullNamespaceExpected
+    test_code: |
+      @Test
+      public void testGetFunctionWithNullNamespaceExpected() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          Function result = packageFunctions.getFunction(null, "Date.new", null);
+          assertNull(result);
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test method lookup failure for a non-existent method.
+    test_name: testGetFunctionWithNonExistentMethod
+    test_code: |
+      @Test
+      public void testGetFunctionWithNonExistentMethod() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          Function result = packageFunctions.getFunction("util", "NonExistentMethod", new Object[]{});
+          assertNull(result);
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test handling of empty collections during method invocation.
+    test_name: testGetFunctionWithEmptyCollection
+    test_code: |
+      @Test
+      public void testGetFunctionWithEmptyCollection() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{Collections.emptyList()});
+          assertNull(result);
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test constructor invocation failure due to missing constructor.
+    test_name: testGetFunctionWithNonExistentConstructor
+    test_code: |
+      @Test
+      public void testGetFunctionWithNonExistentConstructor() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          Function result = packageFunctions.getFunction("util", "NonExistentConstructor.new", new Object[]{});
+          assertNull(result);
+      }
+    new_imports_code: ""
+```2026-04-06 09:39:31,642 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5068
+2026-04-06 09:39:31,650 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:39:31,650 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:39:57,952 - panta.unit_test_generator - INFO - Generated test has passed: testGetFunctionWithNullNamespaceExpected
+2026-04-06 09:39:57,954 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:39:57,955 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:40:19,847 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:40:19,849 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:40:19,849 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:40:41,406 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:40:41,409 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:40:41,409 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:41:02,023 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:41:02,024 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:41:26,665 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JxPath-22f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetFunctionWithNonExistentMethod() {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the function returns null when a non-existent method is requested.
+  test_name: |
+    testGetFunctionWithNonExistentMethod
+  test_code: |
+    @Test
+    public void testGetFunctionWithNonExistentMethod() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "NonExistentMethod", new Object[]{});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.Function;
+- test_behavior: |
+    Test that the function returns null when an empty collection is passed to a method that expects a non-empty collection.
+  test_name: |
+    testGetFunctionWithEmptyCollection
+  test_code: |
+    @Test
+    public void testGetFunctionWithEmptyCollection() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{Collections.emptyList()});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import java.util.Collections;
+    import org.apache.commons.jxpath.Function;
+- test_behavior: |
+    Test that the function returns null when a non-existent constructor is requested.
+  test_name: |
+    testGetFunctionWithNonExistentConstructor
+  test_code: |
+    @Test
+    public void testGetFunctionWithNonExistentConstructor() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "NonExistentConstructor.new", new Object[]{});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.Function;
+```2026-04-06 09:41:36,877 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5953
+2026-04-06 09:41:36,884 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:41:36,884 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:41:57,099 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:41:57,102 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:41:57,103 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:42:17,498 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:42:17,501 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:42:17,502 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:42:37,978 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetFunctionWithNonExistentMethod() {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the function returns null when a non-existent method is requested.
+  test_name: |
+    testGetFunctionWithNonExistentMethod
+  test_code: |
+    @Test
+    public void testGetFunctionWithNonExistentMethod() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "NonExistentMethod", new Object[]{});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.Function;
+- test_behavior: |
+    Test that the function returns null when an empty collection is passed to a method that expects a non-empty collection.
+  test_name: |
+    testGetFunctionWithEmptyCollection
+  test_code: |
+    @Test
+    public void testGetFunctionWithEmptyCollection() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{Collections.emptyList()});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import java.util.Collections;
+    import org.apache.commons.jxpath.Function;
+- test_behavior: |
+    Test that the function returns null when a non-existent constructor is requested.
+  test_name: |
+    testGetFunctionWithNonExistentConstructor
+  test_code: |
+    @Test
+    public void testGetFunctionWithNonExistentConstructor() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "NonExistentConstructor.new", new Object[]{});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.Function;
+```2026-04-06 09:42:46,378 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5979
+2026-04-06 09:42:46,384 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:42:46,385 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:43:06,871 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:43:06,873 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:43:06,874 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:43:27,825 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:43:27,828 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:43:27,828 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:43:48,951 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetFunctionWithNonExistentMethod() {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the function returns null when a non-existent method is requested.
+  test_name: |
+    testGetFunctionWithNonExistentMethod
+  test_code: |
+    @Test
+    public void testGetFunctionWithNonExistentMethod() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "NonExistentMethod", new Object[]{});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.Function;
+- test_behavior: |
+    Test that the function returns null when an empty collection is passed to a method that expects a non-empty collection.
+  test_name: |
+    testGetFunctionWithEmptyCollection
+  test_code: |
+    @Test
+    public void testGetFunctionWithEmptyCollection() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{Collections.emptyList()});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import java.util.Collections;
+    import org.apache.commons.jxpath.Function;
+- test_behavior: |
+    Test that the function returns null when a non-existent constructor is requested.
+  test_name: |
+    testGetFunctionWithNonExistentConstructor
+  test_code: |
+    @Test
+    public void testGetFunctionWithNonExistentConstructor() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "NonExistentConstructor.new", new Object[]{});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.Function;
+```2026-04-06 09:43:57,315 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5979
+2026-04-06 09:43:57,322 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:43:57,322 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:44:18,851 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:44:18,853 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:44:18,854 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:44:40,125 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:44:40,127 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:44:40,128 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:45:01,496 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:45:01,497 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:45:26,939 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JxPath-22f/target/jacoco/jacoco.csv
+2026-04-06 09:45:26,960 - panta.panta - INFO - Iteration 3 cannot increase coverage.
+2026-04-06 09:45:26,961 - panta.panta - INFO - Current line Coverage: 70.0%, branch coverage: 52.5%
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test behavior when namespace is null but expected.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a null namespace and a valid name.
+      2. The branch checking the namespace condition is reached.
+      3. The method returns null due to the namespace mismatch.
+    input_focus: |
+      Pass null as the namespace and a valid method name that matches the expected namespace.
+    observable_behavior: |
+      Verify that the return value is null, indicating that the function was not found due to the namespace condition.
+
+  - design_name: |
+      Test method lookup with a null target.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and name, but with parameters leading to a null target.
+      2. The branch checking if the target is null is reached.
+      3. The method returns null as no function can be found.
+    input_focus: |
+      Provide parameters where the first element leads to a null target after conversion.
+    observable_behavior: |
+      Check that the return value is null, confirming that no method function was found due to the null target.
+
+  - design_name: |
+      Test method lookup for a NodeSet target.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and name, passing a NodeSet as the first parameter.
+      2. The branch checking if the target is an instance of NodeSet is reached.
+      3. The method attempts to retrieve pointers from the NodeSet.
+    input_focus: |
+      Pass a NodeSet object as the first parameter along with a valid method name.
+    observable_behavior: |
+      Verify that the method function is correctly resolved from the pointers in the NodeSet.
+
+  - design_name: |
+      Test constructor lookup with a valid class name.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and a constructor name.
+      2. The branch checking if the method name equals "new" is reached.
+      3. The method attempts to look up the constructor for the specified class.
+    input_focus: |
+      Provide a valid class name that exists in the specified namespace and valid parameters for the constructor.
+    observable_behavior: |
+      Check that the returned function is a ConstructorFunction, indicating successful constructor resolution.
+
+  - design_name: |
+      Test exception handling for class not found.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and a name that leads to a non-existent class.
+      2. The branch attempting to load the class is reached.
+      3. A JXPathException is thrown due to the class not being found.
+    input_focus: |
+      Use a class name that does not exist in the specified namespace.
+    observable_behavior: |
+      Verify that a JXPathException is thrown, indicating the class could not be found.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public Function getFunction(String namespace, String name, Object[] parameters)
+new_tests:
+  - test_behavior: Test behavior when namespace is null but expected.
+    test_name: testGetFunctionWithNullNamespaceExpected
+    test_code: |
+      @Test
+      public void testGetFunctionWithNullNamespaceExpected() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          Function result = packageFunctions.getFunction(null, "Date.new", null);
+          assertNull(result);
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test method lookup with a null target.
+    test_name: testGetFunctionWithNullTarget
+    test_code: |
+      @Test
+      public void testGetFunctionWithNullTarget() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{null});
+          assertNull(result);
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test method lookup for a NodeSet target.
+    test_name: testGetFunctionWithNodeSetTarget
+    test_code: |
+      @Test
+      public void testGetFunctionWithNodeSetTarget() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          NodeSet nodeSet = new NodeSet(); // Assuming NodeSet is a valid class
+          Function result = packageFunctions.getFunction("util", "someMethod", new Object[]{nodeSet});
+          assertNotNull(result);
+          assertTrue(result instanceof MethodFunction);
+      }
+    new_imports_code: "import org.apache.commons.jxpath.NodeSet;"
+
+  - test_behavior: Test constructor lookup with a valid class name.
+    test_name: testGetFunctionWithValidConstructor
+    test_code: |
+      @Test
+      public void testGetFunctionWithValidConstructor() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          Function result = packageFunctions.getFunction("util", "Date.new", null);
+          assertNotNull(result);
+          assertTrue(result instanceof ConstructorFunction);
+      }
+    new_imports_code: "import org.apache.commons.jxpath.functions.ConstructorFunction;"
+
+  - test_behavior: Test exception handling for class not found.
+    test_name: testGetFunctionThrowsExceptionOnClassNotFound
+    test_code: |
+      @Test(expected = JXPathException.class)
+      public void testGetFunctionThrowsExceptionOnClassNotFound() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          packageFunctions.getFunction("util", "NonExistentClass.new", null);
+      }
+    new_imports_code: ""
+```2026-04-06 09:45:52,584 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5468
+2026-04-06 09:45:52,594 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:45:52,595 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:46:08,729 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:46:08,731 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:46:08,731 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:46:29,362 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:46:29,364 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:46:29,365 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:46:45,446 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:46:45,449 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:46:45,449 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:47:11,620 - panta.unit_test_generator - INFO - Generated test has passed: testGetFunctionWithValidConstructor
+2026-04-06 09:47:11,622 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:47:11,623 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:47:28,287 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:47:28,288 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:47:54,971 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JxPath-22f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test(expected = JXPathException.class)
+  public void testGetFunctionThrowsExceptionOnClassNotFound() {
+      PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+      packageFunctions.getFunction("util", "NonExistentClass.new", null);
+  }
+new_tests:
+- test_behavior: |
+    Test that the function returns null when the namespace is null.
+  test_name: |
+    testGetFunctionWithNullNamespace
+  test_code: |
+    @Test
+    public void testGetFunctionWithNullNamespace() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction(null, "Date.new", null);
+        assertNull(result);
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that the function returns null when the target is null.
+  test_name: |
+    testGetFunctionWithNullTarget
+  test_code: |
+    @Test
+    public void testGetFunctionWithNullTarget() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{null});
+        assertNull(result);
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that the function throws an exception when trying to instantiate an abstract NodeSet.
+  test_name: |
+    testGetFunctionWithNodeSetTarget
+  test_code: |
+    @Test
+    public void testGetFunctionWithNodeSetTarget() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        // Create a mock or a concrete implementation of NodeSet
+        NodeSet nodeSet = new ConcreteNodeSet(); // Assuming ConcreteNodeSet is a valid implementation
+        Function result = packageFunctions.getFunction("util", "someMethod", new Object[]{nodeSet});
+        assertNotNull(result);
+        assertTrue(result instanceof MethodFunction);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.NodeSet;
+  
+- test_behavior: |
+    Test that the function throws an exception when the class is not found.
+  test_name: |
+    testGetFunctionThrowsExceptionOnClassNotFound
+  test_code: |
+    @Test(expected = JXPathException.class)
+    public void testGetFunctionThrowsExceptionOnClassNotFound() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        packageFunctions.getFunction("util", "NonExistentClass.new", null);
+    }
+  new_imports_code: |
+```2026-04-06 09:48:05,160 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 4863
+2026-04-06 09:48:05,169 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:48:05,169 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:48:21,638 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:48:21,641 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:48:21,641 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:48:43,614 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:48:43,617 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:48:43,617 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:49:00,314 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:49:00,316 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:49:00,317 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:49:16,748 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetFunctionThrowsExceptionOnClassNotFound() {
+      PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+      packageFunctions.getFunction("util", "NonExistentClass.new", null);
+  }
+new_tests:
+- test_behavior: |
+    Test that the function returns null when the namespace is null.
+  test_name: |
+    testGetFunctionWithNullNamespaceFixed
+  test_code: |
+    @Test
+    public void testGetFunctionWithNullNamespaceFixed() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction(null, "Date.new", null);
+        assertNull(result);
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that the function returns null when the target parameter is null.
+  test_name: |
+    testGetFunctionWithNullTarget
+  test_code: |
+    @Test
+    public void testGetFunctionWithNullTarget() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{null});
+        assertNull(result);
+    }
+  new_imports_code: |
+  
+- test_behavior: |
+    Test that the function returns a MethodFunction when a NodeSet is passed as the target.
+  test_name: |
+    testGetFunctionWithNodeSetTarget
+  test_code: |
+    @Test
+    public void testGetFunctionWithNodeSetTarget() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        NodeSet nodeSet = new NodeSet() {
+            // Implement necessary methods for NodeSet
+        };
+        Function result = packageFunctions.getFunction("util", "someMethod", new Object[]{nodeSet});
+        assertNotNull(result);
+        assertTrue(result instanceof MethodFunction);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.NodeSet;
+
+- test_behavior: |
+    Test that the function throws JXPathException when a class is not found.
+  test_name: |
+    testGetFunctionThrowsExceptionOnClassNotFoundFixed
+  test_code: |
+    @Test(expected = JXPathException.class)
+    public void testGetFunctionThrowsExceptionOnClassNotFoundFixed() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        packageFunctions.getFunction("util", "NonExistentClass.new", null);
+    }
+  new_imports_code: |
+```2026-04-06 09:49:26,901 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 4878
+2026-04-06 09:49:26,910 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:49:26,911 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:49:52,182 - panta.unit_test_generator - INFO - Generated test has passed: testGetFunctionWithNullNamespaceFixed
+
+2026-04-06 09:49:52,183 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:49:52,183 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:50:12,649 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:50:12,651 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:50:12,652 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:50:28,950 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:50:28,952 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:50:28,953 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:50:53,663 - panta.unit_test_generator - INFO - Generated test has passed: testGetFunctionThrowsExceptionOnClassNotFoundFixed
+
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetFunctionWithNullTarget() {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the function returns null when the target is null.
+  test_name: |
+    testGetFunctionWithNullTarget
+  test_code: |
+    @Test
+    public void testGetFunctionWithNullTarget() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{null});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.Function;
+- test_behavior: |
+    Test that the function returns a MethodFunction when a NodeSet is passed as a target.
+  test_name: |
+    testGetFunctionWithNodeSetTarget
+  test_code: |
+    @Test
+    public void testGetFunctionWithNodeSetTarget() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        NodeSet nodeSet = new NodeSet() {
+            @Override
+            public Set getValues() {
+                return Collections.emptySet(); // Implement as needed
+            }
+        };
+        Function result = packageFunctions.getFunction("util", "someMethod", new Object[]{nodeSet});
+        assertNotNull(result);
+        assertTrue(result instanceof MethodFunction);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.NodeSet;
+    import org.apache.commons.jxpath.Function;
+```2026-04-06 09:51:00,487 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 4487
+2026-04-06 09:51:00,493 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:51:00,493 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:51:21,971 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:51:21,975 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:51:21,975 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:51:39,196 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:51:39,197 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:52:05,954 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JxPath-22f/target/jacoco/jacoco.csv
+2026-04-06 09:52:05,975 - panta.panta - INFO - Iteration 4 increased line coverage 6.67%, branch coverage 5.0%
+2026-04-06 09:52:05,975 - panta.panta - INFO - Current line Coverage: 76.67%, branch coverage: 57.5%
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test behavior when namespace is null but class namespace is set.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a null namespace.
+      2. The branch checking if the provided namespace is null is taken.
+      3. The method returns null as the namespaces do not match.
+    input_focus: |
+      Pass null as the namespace while providing a valid name and parameters.
+    observable_behavior: |
+      Verify that the method returns null, indicating that the function was not found due to namespace mismatch.
+
+  - design_name: |
+      Test method lookup when target is a NodeSet.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and name.
+      2. Pass a NodeSet as the first parameter.
+      3. The branch checking if the target is an instance of NodeSet is taken.
+    input_focus: |
+      Provide a NodeSet as the first parameter along with a valid method name and other parameters.
+    observable_behavior: |
+      Check that the correct method is looked up and returned based on the NodeSet's pointers.
+
+  - design_name: |
+      Test behavior when the target is a Collection with no elements.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and name.
+      2. Pass an empty Collection as the first parameter.
+      3. The branch checking if the Collection has elements is taken, leading to a null target.
+    input_focus: |
+      Provide an empty Collection as the first parameter along with a valid method name and other parameters.
+    observable_behavior: |
+      Verify that the method returns null, indicating that no method could be found due to the empty Collection.
+
+  - design_name: |
+      Test exception handling for class not found during method lookup.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and name.
+      2. Provide parameters that would lead to a class not found scenario.
+      3. The branch that throws JXPathException is reached.
+    input_focus: |
+      Use a class name that does not exist in the classpath as part of the method name.
+    observable_behavior: |
+      Check that a JXPathException is thrown, indicating that the class could not be found.
+
+  - design_name: |
+      Test constructor lookup when parameters are provided.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and a constructor name.
+      2. Provide parameters that match the constructor's signature.
+      3. The branch checking for constructor lookup is taken.
+    input_focus: |
+      Pass a valid constructor name along with parameters that match its expected types.
+    observable_behavior: |
+      Verify that the correct ConstructorFunction is returned based on the provided parameters.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testGetFunctionWithDifferentNamespace()
+new_tests:
+  - test_behavior: Test behavior when namespace is null but class namespace is set.
+    test_name: testGetFunctionWithNullNamespaceAndValidName
+    test_code: |
+      @Test
+      public void testGetFunctionWithNullNamespaceAndValidName() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          Function result = packageFunctions.getFunction(null, "Date.new", null);
+          assertNull(result);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test method lookup when target is a NodeSet.
+    test_name: testGetFunctionWithNodeSetAsTarget
+    test_code: |
+      @Test
+      public void testGetFunctionWithNodeSetAsTarget() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          NodeSet nodeSet = new NodeSet() {
+              @Override
+              public Iterator getPointers() {
+                  return Collections.singleton(new Pointer() {
+                      @Override
+                      public Object getValue() {
+                          return new ArrayList<String>() {{
+                              add("foo");
+                          }};
+                      }
+                  }).iterator();
+              }
+          };
+          Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{nodeSet});
+          assertNotNull(result);
+          assertTrue(result instanceof MethodFunction);
+      }
+    new_imports_code: |
+      import org.apache.commons.jxpath.NodeSet;
+      import org.apache.commons.jxpath.Pointer;
+
+  - test_behavior: Test behavior when the target is a Collection with no elements.
+    test_name: testGetFunctionWithEmptyCollection
+    test_code: |
+      @Test
+      public void testGetFunctionWithEmptyCollection() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{Collections.emptyList()});
+          assertNull(result);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test exception handling for class not found during method lookup.
+    test_name: testGetFunctionThrowsExceptionOnInvalidClassDuringMethodLookup
+    test_code: |
+      @Test(expected = JXPathException.class)
+      public void testGetFunctionThrowsExceptionOnInvalidClassDuringMethodLookup() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          packageFunctions.getFunction("util", "InvalidClass.new", null);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test constructor lookup when parameters are provided.
+    test_name: testGetFunctionWithValidConstructorAndParameters
+    test_code: |
+      @Test
+      public void testGetFunctionWithValidConstructorAndParameters() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          Function result = packageFunctions.getFunction("util", "Date.new", new Object[]{});
+          assertNotNull(result);
+          assertTrue(result instanceof ConstructorFunction);
+      }
+    new_imports_code: ''
+```2026-04-06 09:52:33,332 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5660
+2026-04-06 09:52:33,342 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:52:33,343 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:52:59,847 - panta.unit_test_generator - INFO - Generated test has passed: testGetFunctionWithNullNamespaceAndValidName
+2026-04-06 09:52:59,849 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:52:59,849 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:53:15,964 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:53:15,967 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:53:15,967 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:53:35,974 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:53:35,977 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:53:35,977 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:54:00,887 - panta.unit_test_generator - INFO - Generated test has passed: testGetFunctionThrowsExceptionOnInvalidClassDuringMethodLookup
+2026-04-06 09:54:00,890 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:54:00,890 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:54:25,186 - panta.unit_test_generator - INFO - Generated test has passed: testGetFunctionWithValidConstructorAndParameters
+2026-04-06 09:54:25,186 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:54:50,281 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JxPath-22f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetFunctionWithEmptyCollection() {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the function returns a MethodFunction when a NodeSet is passed as a target.
+  test_name: |
+    testGetFunctionWithNodeSetAsTarget
+  test_code: |
+    @Test
+    public void testGetFunctionWithNodeSetAsTarget() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        NodeSet nodeSet = new NodeSet() {
+            @Override
+            public Iterator getPointers() {
+                return Collections.singleton(new Pointer() {
+                    @Override
+                    public Object getValue() {
+                        return "foo";
+                    }
+                    @Override
+                    public String asPath() {
+                        return "foo";
+                    }
+                }).iterator();
+            }
+            @Override
+            public List getValues() {
+                return Collections.singletonList("foo");
+            }
+        };
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{nodeSet});
+        assertNotNull(result);
+        assertTrue(result instanceof MethodFunction);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.NodeSet;
+    import org.apache.commons.jxpath.Pointer;
+    import java.util.Collections;
+    import java.util.List;
+- test_behavior: |
+    Test that the function returns null when an empty collection is passed.
+  test_name: |
+    testGetFunctionWithEmptyCollection
+  test_code: |
+    @Test
+    public void testGetFunctionWithEmptyCollection() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{Collections.emptyList()});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import java.util.Collections;
+```2026-04-06 09:54:58,402 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5087
+2026-04-06 09:54:58,408 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:54:58,408 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:55:15,491 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:55:15,492 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:55:15,493 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:55:36,830 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetFunctionWithEmptyCollection() {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the function correctly handles a NodeSet as a target for method invocation.
+  test_name: |
+    testGetFunctionWithNodeSetAsTarget
+  test_code: |
+    @Test
+    public void testGetFunctionWithNodeSetAsTarget() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        NodeSet nodeSet = new NodeSet() {
+            @Override
+            public Iterator<Pointer> getPointers() {
+                return Collections.singleton(new Pointer() {
+                    @Override
+                    public Object getValue() {
+                        return "foo";
+                    }
+                    @Override
+                    public String asPath() {
+                        return "foo";
+                    }
+                    @Override
+                    public NodeSet getRootNode() {
+                        return null; // Implement as needed
+                    }
+                }).iterator();
+            }
+            @Override
+            public List<Object> getValues() {
+                return Collections.singletonList("foo");
+            }
+        };
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{nodeSet});
+        assertNotNull(result);
+        assertTrue(result instanceof MethodFunction);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.NodeSet;
+    import org.apache.commons.jxpath.Pointer;
+    import java.util.Collections;
+    import java.util.List;
+- test_behavior: |
+    Test that the function returns null when an empty collection is passed.
+  test_name: |
+    testGetFunctionWithEmptyCollection
+  test_code: |
+    @Test
+    public void testGetFunctionWithEmptyCollection() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{Collections.emptyList()});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import java.util.Collections;
+```2026-04-06 09:55:45,092 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5098
+2026-04-06 09:55:45,099 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:55:45,099 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:56:02,143 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:56:02,146 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:56:02,146 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:56:23,478 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetFunctionWithEmptyCollection() {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the function returns a MethodFunction when a NodeSet is passed as a target.
+  test_name: |
+    testGetFunctionWithNodeSetAsTarget
+  test_code: |
+    @Test
+    public void testGetFunctionWithNodeSetAsTarget() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        NodeSet nodeSet = new NodeSet() {
+            @Override
+            public Iterator<Pointer> getPointers() {
+                return Collections.singleton(new Pointer() {
+                    @Override
+                    public Object getValue() {
+                        return "foo";
+                    }
+                    @Override
+                    public String asPath() {
+                        return "foo";
+                    }
+                    @Override
+                    public NodeSet getRootNode() {
+                        return null; // Implement as needed
+                    }
+                    @Override
+                    public void setValue(Object value) {
+                        // Implement as needed
+                    }
+                }).iterator();
+            }
+            @Override
+            public List<Object> getValues() {
+                return Collections.singletonList("foo");
+            }
+        };
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{nodeSet});
+        assertNotNull(result);
+        assertTrue(result instanceof MethodFunction);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.NodeSet;
+    import org.apache.commons.jxpath.Pointer;
+    import java.util.Collections;
+    import java.util.List;
+- test_behavior: |
+    Test that the function returns null when an empty collection is passed.
+  test_name: |
+    testGetFunctionWithEmptyCollection
+  test_code: |
+    @Test
+    public void testGetFunctionWithEmptyCollection() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{Collections.emptyList()});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import java.util.Collections;
+```2026-04-06 09:56:32,193 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5237
+2026-04-06 09:56:32,197 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:56:32,197 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:56:49,144 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:56:49,146 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:56:49,146 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:57:10,296 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:57:10,297 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:57:35,082 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JxPath-22f/target/jacoco/jacoco.csv
+2026-04-06 09:57:35,103 - panta.panta - INFO - Iteration 5 cannot increase coverage.
+2026-04-06 09:57:35,103 - panta.panta - INFO - Current line Coverage: 76.67%, branch coverage: 57.5%
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test behavior when namespace is null and class namespace is set.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a null namespace.
+      2. The branch checking if the provided namespace is null is taken.
+      3. The method returns null due to namespace mismatch.
+    input_focus: |
+      Pass null as the namespace argument while providing a valid method name and parameters.
+    observable_behavior: |
+      Verify that the return value is null, indicating that the function was not found due to namespace mismatch.
+
+  - design_name: |
+      Test method lookup when target is a NodeSet.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and method name.
+      2. Provide a NodeSet as the first parameter.
+      3. The branch for handling NodeSet is taken, leading to method lookup.
+    input_focus: |
+      Create a NodeSet object and pass it as the first parameter along with a valid method name.
+    observable_behavior: |
+      Check that the method lookup proceeds correctly and returns a valid MethodFunction based on the NodeSet.
+
+  - design_name: |
+      Test method lookup when the target is a Collection with no elements.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and method name.
+      2. Pass an empty Collection as the first parameter.
+      3. The branch for handling empty Collection is taken, leading to a null target.
+    input_focus: |
+      Provide an empty Collection as the first parameter along with a valid method name.
+    observable_behavior: |
+      Verify that the method lookup does not find a valid method and returns null.
+
+  - design_name: |
+      Test exception handling when class cannot be found.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and method name.
+      2. Provide parameters that will lead to a ClassNotFoundException.
+      3. The exception handling branch is executed, throwing a JXPathException.
+    input_focus: |
+      Use a method name that corresponds to a non-existent class in the specified namespace.
+    observable_behavior: |
+      Check that a JXPathException is thrown, indicating that the class could not be found.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public Function getFunction(String namespace, String name, Object[] parameters)
+new_tests:
+  - test_behavior: Test behavior when namespace is null and class namespace is set.
+    test_name: testGetFunctionWithNullNamespaceAndValidMethod
+    test_code: |
+      @Test
+      public void testGetFunctionWithNullNamespaceAndValidMethod() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          Function result = packageFunctions.getFunction(null, "Date.new", null);
+          assertNull(result);
+      }
+    new_imports_code: ""
+    
+  - test_behavior: Test method lookup when target is a NodeSet.
+    test_name: testGetFunctionWithNodeSetAsTarget
+    test_code: |
+      @Test
+      public void testGetFunctionWithNodeSetAsTarget() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          NodeSet nodeSet = new NodeSet(); // Assuming NodeSet is a valid class
+          Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{nodeSet});
+          assertNotNull(result);
+          assertTrue(result instanceof MethodFunction);
+      }
+    new_imports_code: "import org.apache.commons.jxpath.NodeSet;"
+    
+  - test_behavior: Test method lookup when the target is a Collection with no elements.
+    test_name: testGetFunctionWithEmptyCollection
+    test_code: |
+      @Test
+      public void testGetFunctionWithEmptyCollection() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          Collection<Object> emptyCollection = Collections.emptyList();
+          Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{emptyCollection});
+          assertNull(result);
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test exception handling when class cannot be found.
+    test_name: testGetFunctionThrowsExceptionOnClassNotFoundDuringMethodLookup
+    test_code: |
+      @Test(expected = JXPathException.class)
+      public void testGetFunctionThrowsExceptionOnClassNotFoundDuringMethodLookup() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          packageFunctions.getFunction("util", "NonExistentClass.new", null);
+      }
+    new_imports_code: ""
+```2026-04-06 09:57:56,323 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5469
+2026-04-06 09:57:56,332 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:57:56,333 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:58:21,916 - panta.unit_test_generator - INFO - Generated test has passed: testGetFunctionWithNullNamespaceAndValidMethod
+2026-04-06 09:58:21,917 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:58:21,918 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:58:38,222 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 09:58:38,224 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:58:38,224 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:58:58,498 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 09:58:58,500 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:58:58,500 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:59:25,187 - panta.unit_test_generator - INFO - Generated test has passed: testGetFunctionThrowsExceptionOnClassNotFoundDuringMethodLookup
+2026-04-06 09:59:25,188 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 09:59:52,134 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JxPath-22f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetFunctionWithEmptyCollection() {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the function returns a MethodFunction when a NodeSet is passed as a target.
+  test_name: |
+    testGetFunctionWithNodeSetAsTarget
+  test_code: |
+    @Test
+    public void testGetFunctionWithNodeSetAsTarget() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        // Create a mock NodeSet since NodeSet is abstract and cannot be instantiated directly
+        NodeSet nodeSet = new NodeSet() {
+            @Override
+            public Iterator<Pointer> getPointers() {
+                return Collections.singletonList(new Pointer() {
+                    @Override
+                    public Object getValue() {
+                        return "foo"; // Return a mock value
+                    }
+                }).iterator();
+            }
+        };
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{nodeSet});
+        assertNotNull(result);
+        assertTrue(result instanceof MethodFunction);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.NodeSet;
+    import org.apache.commons.jxpath.Pointer;
+- test_behavior: |
+    Test that the function returns null when an empty collection is passed.
+  test_name: |
+    testGetFunctionWithEmptyCollection
+  test_code: |
+    @Test
+    public void testGetFunctionWithEmptyCollection() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Collection<Object> emptyCollection = Collections.emptyList();
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{emptyCollection});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import java.util.Collection;
+    import java.util.Collections;
+```2026-04-06 09:59:59,943 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 4846
+2026-04-06 09:59:59,950 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 09:59:59,951 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 10:00:17,245 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 10:00:17,247 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 10:00:17,247 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 10:00:38,744 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetFunctionWithEmptyCollection() {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the function returns a MethodFunction when a NodeSet is passed as a target.
+  test_name: |
+    testGetFunctionWithNodeSetAsTarget
+  test_code: |
+    @Test
+    public void testGetFunctionWithNodeSetAsTarget() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        // Create a mock NodeSet since NodeSet is abstract and cannot be instantiated directly
+        NodeSet nodeSet = new NodeSet() {
+            @Override
+            public Iterator<Pointer> getPointers() {
+                return Collections.singletonList(new Pointer() {
+                    @Override
+                    public Object getValue() {
+                        return "foo"; // Return a mock value
+                    }
+                    @Override
+                    public String asPath() {
+                        return ""; // Provide a mock implementation
+                    }
+                }).iterator();
+            }
+            @Override
+            public Object[] getValues() {
+                return new Object[]{getPointers().next().getValue()}; // Provide a mock implementation
+            }
+        };
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{nodeSet});
+        assertNotNull(result);
+        assertTrue(result instanceof MethodFunction);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.NodeSet;
+    import org.apache.commons.jxpath.Pointer;
+- test_behavior: |
+    Test that the function returns null when an empty collection is passed to Collections.singleton.
+  test_name: |
+    testGetFunctionWithEmptyCollection
+  test_code: |
+    @Test
+    public void testGetFunctionWithEmptyCollection() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Collection<Object> emptyCollection = Collections.emptyList();
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{emptyCollection});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import java.util.Collection;
+    import java.util.Collections;
+```2026-04-06 10:00:47,846 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5318
+2026-04-06 10:00:47,854 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 10:00:47,854 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 10:01:04,524 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 10:01:04,526 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 10:01:04,527 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 10:01:25,098 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetFunctionWithEmptyCollection() {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the function correctly handles a NodeSet as a target for method invocation.
+  test_name: |
+    testGetFunctionWithNodeSetAsTarget
+  test_code: |
+    @Test
+    public void testGetFunctionWithNodeSetAsTarget() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        // Create a mock NodeSet since NodeSet is abstract and cannot be instantiated directly
+        NodeSet nodeSet = new NodeSet() {
+            @Override
+            public Iterator<Pointer> getPointers() {
+                return Collections.singletonList(new Pointer() {
+                    @Override
+                    public Object getValue() {
+                        return "foo"; // Return a mock value
+                    }
+                    @Override
+                    public String asPath() {
+                        return ""; // Provide a mock implementation
+                    }
+                    @Override
+                    public Object getRootNode() {
+                        return null; // Provide a mock implementation
+                    }
+                }).iterator();
+            }
+            @Override
+            public Object[] getValues() {
+                return new Object[]{getPointers().next().getValue()}; // Provide a mock implementation
+            }
+        };
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{nodeSet});
+        assertNotNull(result);
+        assertTrue(result instanceof MethodFunction);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.NodeSet;
+    import org.apache.commons.jxpath.Pointer;
+- test_behavior: |
+    Test that the function returns null when an empty collection is passed to it.
+  test_name: |
+    testGetFunctionWithEmptyCollection
+  test_code: |
+    @Test
+    public void testGetFunctionWithEmptyCollection() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Collection<Object> emptyCollection = Collections.emptyList();
+        Function result = packageFunctions.getFunction("util", "Collections.singleton", new Object[]{emptyCollection});
+        assertNull(result);
+    }
+  new_imports_code: |
+    import java.util.Collection;
+    import java.util.Collections;
+```2026-04-06 10:01:34,100 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5540
+2026-04-06 10:01:34,107 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 10:01:34,107 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 10:01:49,554 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 10:01:49,556 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 10:01:49,556 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 10:02:09,857 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 10:02:09,858 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 10:02:34,830 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JxPath-22f/target/jacoco/jacoco.csv
+2026-04-06 10:02:34,849 - panta.panta - INFO - Iteration 6 cannot increase coverage.
+2026-04-06 10:02:34,849 - panta.panta - INFO - Current line Coverage: 76.67%, branch coverage: 57.5%
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test handling of null namespace in function retrieval.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Set getUsedNamespaces()
+    execution_flow: |
+      1. Call getUsedNamespaces() to retrieve the namespace.
+      2. Inside getFunction(), the branch for null namespace is reached.
+    input_focus: |
+      Use a PackageFunctions instance initialized with a non-null namespace and call getFunction() with a null namespace.
+    observable_behavior: |
+      Verify that the function retrieval returns null as expected due to the namespace mismatch.
+
+  - design_name: |
+      Test method lookup for a valid target in a NodeSet.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and method name.
+      2. The branch checking if the target is an instance of NodeSet is taken.
+    input_focus: |
+      Provide a NodeSet as the first parameter in the parameters array, along with a valid method name.
+    observable_behavior: |
+      Check that the returned Function is correctly associated with the method found in the NodeSet.
+
+  - design_name: |
+      Test behavior when the method name is not found.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and a method name that does not exist.
+      2. The branch for method not found is reached.
+    input_focus: |
+      Use a valid namespace and a method name that is guaranteed not to exist in the specified class.
+    observable_behavior: |
+      Verify that the function retrieval returns null, indicating that the method was not found.
+
+  - design_name: |
+      Test exception handling for class loading failures.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and a method name.
+      2. The branch for class loading failure is reached when attempting to load a non-existent class.
+    input_focus: |
+      Provide a method name that corresponds to a class that does not exist in the classpath.
+    observable_behavior: |
+      Check that a JXPathException is thrown, indicating that the class could not be found.
+
+  - design_name: |
+      Test constructor lookup for a valid class with parameters.
+    method_context:
+      method_signature_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+      entry_hint: |
+        public Function getFunction(String namespace, String name, Object[] parameters)
+    execution_flow: |
+      1. Call getFunction() with a valid namespace and a constructor name.
+      2. The branch for constructor lookup is reached.
+    input_focus: |
+      Use a valid class name that has a constructor matching the provided parameters.
+    observable_behavior: |
+      Verify that the returned Function corresponds to the expected ConstructorFunction for the specified parameters.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public Function getFunction(String namespace, String name, Object[] parameters)
+new_tests:
+  - test_behavior: Test handling of null namespace in function retrieval.
+    test_name: testGetFunctionWithNullNamespaceAndNonNullPrefix
+    test_code: |
+      @Test
+      public void testGetFunctionWithNullNamespaceAndNonNullPrefix() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          Function result = packageFunctions.getFunction(null, "Date.new", null);
+          assertNull(result);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test method lookup for a valid target in a NodeSet.
+    test_name: testGetFunctionWithNodeSetTarget
+    test_code: |
+      @Test
+      public void testGetFunctionWithNodeSetTarget() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          NodeSet nodeSet = new NodeSet(); // Assuming NodeSet is a valid class in the context
+          Function result = packageFunctions.getFunction("util", "someMethod", new Object[]{nodeSet});
+          assertNotNull(result);
+          assertTrue(result instanceof MethodFunction);
+      }
+    new_imports_code: 'import org.apache.commons.jxpath.NodeSet;'
+
+  - test_behavior: Test behavior when the method name is not found.
+    test_name: testGetFunctionWithNonExistentMethod
+    test_code: |
+      @Test
+      public void testGetFunctionWithNonExistentMethod() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          Function result = packageFunctions.getFunction("util", "NonExistentMethod", null);
+          assertNull(result);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test exception handling for class loading failures.
+    test_name: testGetFunctionThrowsExceptionOnInvalidClassDuringMethodLookup
+    test_code: |
+      @Test(expected = JXPathException.class)
+      public void testGetFunctionThrowsExceptionOnInvalidClassDuringMethodLookup() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          packageFunctions.getFunction("util", "InvalidClass.new", null);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test constructor lookup for a valid class with parameters.
+    test_name: testGetFunctionWithValidConstructorAndParameters
+    test_code: |
+      @Test
+      public void testGetFunctionWithValidConstructorAndParameters() {
+          PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+          Function result = packageFunctions.getFunction("util", "Date.new", new Object[]{});
+          assertNotNull(result);
+          assertTrue(result instanceof ConstructorFunction);
+      }
+    new_imports_code: ''
+```2026-04-06 10:02:58,497 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5818
+2026-04-06 10:02:58,507 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 10:02:58,507 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 10:03:25,509 - panta.unit_test_generator - INFO - Generated test has passed: testGetFunctionWithNullNamespaceAndNonNullPrefix
+2026-04-06 10:03:25,511 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 10:03:25,512 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 10:03:42,387 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 10:03:42,389 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 10:03:42,389 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 10:04:03,825 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 10:04:03,828 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 10:04:03,829 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 10:04:20,803 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 10:04:20,805 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 10:04:20,806 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 10:04:38,104 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 10:04:38,105 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 10:05:05,214 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JxPath-22f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetFunctionWithValidConstructorAndParameters() {
+      PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+      Function result = packageFunctions.getFunction("util", "Date.new", new Object[]{});
+      assertNotNull(result);
+      assertTrue(result instanceof ConstructorFunction);
+  }
+new_tests:
+- test_behavior: |
+    Test that the function can handle a NodeSet target correctly.
+  test_name: |
+    testGetFunctionWithNodeSetTarget
+  test_code: |
+    @Test
+    public void testGetFunctionWithNodeSetTarget() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        // Create a mock NodeSet since NodeSet is abstract and cannot be instantiated directly
+        NodeSet nodeSet = new NodeSet() {
+            // Implement necessary methods for the test
+        };
+        Function result = packageFunctions.getFunction("util", "someMethod", new Object[]{nodeSet});
+        assertNotNull(result);
+        assertTrue(result instanceof MethodFunction);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.NodeSet;
+- test_behavior: |
+    Test that the function returns null for a non-existent method.
+  test_name: |
+    testGetFunctionWithNonExistentMethod
+  test_code: |
+    @Test
+    public void testGetFunctionWithNonExistentMethod() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "NonExistentMethod", null);
+        assertNull(result);
+    }
+  new_imports_code: |
+- test_behavior: |
+    Test that the function throws an exception on invalid class during method lookup.
+  test_name: |
+    testGetFunctionThrowsExceptionOnInvalidClassDuringMethodLookup
+  test_code: |
+    @Test(expected = JXPathException.class)
+    public void testGetFunctionThrowsExceptionOnInvalidClassDuringMethodLookup() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        packageFunctions.getFunction("util", "InvalidClass.new", null);
+    }
+  new_imports_code: |
+- test_behavior: |
+    Test that the function returns a valid constructor for Date with parameters.
+  test_name: |
+    testGetFunctionWithValidConstructorAndParameters
+  test_code: |
+    @Test
+    public void testGetFunctionWithValidConstructorAndParameters() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "Date.new", new Object[]{});
+        assertNotNull(result);
+        assertTrue(result instanceof ConstructorFunction);
+    }
+  new_imports_code: |
+```2026-04-06 10:05:16,198 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5521
+2026-04-06 10:05:16,209 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 10:05:16,209 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 10:05:32,179 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 10:05:32,181 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 10:05:32,181 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 10:05:52,173 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-06 10:05:52,175 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 10:05:52,176 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 10:06:07,902 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-06 10:06:07,903 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java
+2026-04-06 10:06:07,903 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 10:06:23,791 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testGetFunctionWithValidConstructorAndParameters() {
+    PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+    Function result = packageFunctions.getFunction("util", "Date.new", new Object[]{});
+    assertNotNull(result);
+    assertTrue(result instanceof ConstructorFunction);
+}
+new_tests:
+- test_behavior: |
+    Test that the function can handle a NodeSet as a target for method invocation.
+  test_name: |
+    testGetFunctionWithNodeSetTarget
+  test_code: |
+    @Test
+    public void testGetFunctionWithNodeSetTarget() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        // Create a mock NodeSet since NodeSet is abstract and cannot be instantiated directly
+        NodeSet nodeSet = new NodeSet() {
+            @Override
+            public Collection getValues() {
+                return Collections.emptyList(); // Return an empty collection for the mock
+            }
+        };
+        Function result = packageFunctions.getFunction("util", "someMethod", new Object[]{nodeSet});
+        assertNotNull(result);
+        assertTrue(result instanceof MethodFunction);
+    }
+  new_imports_code: |
+    import org.apache.commons.jxpath.NodeSet;
+- test_behavior: |
+    Test that the function returns null when a non-existent method is requested.
+  test_name: |
+    testGetFunctionWithNonExistentMethod
+  test_code: |
+    @Test
+    public void testGetFunctionWithNonExistentMethod() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "NonExistentMethod", null);
+        assertNull(result);
+    }
+  new_imports_code: |
+- test_behavior: |
+    Test that the function throws an exception when an invalid class is requested during method lookup.
+  test_name: |
+    testGetFunctionThrowsExceptionOnInvalidClassDuringMethodLookup
+  test_code: |
+    @Test(expected = JXPathException.class)
+    public void testGetFunctionThrowsExceptionOnInvalidClassDuringMethodLookup() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        packageFunctions.getFunction("util", "InvalidClass.new", null);
+    }
+  new_imports_code: |
+- test_behavior: |
+    Test that the function can handle valid constructor calls with parameters.
+  test_name: |
+    testGetFunctionWithValidConstructorAndParameters
+  test_code: |
+    @Test
+    public void testGetFunctionWithValidConstructorAndParameters() {
+        PackageFunctions packageFunctions = new PackageFunctions("java.util.", "util");
+        Function result = packageFunctions.getFunction("util", "Date.new", new Object[]{});
+        assertNotNull(result);
+        assertTrue(result instanceof ConstructorFunction);
+    }
+  new_imports_code: |
+```2026-04-06 10:06:35,004 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5585
+2026-04-06 10:06:35,051 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PackageFunctionsTest"
+2026-04-06 10:07:00,550 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JxPath-22f/target/jacoco/jacoco.csv
+2026-04-06 10:07:00,569 - panta.panta - INFO - Iteration 7 cannot increase coverage.
+2026-04-06 10:07:00,570 - panta.panta - ERROR - Reached maximum iteration limit without improving coverage. Current Coverage: (76.67%, 57.5%)
+2026-04-06 10:07:00,592 - panta.panta - INFO - Report generated successfully at: ../../result-files/control_gpt-4o-mini/
+
+

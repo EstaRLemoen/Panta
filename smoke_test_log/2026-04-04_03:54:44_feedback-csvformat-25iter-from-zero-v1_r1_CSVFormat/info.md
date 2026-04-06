@@ -1,0 +1,24 @@
+# Batch Run R1
+
+- Batch name: feedback-csvformat-25iter-from-zero-v1
+- Timestamp: 2026-04-04_03:54:44
+- Round: 1 / 1
+- Baseline test file: original `defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVFormatTest.java` contents
+- report_filepath: feedback_csvformat_25iter_from_zero_v1_r1_20260404_035444.html
+- Run status: completed
+- Process exit code: 0
+- Effective config overrides:
+  - code_coverage_report_path = defects4j-subjects-notests/Csv-16f/target/jacoco/jacoco.csv
+  - enable_advice_feedback = true
+  - enable_fixing = 3
+  - junit_version = 4
+  - llm_advice_activation_line_coverage = 100
+  - llm_advice_activation_no_growth = 25
+  - maximum_iterations = 25
+  - no_coverage_increase_iterations = 25
+  - project_directory = defects4j-subjects-notests/Csv-16f
+  - report_filepath = feedback_csvformat_25iter_from_zero_v1_r1_20260404_035444.html
+  - source_code_file = defects4j-subjects-notests/Csv-16f/src/main/java/org/apache/commons/csv/CSVFormat.java
+  - test_code_command_dir = defects4j-subjects-notests/Csv-16f/
+  - test_code_file = defects4j-subjects-notests/Csv-16f/src/test/java/org/apache/commons/csv/CSVFormatTest.java
+  - test_execution_command = mvn clean package -Dtest=CSVFormatTest
