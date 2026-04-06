@@ -79,8 +79,9 @@ Never use reflection to access private or internal methods unless the existing t
 If a design references an internal target, use it only to reason about the path and assertions; the generated test should still execute through a public or externally reachable API.
 Do not copy `entry_hint` as if it were complete test code. Build the actual invocation from the entry method identified there plus the concrete setup described in `input_focus`.
 Do not invent assertions from `execution_flow` alone when `observable_behavior` already specifies the expected public result.
-If you are uncertain about the exact expected result for a given design, you may generate at most 2 tests for that same design.
-Those tests must stay anchored to the same core scenario, entry path, and target behavior cluster from the advice; vary only the predicted externally observable outcome when necessary.
-Do not use this uncertainty rule to branch into different behavior clusters, different setup families, or unrelated public entrypoints.
+Every provided `test_design` must be represented by at least 1 generated test.
+If needed, you may generate multiple tests for the same design.
+Those tests must stay anchored to the same core scenario, entry path, and target behavior cluster from the advice; vary only the predicted externally observable outcome or concrete setup details when necessary.
+Do not use this flexibility to branch into different behavior clusters, different setup families, or unrelated public entrypoints.
 
 Response:"""
