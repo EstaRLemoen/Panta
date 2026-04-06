@@ -1,0 +1,182 @@
+{
+  "generated_on": "2026-04-05",
+  "scope": "Defects4J subject path parameters for selected target classes under defects4j-subjects-notests/",
+  "notes": [
+    "The user wrote PrototypeFactor, but the actual class in Collections-28f is PrototypeFactory.",
+    "For notests subjects, test source trees may be absent on disk. Panta can create the missing test directory and an empty test file skeleton automatically, as long as test_code_file points to the intended location.",
+    "These values are the project-specific path parameters that matter for Panta runs: project_directory, source_code_file, test_code_file, test_code_command_dir, code_coverage_report_path, and test_execution_command.",
+    "The source/test root choices below are grounded in defects4j.build.properties: d4j.dir.src.classes and d4j.dir.src.tests.",
+    "Complexity values come from evaluation/data/class_list.csv."
+  ],
+  "project_parameter_summary": [
+    {
+      "project": "Collections-28f",
+      "project_directory": "defects4j-subjects-notests/Collections-28f",
+      "source_root": "src/main/java",
+      "test_root": "src/test/java",
+      "test_code_command_dir": "defects4j-subjects-notests/Collections-28f",
+      "code_coverage_report_path": "defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv",
+      "layout_note": "Standard Maven layout. src/test/java already exists in this checkout."
+    },
+    {
+      "project": "Cli-40f",
+      "project_directory": "defects4j-subjects-notests/Cli-40f",
+      "source_root": "src/main/java",
+      "test_root": "src/test/java",
+      "test_code_command_dir": "defects4j-subjects-notests/Cli-40f",
+      "code_coverage_report_path": "defects4j-subjects-notests/Cli-40f/target/jacoco/jacoco.csv",
+      "layout_note": "Defects4J metadata says src/test/java, even though the notests checkout currently omits that tree."
+    },
+    {
+      "project": "JacksonCore-26f",
+      "project_directory": "defects4j-subjects-notests/JacksonCore-26f",
+      "source_root": "src/main/java",
+      "test_root": "src/test/java",
+      "test_code_command_dir": "defects4j-subjects-notests/JacksonCore-26f",
+      "code_coverage_report_path": "defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv",
+      "layout_note": "Standard Maven layout. src/test exists in this checkout."
+    },
+    {
+      "project": "JxPath-22f",
+      "project_directory": "defects4j-subjects-notests/JxPath-22f",
+      "source_root": "src/java",
+      "test_root": "src/test",
+      "test_code_command_dir": "defects4j-subjects-notests/JxPath-22f",
+      "code_coverage_report_path": "defects4j-subjects-notests/JxPath-22f/target/jacoco/jacoco.csv",
+      "layout_note": "Non-standard layout. Source is under src/java and tests belong under src/test."
+    }
+  ],
+  "targets": [
+    {
+      "requested_project_label": "collection-28f",
+      "actual_project_directory": "defects4j-subjects-notests/Collections-28f",
+      "requested_class_label": "MapUtils",
+      "actual_class_name": "MapUtils",
+      "complexity": 11,
+      "package_name": "org.apache.commons.collections4",
+      "source_code_file": "defects4j-subjects-notests/Collections-28f/src/main/java/org/apache/commons/collections4/MapUtils.java",
+      "test_code_file": "defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/MapUtilsTest.java",
+      "test_class_name": "MapUtilsTest",
+      "test_execution_command": "mvn clean package -Dtest=MapUtilsTest"
+    },
+    {
+      "requested_project_label": "collection-28f",
+      "actual_project_directory": "defects4j-subjects-notests/Collections-28f",
+      "requested_class_label": "PrototypeFactor",
+      "actual_class_name": "PrototypeFactory",
+      "complexity": 16,
+      "package_name": "org.apache.commons.collections4.functors",
+      "source_code_file": "defects4j-subjects-notests/Collections-28f/src/main/java/org/apache/commons/collections4/functors/PrototypeFactory.java",
+      "test_code_file": "defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java",
+      "test_class_name": "PrototypeFactoryTest",
+      "test_execution_command": "mvn clean package -Dtest=PrototypeFactoryTest",
+      "note": "Class name corrected from the user's PrototypeFactor to PrototypeFactory."
+    },
+    {
+      "requested_project_label": "cli-40f",
+      "actual_project_directory": "defects4j-subjects-notests/Cli-40f",
+      "requested_class_label": "HelpFormatter",
+      "actual_class_name": "HelpFormatter",
+      "complexity": 11,
+      "package_name": "org.apache.commons.cli",
+      "source_code_file": "defects4j-subjects-notests/Cli-40f/src/main/java/org/apache/commons/cli/HelpFormatter.java",
+      "test_code_file": "defects4j-subjects-notests/Cli-40f/src/test/java/org/apache/commons/cli/HelpFormatterTest.java",
+      "test_class_name": "HelpFormatterTest",
+      "test_execution_command": "mvn clean package -Dtest=HelpFormatterTest"
+    },
+    {
+      "requested_project_label": "cli-40f",
+      "actual_project_directory": "defects4j-subjects-notests/Cli-40f",
+      "requested_class_label": "PosixParser",
+      "actual_class_name": "PosixParser",
+      "complexity": 11,
+      "package_name": "org.apache.commons.cli",
+      "source_code_file": "defects4j-subjects-notests/Cli-40f/src/main/java/org/apache/commons/cli/PosixParser.java",
+      "test_code_file": "defects4j-subjects-notests/Cli-40f/src/test/java/org/apache/commons/cli/PosixParserTest.java",
+      "test_class_name": "PosixParserTest",
+      "test_execution_command": "mvn clean package -Dtest=PosixParserTest"
+    },
+    {
+      "requested_project_label": "JacksonCore-26f",
+      "actual_project_directory": "defects4j-subjects-notests/JacksonCore-26f",
+      "requested_class_label": "UTF8JsonGenerator",
+      "actual_class_name": "UTF8JsonGenerator",
+      "complexity": 11,
+      "package_name": "com.fasterxml.jackson.core.json",
+      "source_code_file": "defects4j-subjects-notests/JacksonCore-26f/src/main/java/com/fasterxml/jackson/core/json/UTF8JsonGenerator.java",
+      "test_code_file": "defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/json/UTF8JsonGeneratorTest.java",
+      "test_class_name": "UTF8JsonGeneratorTest",
+      "test_execution_command": "mvn clean package -Dtest=UTF8JsonGeneratorTest"
+    },
+    {
+      "requested_project_label": "JacksonCore-26f",
+      "actual_project_directory": "defects4j-subjects-notests/JacksonCore-26f",
+      "requested_class_label": "UTF32Reader",
+      "actual_class_name": "UTF32Reader",
+      "complexity": 14,
+      "package_name": "com.fasterxml.jackson.core.io",
+      "source_code_file": "defects4j-subjects-notests/JacksonCore-26f/src/main/java/com/fasterxml/jackson/core/io/UTF32Reader.java",
+      "test_code_file": "defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/UTF32ReaderTest.java",
+      "test_class_name": "UTF32ReaderTest",
+      "test_execution_command": "mvn clean package -Dtest=UTF32ReaderTest"
+    },
+    {
+      "requested_project_label": "JxPath-22f",
+      "actual_project_directory": "defects4j-subjects-notests/JxPath-22f",
+      "requested_class_label": "ValueUtils",
+      "actual_class_name": "ValueUtils",
+      "complexity": 12,
+      "package_name": "org.apache.commons.jxpath.util",
+      "source_code_file": "defects4j-subjects-notests/JxPath-22f/src/java/org/apache/commons/jxpath/util/ValueUtils.java",
+      "test_code_file": "defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/util/ValueUtilsTest.java",
+      "test_class_name": "ValueUtilsTest",
+      "test_execution_command": "mvn clean package -Dtest=ValueUtilsTest"
+    },
+    {
+      "requested_project_label": "JxPath-22f",
+      "actual_project_directory": "defects4j-subjects-notests/JxPath-22f",
+      "requested_class_label": "PackageFunctions",
+      "actual_class_name": "PackageFunctions",
+      "complexity": 18,
+      "package_name": "org.apache.commons.jxpath",
+      "source_code_file": "defects4j-subjects-notests/JxPath-22f/src/java/org/apache/commons/jxpath/PackageFunctions.java",
+      "test_code_file": "defects4j-subjects-notests/JxPath-22f/src/test/org/apache/commons/jxpath/PackageFunctionsTest.java",
+      "test_class_name": "PackageFunctionsTest",
+      "test_execution_command": "mvn clean package -Dtest=PackageFunctionsTest"
+    }
+  ],
+  "copy_paste_templates": [
+    {
+      "project": "Collections-28f",
+      "template": {
+        "project_directory": "defects4j-subjects-notests/Collections-28f",
+        "test_code_command_dir": "defects4j-subjects-notests/Collections-28f",
+        "code_coverage_report_path": "defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv"
+      }
+    },
+    {
+      "project": "Cli-40f",
+      "template": {
+        "project_directory": "defects4j-subjects-notests/Cli-40f",
+        "test_code_command_dir": "defects4j-subjects-notests/Cli-40f",
+        "code_coverage_report_path": "defects4j-subjects-notests/Cli-40f/target/jacoco/jacoco.csv"
+      }
+    },
+    {
+      "project": "JacksonCore-26f",
+      "template": {
+        "project_directory": "defects4j-subjects-notests/JacksonCore-26f",
+        "test_code_command_dir": "defects4j-subjects-notests/JacksonCore-26f",
+        "code_coverage_report_path": "defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv"
+      }
+    },
+    {
+      "project": "JxPath-22f",
+      "template": {
+        "project_directory": "defects4j-subjects-notests/JxPath-22f",
+        "test_code_command_dir": "defects4j-subjects-notests/JxPath-22f",
+        "code_coverage_report_path": "defects4j-subjects-notests/JxPath-22f/target/jacoco/jacoco.csv"
+      }
+    }
+  ]
+}
