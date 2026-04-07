@@ -1,0 +1,355 @@
+2026-04-07 06:37:40,967 - panta.panta - INFO - CFG snapshot directory created: cfg_snapshot_test/intermediate/cfg/PrototypeFactory_20260407_063740_4fd85ce8
+2026-04-07 06:37:49,512 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:38:33,450 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+2026-04-07 06:38:33,480 - panta.panta - INFO - Current line Coverage: 0.0%, branch coverage: 0.0%
+2026-04-07 06:38:33,481 - panta.panta - INFO - initial tests generation using baseline type of prompt
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+      assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the prototypeFactory method returns a ConstantFactory when the prototype is null.
+  test_name: |
+    testPrototypeFactoryWithNull
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithNull() {
+        Factory<Object> factory = PrototypeFactory.prototypeFactory(null);
+        assertNotNull(factory);
+        assertEquals(ConstantFactory.NULL_INSTANCE, factory.create());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.ConstantFactory;
+- test_behavior: |
+    Test that the prototypeFactory method returns a PrototypeCloneFactory when the prototype has a public clone method.
+  test_name: |
+    testPrototypeFactoryWithCloneMethod
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCloneMethod() throws Exception {
+        CloneablePrototype prototype = new CloneablePrototype();
+        Factory<CloneablePrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CloneablePrototype clone = factory.create();
+        assertNotSame(prototype, clone);
+        assertEquals(prototype.value, clone.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.PrototypeFactoryTest.CloneablePrototype;
+- test_behavior: |
+    Test that the prototypeFactory method returns an InstantiateFactory when the prototype has a public copy constructor.
+  test_name: |
+    testPrototypeFactoryWithCopyConstructor
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCopyConstructor() {
+        CopyConstructorPrototype prototype = new CopyConstructorPrototype(42);
+        Factory<CopyConstructorPrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CopyConstructorPrototype clone = factory.create();
+        assertNotSame(prototype, clone);
+        assertEquals(prototype.value, clone.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.PrototypeFactoryTest.CopyConstructorPrototype;
+- test_behavior: |
+    Test that the prototypeFactory method throws an IllegalArgumentException when the prototype is not cloneable.
+  test_name: |
+    testPrototypeFactoryWithNonCloneable
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testPrototypeFactoryWithNonCloneable() {
+        NonCloneablePrototype prototype = new NonCloneablePrototype();
+        PrototypeFactory.prototypeFactory(prototype);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.PrototypeFactoryTest.NonCloneablePrototype;
+- test_behavior: |
+    Test that the PrototypeSerializationFactory creates a clone using serialization.
+  test_name: |
+    testPrototypeSerializationFactory
+  test_code: |
+    @Test
+    public void testPrototypeSerializationFactory() throws Exception {
+        SerializablePrototype prototype = new SerializablePrototype("test");
+        Factory<SerializablePrototype> factory = new PrototypeFactory.PrototypeSerializationFactory<>(prototype);
+        SerializablePrototype clone = factory.create();
+        assertNotSame(prototype, clone);
+        assertEquals(prototype.value, clone.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.PrototypeFactoryTest.SerializablePrototype;
+```
+
+### Additional Classes for Testing
+To support the new tests, you will need to define the following classes within the `PrototypeFactoryTest.java` file:
+
+```java
+static class CloneablePrototype implements Cloneable {
+    int value = 10;
+
+    @Override
+    protected Object clone() {
+        return new CloneablePrototype();
+    }
+}
+
+static class CopyConstructorPrototype {
+    int value;
+
+    public CopyConstructorPrototype(int value) {
+        this.value = value;
+    }
+
+    public CopyConstructorPrototype(CopyConstructorPrototype other) {
+        this.value = other.value;
+    }
+}
+
+static class NonCloneablePrototype {
+    // No clone method
+}
+
+static class SerializablePrototype implements Serializable {
+    String value;
+
+    public SerializablePrototype(String value) {
+        this.value = value;
+    }
+}
+``` 
+
+These classes will allow the tests to run successfully and cover the various scenarios outlined in the new tests.2026-04-07 06:38:53,671 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 3714
+2026-04-07 06:38:53,684 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:39:35,103 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+2026-04-07 06:39:35,120 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:40:17,716 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+2026-04-07 06:40:17,733 - panta.panta - INFO - Iteration 0 cannot increase coverage.
+2026-04-07 06:40:17,734 - panta.panta - INFO - Current line Coverage: 0.0%, branch coverage: 0.0%
+2026-04-07 06:40:17,734 - panta.panta - INFO - initial tests generation using baseline type of prompt
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+      assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the prototypeFactory method returns a ConstantFactory when the prototype is null.
+  test_name: |
+    testPrototypeFactoryWithNullPrototype
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithNullPrototype() {
+        Factory<Object> factory = PrototypeFactory.prototypeFactory(null);
+        assertNotNull(factory);
+        assertEquals(ConstantFactory.NULL_INSTANCE, factory.create());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.ConstantFactory;
+- test_behavior: |
+    Test that the prototypeFactory method returns a PrototypeCloneFactory when the prototype has a public clone method.
+  test_name: |
+    testPrototypeFactoryWithCloneMethod
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCloneMethod() throws Exception {
+        CloneablePrototype prototype = new CloneablePrototype();
+        Factory<CloneablePrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CloneablePrototype clone = factory.create();
+        assertNotSame(prototype, clone);
+        assertEquals(prototype.value, clone.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.PrototypeFactoryTest.CloneablePrototype;
+- test_behavior: |
+    Test that the prototypeFactory method returns a PrototypeSerializationFactory when the prototype is Serializable but has no clone method.
+  test_name: |
+    testPrototypeFactoryWithSerializablePrototype
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithSerializablePrototype() {
+        SerializablePrototype prototype = new SerializablePrototype();
+        Factory<SerializablePrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        SerializablePrototype clone = factory.create();
+        assertNotSame(prototype, clone);
+        assertEquals(prototype.value, clone.value);
+    }
+  new_imports_code: |
+    import java.io.Serializable;
+- test_behavior: |
+    Test that the prototypeFactory method throws an IllegalArgumentException when the prototype cannot be cloned.
+  test_name: |
+    testPrototypeFactoryWithNonCloneablePrototype
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testPrototypeFactoryWithNonCloneablePrototype() {
+        NonCloneablePrototype prototype = new NonCloneablePrototype();
+        PrototypeFactory.prototypeFactory(prototype);
+    }
+  new_imports_code: |
+    // No new imports required
+```
+
+### Additional Classes for Testing
+To support the tests, you will need to define the following classes within the `PrototypeFactoryTest` class:
+
+```java
+static class CloneablePrototype implements Cloneable {
+    int value = 42;
+
+    @Override
+    protected Object clone() {
+        return new CloneablePrototype();
+    }
+}
+
+static class SerializablePrototype implements Serializable {
+    int value = 42;
+}
+
+static class NonCloneablePrototype {
+    int value = 42;
+}
+``` 
+
+These classes will help in testing the different scenarios outlined in the new tests.2026-04-07 06:40:31,190 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 3494
+2026-04-07 06:40:31,199 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:41:13,854 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+2026-04-07 06:41:13,870 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:41:54,896 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+2026-04-07 06:41:54,921 - panta.panta - INFO - Iteration 1 cannot increase coverage.
+2026-04-07 06:41:54,922 - panta.panta - INFO - Current line Coverage: 0.0%, branch coverage: 0.0%
+2026-04-07 06:41:54,922 - panta.panta - INFO - initial tests generation using baseline type of prompt
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+      assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the prototypeFactory returns a ConstantFactory when the prototype is null.
+  test_name: |
+    testPrototypeFactoryWithNull
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithNull() {
+        Factory<Object> factory = PrototypeFactory.prototypeFactory(null);
+        assertNotNull(factory);
+        assertEquals(ConstantFactory.NULL_INSTANCE, factory.create());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.ConstantFactory;
+- test_behavior: |
+    Test that the prototypeFactory returns a PrototypeCloneFactory when the prototype has a public clone method.
+  test_name: |
+    testPrototypeFactoryWithCloneMethod
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCloneMethod() throws Exception {
+        CloneablePrototype prototype = new CloneablePrototype();
+        Factory<CloneablePrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CloneablePrototype clone1 = factory.create();
+        CloneablePrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.PrototypeFactoryTest.CloneablePrototype;
+- test_behavior: |
+    Test that the prototypeFactory returns an InstantiateFactory when the prototype has a public copy constructor.
+  test_name: |
+    testPrototypeFactoryWithCopyConstructor
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCopyConstructor() throws Exception {
+        CopyConstructorPrototype prototype = new CopyConstructorPrototype(42);
+        Factory<CopyConstructorPrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CopyConstructorPrototype clone1 = factory.create();
+        CopyConstructorPrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.PrototypeFactoryTest.CopyConstructorPrototype;
+- test_behavior: |
+    Test that the prototypeFactory throws an IllegalArgumentException when the prototype cannot be cloned.
+  test_name: |
+    testPrototypeFactoryWithNonCloneable
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testPrototypeFactoryWithNonCloneable() {
+        NonCloneablePrototype prototype = new NonCloneablePrototype();
+        PrototypeFactory.prototypeFactory(prototype);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.PrototypeFactoryTest.NonCloneablePrototype;
+- test_behavior: |
+    Test that the PrototypeSerializationFactory creates a clone via serialization.
+  test_name: |
+    testPrototypeSerializationFactory
+  test_code: |
+    @Test
+    public void testPrototypeSerializationFactory() throws Exception {
+        SerializablePrototype prototype = new SerializablePrototype("test");
+        Factory<SerializablePrototype> factory = new PrototypeFactory.PrototypeSerializationFactory<>(prototype);
+        SerializablePrototype clone1 = factory.create();
+        SerializablePrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.PrototypeFactoryTest.SerializablePrototype;
+```
+
+```java
+// Additional Classes for Testing
+class CloneablePrototype implements Cloneable {
+    int value = 10;
+
+    @Override
+    protected Object clone() {
+        return new CloneablePrototype();
+    }
+}
+
+class CopyConstructorPrototype {
+    int value;
+
+    public CopyConstructorPrototype(int value) {
+        this.value = value;
+    }
+
+    public CopyConstructorPrototype(CopyConstructorPrototype other) {
+        this.value = other.value;
+    }
+}
+
+class NonCloneablePrototype {
+    // No clone method
+}
+
+class SerializablePrototype implements Serializable {
+    String value;
+
+    public SerializablePrototype(String value) {
+        this.value = value;
+    }
+}
+```2026-04-07 06:42:10,923 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 3736
+2026-04-07 06:42:10,932 - panta.panta - ERROR - iteration stops due to error: not enough values to unpack (expected 2, got 0)
+2026-04-07 06:42:10,945 - panta.panta - INFO - Report generated successfully at: ../../result-files/control_gpt-4o-mini/
+
+

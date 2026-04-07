@@ -1,0 +1,1662 @@
+2026-04-07 06:42:29,779 - panta.panta - INFO - CFG snapshot directory created: cfg_snapshot_test/intermediate/cfg/PrototypeFactory_20260407_064229_b2eeb89e
+2026-04-07 06:42:37,644 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:43:19,021 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+2026-04-07 06:43:19,063 - panta.panta - INFO - Current line Coverage: 0.0%, branch coverage: 0.0%
+2026-04-07 06:43:19,063 - panta.panta - INFO - initial tests generation using baseline type of prompt
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the prototypeFactory method returns a ConstantFactory when the prototype is null.
+  test_name: |
+    testPrototypeFactoryWithNull
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithNull() {
+        Factory<Object> factory = PrototypeFactory.prototypeFactory(null);
+        assertNotNull(factory);
+        assertEquals(ConstantFactory.NULL_INSTANCE, factory.create());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.ConstantFactory;
+- test_behavior: |
+    Test that the prototypeFactory method correctly creates a factory using the public clone method.
+  test_name: |
+    testPrototypeFactoryWithCloneMethod
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCloneMethod() throws Exception {
+        TestPrototype prototype = new TestPrototype();
+        Factory<TestPrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        TestPrototype clone1 = factory.create();
+        TestPrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.Factory;
+- test_behavior: |
+    Test that the prototypeFactory method correctly creates a factory using the copy constructor.
+  test_name: |
+    testPrototypeFactoryWithCopyConstructor
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCopyConstructor() throws Exception {
+        CopyConstructorPrototype prototype = new CopyConstructorPrototype(42);
+        Factory<CopyConstructorPrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CopyConstructorPrototype clone1 = factory.create();
+        CopyConstructorPrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.Factory;
+- test_behavior: |
+    Test that the prototypeFactory method throws an IllegalArgumentException when the prototype is not cloneable.
+  test_name: |
+    testPrototypeFactoryThrowsException
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testPrototypeFactoryThrowsException() {
+        PrototypeFactory.prototypeFactory(new NonCloneablePrototype());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.PrototypeFactory;
+- test_behavior: |
+    Test that the PrototypeSerializationFactory creates a clone using serialization.
+  test_name: |
+    testPrototypeSerializationFactory
+  test_code: |
+    @Test
+    public void testPrototypeSerializationFactory() throws Exception {
+        SerializablePrototype prototype = new SerializablePrototype("test");
+        Factory<SerializablePrototype> factory = new PrototypeFactory.PrototypeSerializationFactory<>(prototype);
+        SerializablePrototype clone1 = factory.create();
+        SerializablePrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import java.io.Serializable;
+- test_behavior: |
+    Test that the PrototypeSerializationFactory handles IOException correctly.
+  test_name: |
+    testPrototypeSerializationFactoryIOException
+  test_code: |
+    @Test(expected = FunctorException.class)
+    public void testPrototypeSerializationFactoryIOException() throws Exception {
+        FaultySerializablePrototype prototype = new FaultySerializablePrototype();
+        Factory<FaultySerializablePrototype> factory = new PrototypeFactory.PrototypeSerializationFactory<>(prototype);
+        factory.create();
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.FunctorException;
+```
+2026-04-07 06:43:38,149 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 3662
+2026-04-07 06:43:38,161 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:43:38,162 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:44:13,261 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-07 06:44:13,263 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:44:13,264 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:44:44,165 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 06:44:44,168 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:44:44,169 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:45:15,386 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 06:45:15,389 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:45:15,389 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:45:45,390 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 06:45:45,392 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:45:45,392 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:46:15,476 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 06:46:15,478 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:46:15,478 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:46:46,431 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 06:46:46,432 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:47:27,650 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+      assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the prototype factory returns a non-null factory when given null as a prototype.
+  test_name: |
+    testPrototypeFactoryWithNull
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithNull() {
+        Factory<Object> factory = PrototypeFactory.prototypeFactory(null);
+        assertNotNull(factory);
+        assertEquals(ConstantFactory.NULL_INSTANCE, factory.create());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.ConstantFactory;
+- test_behavior: |
+    Test that the prototype factory correctly clones an object using the clone method.
+  test_name: |
+    testPrototypeFactoryWithCloneMethod
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCloneMethod() throws Exception {
+        TestPrototype prototype = new TestPrototype();
+        Factory<TestPrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        TestPrototype clone1 = factory.create();
+        TestPrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.Factory;
+- test_behavior: |
+    Test that the prototype factory correctly clones an object using a copy constructor.
+  test_name: |
+    testPrototypeFactoryWithCopyConstructor
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCopyConstructor() throws Exception {
+        CopyConstructorPrototype prototype = new CopyConstructorPrototype(42);
+        Factory<CopyConstructorPrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CopyConstructorPrototype clone1 = factory.create();
+        CopyConstructorPrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.Factory;
+- test_behavior: |
+    Test that the prototype factory throws an exception when given a non-cloneable prototype.
+  test_name: |
+    testPrototypeFactoryThrowsException
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testPrototypeFactoryThrowsException() {
+        PrototypeFactory.prototypeFactory(new NonCloneablePrototype());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.PrototypeFactory;
+- test_behavior: |
+    Test that the prototype serialization factory correctly clones a serializable object.
+  test_name: |
+    testPrototypeSerializationFactory
+  test_code: |
+    @Test
+    public void testPrototypeSerializationFactory() throws Exception {
+        SerializablePrototype prototype = new SerializablePrototype("test");
+        Factory<SerializablePrototype> factory = new PrototypeFactory.PrototypeSerializationFactory<>(prototype);
+        SerializablePrototype clone1 = factory.create();
+        SerializablePrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import java.io.Serializable;
+- test_behavior: |
+    Test that the prototype serialization factory throws a FunctorException on IO failure.
+  test_name: |
+    testPrototypeSerializationFactoryIOException
+  test_code: |
+    @Test(expected = FunctorException.class)
+    public void testPrototypeSerializationFactoryIOException() throws Exception {
+        FaultySerializablePrototype prototype = new FaultySerializablePrototype();
+        Factory<FaultySerializablePrototype> factory = new PrototypeFactory.PrototypeSerializationFactory<>(prototype);
+        factory.create();
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.FunctorException;
+```2026-04-07 06:47:42,156 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5478
+2026-04-07 06:47:42,165 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:47:42,166 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:48:16,834 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-07 06:48:16,836 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:48:16,836 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:48:48,660 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 06:48:48,662 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:48:48,662 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:49:20,753 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 06:49:20,755 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:49:20,756 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:49:54,437 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 06:49:54,439 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:49:54,439 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:50:23,832 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 06:50:23,835 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:50:23,835 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:50:54,546 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+      assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the prototypeFactory method returns a non-null factory when passed null.
+  test_name: |
+    testPrototypeFactoryWithNull
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithNull() {
+        Factory<Object> factory = PrototypeFactory.prototypeFactory(null);
+        assertNotNull(factory);
+        assertEquals(ConstantFactory.NULL_INSTANCE, factory.create());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.ConstantFactory;
+- test_behavior: |
+    Test that the prototypeFactory method creates distinct clones using the clone method.
+  test_name: |
+    testPrototypeFactoryWithCloneMethod
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCloneMethod() throws Exception {
+        TestPrototype prototype = new TestPrototype();
+        Factory<TestPrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        TestPrototype clone1 = factory.create();
+        TestPrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.Factory;
+- test_behavior: |
+    Test that the prototypeFactory method creates distinct clones using a copy constructor.
+  test_name: |
+    testPrototypeFactoryWithCopyConstructor
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCopyConstructor() throws Exception {
+        CopyConstructorPrototype prototype = new CopyConstructorPrototype(42);
+        Factory<CopyConstructorPrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CopyConstructorPrototype clone1 = factory.create();
+        CopyConstructorPrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.Factory;
+- test_behavior: |
+    Test that the prototypeFactory method throws an exception for non-cloneable prototypes.
+  test_name: |
+    testPrototypeFactoryThrowsException
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testPrototypeFactoryThrowsException() {
+        PrototypeFactory.prototypeFactory(new NonCloneablePrototype());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.PrototypeFactory;
+- test_behavior: |
+    Test that the PrototypeSerializationFactory creates distinct clones of a Serializable prototype.
+  test_name: |
+    testPrototypeSerializationFactory
+  test_code: |
+    @Test
+    public void testPrototypeSerializationFactory() throws Exception {
+        SerializablePrototype prototype = new SerializablePrototype("test");
+        Factory<SerializablePrototype> factory = new PrototypeFactory.PrototypeSerializationFactory<>(prototype);
+        SerializablePrototype clone1 = factory.create();
+        SerializablePrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import java.io.Serializable;
+- test_behavior: |
+    Test that the PrototypeSerializationFactory throws an exception when serialization fails.
+  test_name: |
+    testPrototypeSerializationFactoryIOException
+  test_code: |
+    @Test(expected = FunctorException.class)
+    public void testPrototypeSerializationFactoryIOException() throws Exception {
+        FaultySerializablePrototype prototype = new FaultySerializablePrototype();
+        Factory<FaultySerializablePrototype> factory = new PrototypeFactory.PrototypeSerializationFactory<>(prototype);
+        factory.create();
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.FunctorException;
+```2026-04-07 06:51:10,334 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5476
+2026-04-07 06:51:10,345 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:51:10,345 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:51:44,816 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-07 06:51:44,818 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:51:44,819 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:52:17,276 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 06:52:17,279 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:52:17,280 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:52:49,119 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 06:52:49,122 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:52:49,123 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:53:19,855 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 06:53:19,857 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:53:19,858 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:53:49,662 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 06:53:49,664 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:53:49,664 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:54:19,958 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+      assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the prototype factory returns a non-null factory instance when given null.
+  test_name: |
+    testPrototypeFactoryWithNull
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithNull() {
+        Factory<Object> factory = PrototypeFactory.prototypeFactory(null);
+        assertNotNull(factory);
+        assertEquals(ConstantFactory.NULL_INSTANCE, factory.create());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.ConstantFactory;
+- test_behavior: |
+    Test that the prototype factory correctly clones an object using the clone method.
+  test_name: |
+    testPrototypeFactoryWithCloneMethod
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCloneMethod() throws Exception {
+        TestPrototype prototype = new TestPrototype();
+        Factory<TestPrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        TestPrototype clone1 = factory.create();
+        TestPrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.Factory;
+- test_behavior: |
+    Test that the prototype factory correctly clones an object using a copy constructor.
+  test_name: |
+    testPrototypeFactoryWithCopyConstructor
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCopyConstructor() throws Exception {
+        CopyConstructorPrototype prototype = new CopyConstructorPrototype(42);
+        Factory<CopyConstructorPrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CopyConstructorPrototype clone1 = factory.create();
+        CopyConstructorPrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.Factory;
+- test_behavior: |
+    Test that the prototype factory throws an exception when given a non-cloneable prototype.
+  test_name: |
+    testPrototypeFactoryThrowsException
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testPrototypeFactoryThrowsException() {
+        PrototypeFactory.prototypeFactory(new NonCloneablePrototype());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.PrototypeFactory;
+- test_behavior: |
+    Test that the prototype serialization factory correctly clones a serializable prototype.
+  test_name: |
+    testPrototypeSerializationFactory
+  test_code: |
+    @Test
+    public void testPrototypeSerializationFactory() throws Exception {
+        SerializablePrototype prototype = new SerializablePrototype("test");
+        Factory<SerializablePrototype> factory = new PrototypeFactory.PrototypeSerializationFactory<>(prototype);
+        SerializablePrototype clone1 = factory.create();
+        SerializablePrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import java.io.Serializable;
+- test_behavior: |
+    Test that the prototype serialization factory throws a FunctorException on IO issues.
+  test_name: |
+    testPrototypeSerializationFactoryIOException
+  test_code: |
+    @Test(expected = FunctorException.class)
+    public void testPrototypeSerializationFactoryIOException() throws Exception {
+        FaultySerializablePrototype prototype = new FaultySerializablePrototype();
+        Factory<FaultySerializablePrototype> factory = new PrototypeFactory.PrototypeSerializationFactory<>(prototype);
+        factory.create();
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.FunctorException;
+```2026-04-07 06:54:34,707 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5478
+2026-04-07 06:54:34,719 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:54:34,719 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:55:07,984 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-07 06:55:07,985 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:55:07,986 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:55:40,218 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 06:55:40,220 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:55:40,220 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:56:12,323 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 06:56:12,324 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:56:12,325 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:56:43,952 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 06:56:43,954 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:56:43,954 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:57:15,496 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 06:57:15,499 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:57:15,499 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:57:46,430 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 06:57:46,432 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:58:26,835 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+2026-04-07 06:58:26,852 - panta.panta - INFO - Iteration 0 cannot increase coverage.
+2026-04-07 06:58:26,853 - panta.panta - INFO - Current line Coverage: 0.0%, branch coverage: 0.0%
+2026-04-07 06:58:26,853 - panta.panta - INFO - initial tests generation using baseline type of prompt
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+      assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the prototypeFactory method returns a ConstantFactory when the prototype is null.
+  test_name: |
+    testPrototypeFactoryWithNull
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithNull() {
+        Factory<Object> factory = PrototypeFactory.prototypeFactory(null);
+        assertNotNull(factory);
+        assertEquals(ConstantFactory.NULL_INSTANCE, factory.create());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.ConstantFactory;
+- test_behavior: |
+    Test that the prototypeFactory method returns a PrototypeCloneFactory when a public clone method exists.
+  test_name: |
+    testPrototypeFactoryWithCloneMethod
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCloneMethod() throws Exception {
+        CloneablePrototype prototype = new CloneablePrototype();
+        Factory<CloneablePrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CloneablePrototype clone1 = factory.create();
+        CloneablePrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.Factory;
+- test_behavior: |
+    Test that the prototypeFactory method returns an InstantiateFactory when a public copy constructor exists.
+  test_name: |
+    testPrototypeFactoryWithCopyConstructor
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCopyConstructor() {
+        CopyConstructorPrototype prototype = new CopyConstructorPrototype(42);
+        Factory<CopyConstructorPrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CopyConstructorPrototype clone1 = factory.create();
+        CopyConstructorPrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.Factory;
+- test_behavior: |
+    Test that the prototypeFactory method throws an IllegalArgumentException when the prototype is not cloneable.
+  test_name: |
+    testPrototypeFactoryWithNonCloneable
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testPrototypeFactoryWithNonCloneable() {
+        NonCloneablePrototype prototype = new NonCloneablePrototype();
+        PrototypeFactory.prototypeFactory(prototype);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.Factory;
+- test_behavior: |
+    Test that the PrototypeSerializationFactory creates a clone using serialization.
+  test_name: |
+    testPrototypeSerializationFactory
+  test_code: |
+    @Test
+    public void testPrototypeSerializationFactory() throws Exception {
+        SerializablePrototype prototype = new SerializablePrototype("test");
+        Factory<SerializablePrototype> factory = new PrototypeFactory.PrototypeSerializationFactory<>(prototype);
+        SerializablePrototype clone1 = factory.create();
+        SerializablePrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import java.io.Serializable;
+    import org.apache.commons.collections4.functors.Factory;
+
+class CloneablePrototype implements Cloneable {
+    int value = 10;
+
+    @Override
+    protected CloneablePrototype clone() {
+        return new CloneablePrototype();
+    }
+}
+
+class CopyConstructorPrototype {
+    int value;
+
+    public CopyConstructorPrototype(int value) {
+        this.value = value;
+    }
+
+    public CopyConstructorPrototype(CopyConstructorPrototype other) {
+        this.value = other.value;
+    }
+}
+
+class NonCloneablePrototype {
+    // No clone method
+}
+
+class SerializablePrototype implements Serializable {
+    String value;
+
+    public SerializablePrototype(String value) {
+        this.value = value;
+    }
+}
+```2026-04-07 06:58:42,097 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 3708
+2026-04-07 06:58:42,360 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:58:42,361 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:59:15,289 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-07 06:59:15,291 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:59:15,291 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 06:59:47,496 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 06:59:47,499 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 06:59:47,500 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:00:18,805 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:00:18,807 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:00:18,808 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:00:50,943 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:00:50,946 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:00:50,946 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:01:22,094 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:01:22,096 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:02:02,994 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+      assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the prototype factory returns a non-null factory instance when given null as a prototype.
+  test_name: |
+    testPrototypeFactoryWithNull
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithNull() {
+        Factory<Object> factory = PrototypeFactory.prototypeFactory(null);
+        assertNotNull(factory);
+        assertEquals(ConstantFactory.NULL_INSTANCE, factory.create());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.ConstantFactory;
+- test_behavior: |
+    Test that the prototype factory can create clones using a public clone method.
+  test_name: |
+    testPrototypeFactoryWithCloneMethod
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCloneMethod() throws Exception {
+        CloneablePrototype prototype = new CloneablePrototype();
+        Factory<CloneablePrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CloneablePrototype clone1 = factory.create();
+        CloneablePrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.Factory;
+- test_behavior: |
+    Test that the prototype factory can create clones using a copy constructor.
+  test_name: |
+    testPrototypeFactoryWithCopyConstructor
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCopyConstructor() {
+        CopyConstructorPrototype prototype = new CopyConstructorPrototype(42);
+        Factory<CopyConstructorPrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CopyConstructorPrototype clone1 = factory.create();
+        CopyConstructorPrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.Factory;
+- test_behavior: |
+    Test that the prototype factory throws an exception when given a non-cloneable prototype.
+  test_name: |
+    testPrototypeFactoryWithNonCloneable
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testPrototypeFactoryWithNonCloneable() {
+        NonCloneablePrototype prototype = new NonCloneablePrototype();
+        PrototypeFactory.prototypeFactory(prototype);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.Factory;
+- test_behavior: |
+    Test that the prototype serialization factory can create clones using serialization.
+  test_name: |
+    testPrototypeSerializationFactory
+  test_code: |
+    @Test
+    public void testPrototypeSerializationFactory() throws Exception {
+        SerializablePrototype prototype = new SerializablePrototype("test");
+        Factory<SerializablePrototype> factory = new PrototypeFactory.PrototypeSerializationFactory<>(prototype);
+        SerializablePrototype clone1 = factory.create();
+        SerializablePrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import java.io.Serializable;
+    import org.apache.commons.collections4.functors.Factory;
+```2026-04-07 07:02:17,257 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5490
+2026-04-07 07:02:17,267 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:02:17,268 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:02:51,332 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-07 07:02:51,333 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:02:51,334 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:03:22,748 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:03:22,750 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:03:22,750 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:03:54,207 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:03:54,209 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:03:54,209 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:04:26,562 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:04:26,564 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:04:26,565 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:04:58,462 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the prototype factory returns a non-null factory when given a null prototype.
+  test_name: |
+    testPrototypeFactoryWithNull
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithNull() {
+        Factory<Object> factory = PrototypeFactory.prototypeFactory(null);
+        assertNotNull(factory);
+        assertEquals(ConstantFactory.NULL_INSTANCE, factory.create());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.ConstantFactory;
+- test_behavior: |
+    Test that the prototype factory correctly clones an object using the clone method.
+  test_name: |
+    testPrototypeFactoryWithCloneMethod
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCloneMethod() throws Exception {
+        CloneablePrototype prototype = new CloneablePrototype();
+        Factory<CloneablePrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CloneablePrototype clone1 = factory.create();
+        CloneablePrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.Factory;
+- test_behavior: |
+    Test that the prototype factory correctly clones an object using a copy constructor.
+  test_name: |
+    testPrototypeFactoryWithCopyConstructor
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCopyConstructor() {
+        CopyConstructorPrototype prototype = new CopyConstructorPrototype(42);
+        Factory<CopyConstructorPrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CopyConstructorPrototype clone1 = factory.create();
+        CopyConstructorPrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.Factory;
+- test_behavior: |
+    Test that the prototype factory throws an exception when given a non-cloneable prototype.
+  test_name: |
+    testPrototypeFactoryWithNonCloneable
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testPrototypeFactoryWithNonCloneable() {
+        NonCloneablePrototype prototype = new NonCloneablePrototype();
+        PrototypeFactory.prototypeFactory(prototype);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.Factory;
+- test_behavior: |
+    Test that the prototype serialization factory correctly clones a serializable object.
+  test_name: |
+    testPrototypeSerializationFactory
+  test_code: |
+    @Test
+    public void testPrototypeSerializationFactory() throws Exception {
+        SerializablePrototype prototype = new SerializablePrototype("test");
+        Factory<SerializablePrototype> factory = new PrototypeFactory.PrototypeSerializationFactory<>(prototype);
+        SerializablePrototype clone1 = factory.create();
+        SerializablePrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import java.io.Serializable;
+    import org.apache.commons.collections4.functors.Factory;
+```2026-04-07 07:05:12,070 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5490
+2026-04-07 07:05:12,081 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:05:12,081 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:05:44,726 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-07 07:05:44,728 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:05:44,728 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:06:14,271 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:06:14,273 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:06:14,274 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:06:44,663 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:06:44,665 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:06:44,666 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:07:15,063 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:07:15,064 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:07:15,065 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:07:46,458 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the prototypeFactory method returns a non-null factory when given null as a prototype.
+  test_name: |
+    testPrototypeFactoryWithNull
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithNull() {
+        Factory<Object> factory = PrototypeFactory.prototypeFactory(null);
+        assertNotNull(factory);
+        assertEquals(ConstantFactory.NULL_INSTANCE, factory.create());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.ConstantFactory;
+
+- test_behavior: |
+    Test that the prototypeFactory method works with an object that has a public clone method.
+  test_name: |
+    testPrototypeFactoryWithCloneMethod
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCloneMethod() throws Exception {
+        CloneablePrototype prototype = new CloneablePrototype();
+        Factory<CloneablePrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CloneablePrototype clone1 = factory.create();
+        CloneablePrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.Factory;
+
+- test_behavior: |
+    Test that the prototypeFactory method works with an object that has a public copy constructor.
+  test_name: |
+    testPrototypeFactoryWithCopyConstructor
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCopyConstructor() {
+        CopyConstructorPrototype prototype = new CopyConstructorPrototype(42);
+        Factory<CopyConstructorPrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CopyConstructorPrototype clone1 = factory.create();
+        CopyConstructorPrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.Factory;
+
+- test_behavior: |
+    Test that the prototypeFactory method throws an exception when given a non-cloneable object.
+  test_name: |
+    testPrototypeFactoryWithNonCloneable
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testPrototypeFactoryWithNonCloneable() {
+        NonCloneablePrototype prototype = new NonCloneablePrototype();
+        PrototypeFactory.prototypeFactory(prototype);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.Factory;
+
+- test_behavior: |
+    Test that the PrototypeSerializationFactory creates distinct copies of a serializable object.
+  test_name: |
+    testPrototypeSerializationFactory
+  test_code: |
+    @Test
+    public void testPrototypeSerializationFactory() throws Exception {
+        SerializablePrototype prototype = new SerializablePrototype("test");
+        Factory<SerializablePrototype> factory = new PrototypeFactory.PrototypeSerializationFactory<>(prototype);
+        SerializablePrototype clone1 = factory.create();
+        SerializablePrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.value, clone1.value);
+        assertEquals(prototype.value, clone2.value);
+    }
+  new_imports_code: |
+    import java.io.Serializable;
+    import org.apache.commons.collections4.functors.Factory;
+```2026-04-07 07:07:59,819 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5501
+2026-04-07 07:07:59,827 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:07:59,828 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:08:34,742 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-07 07:08:34,744 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:08:34,745 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:09:07,357 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:09:07,358 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:09:07,359 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:09:37,382 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:09:37,384 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:09:37,385 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:10:07,841 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:10:07,843 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:10:07,843 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:10:38,390 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:10:38,391 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:11:18,965 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+2026-04-07 07:11:18,983 - panta.panta - INFO - Iteration 1 cannot increase coverage.
+2026-04-07 07:11:18,983 - panta.panta - INFO - Current line Coverage: 0.0%, branch coverage: 0.0%
+2026-04-07 07:11:18,983 - panta.panta - INFO - initial tests generation using baseline type of prompt
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the prototypeFactory method returns a ConstantFactory when the prototype is null.
+  test_name: |
+    testPrototypeFactoryWithNull
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithNull() {
+        Factory<Object> factory = PrototypeFactory.prototypeFactory(null);
+        assertNotNull(factory);
+        assertEquals(ConstantFactory.NULL_INSTANCE, factory.create());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.ConstantFactory;
+
+- test_behavior: |
+    Test that the prototypeFactory method returns a PrototypeCloneFactory when a public clone method exists.
+  test_name: |
+    testPrototypeFactoryWithCloneMethod
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCloneMethod() throws Exception {
+        CloneablePrototype prototype = new CloneablePrototype();
+        Factory<CloneablePrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CloneablePrototype clone1 = factory.create();
+        CloneablePrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.getValue(), clone1.getValue());
+        assertEquals(prototype.getValue(), clone2.getValue());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.Factory;
+
+    class CloneablePrototype implements Cloneable {
+        private String value = "test";
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        protected CloneablePrototype clone() {
+            return new CloneablePrototype();
+        }
+    }
+
+- test_behavior: |
+    Test that the prototypeFactory method returns an InstantiateFactory when a public copy constructor exists.
+  test_name: |
+    testPrototypeFactoryWithCopyConstructor
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCopyConstructor() throws Exception {
+        CopyConstructorPrototype prototype = new CopyConstructorPrototype("test");
+        Factory<CopyConstructorPrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CopyConstructorPrototype clone1 = factory.create();
+        CopyConstructorPrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.getValue(), clone1.getValue());
+        assertEquals(prototype.getValue(), clone2.getValue());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.Factory;
+
+    class CopyConstructorPrototype {
+        private String value;
+
+        public CopyConstructorPrototype(String value) {
+            this.value = value;
+        }
+
+        public CopyConstructorPrototype(CopyConstructorPrototype other) {
+            this.value = other.value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
+- test_behavior: |
+    Test that the prototypeFactory method throws an IllegalArgumentException when the prototype is not cloneable.
+  test_name: |
+    testPrototypeFactoryWithNonCloneable
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testPrototypeFactoryWithNonCloneable() {
+        Object nonCloneablePrototype = new Object();
+        PrototypeFactory.prototypeFactory(nonCloneablePrototype);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.Factory;
+```2026-04-07 07:11:32,010 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 3554
+2026-04-07 07:11:32,018 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:11:32,018 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:12:07,409 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-07 07:12:07,411 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:12:07,412 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:12:38,828 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:12:38,830 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:12:38,831 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:13:10,627 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:13:10,629 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:13:10,629 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:13:39,784 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:13:39,784 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:14:19,900 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+      assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the prototype factory returns a non-null factory when given a null prototype.
+  test_name: |
+    testPrototypeFactoryWithNull
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithNull() {
+        Factory<Object> factory = PrototypeFactory.prototypeFactory(null);
+        assertNotNull(factory);
+        assertEquals(ConstantFactory.NULL_INSTANCE, factory.create());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.ConstantFactory;
+- test_behavior: |
+    Test that the prototype factory correctly clones an object using the clone method.
+  test_name: |
+    testPrototypeFactoryWithCloneMethod
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCloneMethod() throws Exception {
+        CloneablePrototype prototype = new CloneablePrototype();
+        Factory<CloneablePrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CloneablePrototype clone1 = factory.create();
+        CloneablePrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.getValue(), clone1.getValue());
+        assertEquals(prototype.getValue(), clone2.getValue());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.Factory;
+    
+    class CloneablePrototype implements Cloneable {
+        private String value = "test";
+
+        public String getValue() {
+            return value;
+        }
+
+        @Override
+        protected CloneablePrototype clone() {
+            return new CloneablePrototype();
+        }
+    }
+- test_behavior: |
+    Test that the prototype factory correctly clones an object using a copy constructor.
+  test_name: |
+    testPrototypeFactoryWithCopyConstructor
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCopyConstructor() throws Exception {
+        CopyConstructorPrototype prototype = new CopyConstructorPrototype("test");
+        Factory<CopyConstructorPrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CopyConstructorPrototype clone1 = factory.create();
+        CopyConstructorPrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.getValue(), clone1.getValue());
+        assertEquals(prototype.getValue(), clone2.getValue());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.Factory;
+    
+    class CopyConstructorPrototype {
+        private String value;
+
+        public CopyConstructorPrototype(String value) {
+            this.value = value;
+        }
+
+        public CopyConstructorPrototype(CopyConstructorPrototype other) {
+            this.value = other.value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+- test_behavior: |
+    Test that the prototype factory throws an exception when given a non-cloneable object.
+  test_name: |
+    testPrototypeFactoryWithNonCloneable
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testPrototypeFactoryWithNonCloneable() {
+        Object nonCloneablePrototype = new Object();
+        PrototypeFactory.prototypeFactory(nonCloneablePrototype);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.Factory;
+```2026-04-07 07:14:35,136 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 3968
+2026-04-07 07:14:35,145 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:14:35,146 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:15:08,771 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-07 07:15:08,772 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:15:08,773 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:15:39,541 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:15:39,544 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:15:39,544 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:16:10,985 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:16:10,986 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:16:10,987 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:16:43,108 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the prototype factory returns a non-null factory when given null as a prototype.
+  test_name: |
+    testPrototypeFactoryWithNull
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithNull() {
+        Factory<Object> factory = PrototypeFactory.prototypeFactory(null);
+        assertNotNull(factory);
+        assertEquals(ConstantFactory.NULL_INSTANCE, factory.create());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.ConstantFactory;
+- test_behavior: |
+    Test that the prototype factory creates distinct clones using the clone method.
+  test_name: |
+    testPrototypeFactoryWithCloneMethod
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCloneMethod() throws Exception {
+        CloneablePrototype prototype = new CloneablePrototype();
+        Factory<CloneablePrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CloneablePrototype clone1 = factory.create();
+        CloneablePrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.getValue(), clone1.getValue());
+        assertEquals(prototype.getValue(), clone2.getValue());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.Factory;
+    class CloneablePrototype implements Cloneable {
+        private String value = "test";
+        public String getValue() {
+            return value;
+        }
+        @Override
+        protected CloneablePrototype clone() {
+            return new CloneablePrototype();
+        }
+    }
+- test_behavior: |
+    Test that the prototype factory creates distinct clones using a copy constructor.
+  test_name: |
+    testPrototypeFactoryWithCopyConstructor
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCopyConstructor() throws Exception {
+        CopyConstructorPrototype prototype = new CopyConstructorPrototype("test");
+        Factory<CopyConstructorPrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CopyConstructorPrototype clone1 = factory.create();
+        CopyConstructorPrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.getValue(), clone1.getValue());
+        assertEquals(prototype.getValue(), clone2.getValue());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.Factory;
+    class CopyConstructorPrototype {
+        private String value;
+        public CopyConstructorPrototype(String value) {
+            this.value = value;
+        }
+        public CopyConstructorPrototype(CopyConstructorPrototype other) {
+            this.value = other.value;
+        }
+        public String getValue() {
+            return value;
+        }
+    }
+- test_behavior: |
+    Test that the prototype factory throws an IllegalArgumentException when given a non-cloneable object.
+  test_name: |
+    testPrototypeFactoryWithNonCloneable
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testPrototypeFactoryWithNonCloneable() {
+        Object nonCloneablePrototype = new Object();
+        PrototypeFactory.prototypeFactory(nonCloneablePrototype);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.Factory;
+```2026-04-07 07:16:55,918 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 3963
+2026-04-07 07:16:55,928 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:16:55,928 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:17:28,822 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-07 07:17:28,825 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:17:28,825 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:18:01,997 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-07 07:18:01,999 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:18:01,999 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:18:42,652 - panta.unit_test_generator - INFO - Generated test has passed: testPrototypeFactoryWithCopyConstructor
+
+2026-04-07 07:18:42,654 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:18:42,654 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:19:13,280 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPrototypeFactoryWithCopyConstructor() throws Exception {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Test that the factory returns a non-null instance when provided with null as a prototype.
+  test_name: |
+    testPrototypeFactoryWithNull
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithNull() {
+        Factory<Object> factory = PrototypeFactory.prototypeFactory(null);
+        assertNotNull(factory);
+        assertEquals(ConstantFactory.NULL_INSTANCE, factory.create());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.ConstantFactory;
+- test_behavior: |
+    Test that the factory correctly clones an object using a public clone method.
+  test_name: |
+    testPrototypeFactoryWithCloneMethod
+  test_code: |
+    @Test
+    public void testPrototypeFactoryWithCloneMethod() throws Exception {
+        CloneablePrototype prototype = new CloneablePrototype();
+        Factory<CloneablePrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        CloneablePrototype clone1 = factory.create();
+        CloneablePrototype clone2 = factory.create();
+        assertNotSame(clone1, clone2);
+        assertEquals(prototype.getValue(), clone1.getValue());
+        assertEquals(prototype.getValue(), clone2.getValue());
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.Factory;
+- test_behavior: |
+    Test that the factory throws an exception when provided with a non-cloneable object.
+  test_name: |
+    testPrototypeFactoryWithNonCloneable
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testPrototypeFactoryWithNonCloneable() {
+        Object nonCloneablePrototype = new Object();
+        PrototypeFactory.prototypeFactory(nonCloneablePrototype);
+    }
+  new_imports_code: |
+    import org.apache.commons.collections4.functors.Factory;
+```2026-04-07 07:19:22,244 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 3576
+2026-04-07 07:19:22,251 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:19:22,251 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:19:53,120 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:19:53,123 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:19:53,123 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:20:24,451 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:20:24,454 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:20:24,455 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:20:56,353 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:20:56,354 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:21:36,649 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+2026-04-07 07:21:36,671 - panta.panta - INFO - Iteration 2 increased line coverage 46.15%, branch coverage 25.0%
+2026-04-07 07:21:36,671 - panta.panta - INFO - Current line Coverage: 46.15%, branch coverage: 25.0%
+2026-04-07 07:21:36,672 - panta.unit_test_generator - INFO - Selected branch lines for current iteration: [65, 80, 136, 192]
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test handling of null prototype in factory creation.
+    method_context:
+      method_signature_hint: |
+        public static <T> Factory<T> prototypeFactory(final T prototype)
+      entry_hint: |
+        public static <T> Factory<T> prototypeFactory(final T prototype)
+    execution_flow: |
+      1. Call prototypeFactory() with a null prototype.
+      2. The null check branch is taken, returning a constant factory instance.
+    input_focus: |
+      Pass null as the prototype argument to prototypeFactory().
+    observable_behavior: |
+      Verify that the returned factory is the NULL_INSTANCE from ConstantFactory.
+
+  - design_name: |
+      Test prototype creation with a non-serializable object.
+    method_context:
+      method_signature_hint: |
+        public static <T> Factory<T> prototypeFactory(final T prototype)
+      entry_hint: |
+        public static <T> Factory<T> prototypeFactory(final T prototype)
+    execution_flow: |
+      1. Call prototypeFactory() with a non-serializable prototype.
+      2. The method attempts to find a copy constructor but fails.
+      3. An IllegalArgumentException is thrown due to the lack of cloneability.
+    input_focus: |
+      Provide an object that does not implement Serializable and lacks a public clone method or copy constructor.
+    observable_behavior: |
+      Check that the method throws an IllegalArgumentException indicating the prototype must be cloneable.
+
+  - design_name: |
+      Test cloning behavior when the clone method is not set.
+    method_context:
+      method_signature_hint: |
+        private void findCloneMethod()
+      entry_hint: |
+        public static <T> Factory<T> prototypeFactory(final T prototype)
+    execution_flow: |
+      1. Call prototypeFactory() with a prototype that has a public clone method.
+      2. The findCloneMethod() is invoked, but the clone method is not set initially.
+      3. The method sets the clone method and completes without exception.
+    input_focus: |
+      Use a prototype object that has a public clone method.
+    observable_behavior: |
+      Ensure that the factory can successfully create instances after the clone method is found.
+
+  - design_name: |
+      Test serialization cloning with a Serializable prototype.
+    method_context:
+      method_signature_hint: |
+        public T create()
+      entry_hint: |
+        public static <T> Factory<T> prototypeFactory(final T prototype)
+    execution_flow: |
+      1. Call prototypeFactory() with a Serializable prototype.
+      2. The serialization cloning path is taken, invoking the create() method.
+      3. The object is serialized and deserialized to create a clone.
+    input_focus: |
+      Provide a Serializable object as the prototype.
+    observable_behavior: |
+      Verify that the created object is a clone of the original prototype and maintains the expected state.
+
+  - design_name: |
+      Test behavior when ByteArrayInputStream is null during serialization.
+    method_context:
+      method_signature_hint: |
+        public T create()
+      entry_hint: |
+        public static <T> Factory<T> prototypeFactory(final T prototype)
+    execution_flow: |
+      1. Call prototypeFactory() with a Serializable prototype.
+      2. The create() method is invoked, and an IOException is simulated.
+      3. The method attempts to close a null ByteArrayInputStream.
+    input_focus: |
+      Provide a Serializable object and simulate an IOException during serialization.
+    observable_behavior: |
+      Check that the method handles the IOException gracefully and does not throw a NullPointerException when closing the stream.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testPrototypeFactoryWithCopyConstructor() throws Exception
+new_tests:
+  - test_behavior: Test handling of null prototype in factory creation.
+    test_name: testPrototypeFactoryWithNullPrototype
+    test_code: |
+      @Test
+      public void testPrototypeFactoryWithNullPrototype() {
+          Factory<Object> factory = PrototypeFactory.prototypeFactory(null);
+          assertSame(factory, ConstantFactory.<Object>constantFactory(null));
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test prototype creation with a non-serializable object.
+    test_name: testPrototypeFactoryWithNonSerializable
+    test_code: |
+      class NonSerializablePrototype {
+          private String value;
+          public NonSerializablePrototype(String value) {
+              this.value = value;
+          }
+      }
+
+      @Test(expected = IllegalArgumentException.class)
+      public void testPrototypeFactoryWithNonSerializable() {
+          NonSerializablePrototype prototype = new NonSerializablePrototype("test");
+          PrototypeFactory.prototypeFactory(prototype);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test cloning behavior when the clone method is not set.
+    test_name: testPrototypeFactoryWithCloneMethodNotSet
+    test_code: |
+      class CloneablePrototype {
+          private String value;
+          public CloneablePrototype(String value) {
+              this.value = value;
+          }
+          public CloneablePrototype clone() {
+              return new CloneablePrototype(this.value);
+          }
+      }
+
+      @Test
+      public void testPrototypeFactoryWithCloneMethodNotSet() {
+          CloneablePrototype prototype = new CloneablePrototype("test");
+          Factory<CloneablePrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+          CloneablePrototype clone1 = factory.create();
+          assertNotNull(clone1);
+          assertEquals("test", clone1.value);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test serialization cloning with a Serializable prototype.
+    test_name: testPrototypeFactoryWithSerializablePrototype
+    test_code: |
+      class SerializablePrototype implements Serializable {
+          private String value;
+          public SerializablePrototype(String value) {
+              this.value = value;
+          }
+          public String getValue() {
+              return value;
+          }
+      }
+
+      @Test
+      public void testPrototypeFactoryWithSerializablePrototype() {
+          SerializablePrototype prototype = new SerializablePrototype("test");
+          Factory<SerializablePrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+          SerializablePrototype clone = factory.create();
+          assertNotSame(prototype, clone);
+          assertEquals(prototype.getValue(), clone.getValue());
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test behavior when ByteArrayInputStream is null during serialization.
+    test_name: testPrototypeFactoryWithIOExceptionDuringSerialization
+    test_code: |
+      class FaultySerializablePrototype implements Serializable {
+          private String value;
+          public FaultySerializablePrototype(String value) {
+              this.value = value;
+          }
+      }
+
+      @Test
+      public void testPrototypeFactoryWithIOExceptionDuringSerialization() {
+          FaultySerializablePrototype prototype = new FaultySerializablePrototype("test");
+          Factory<FaultySerializablePrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+          // Simulate IOException during serialization
+          try {
+              factory.create();
+              fail("Expected FunctorException due to IOException");
+          } catch (FunctorException e) {
+              // Expected exception
+          }
+      }
+    new_imports_code: ''
+```2026-04-07 07:22:04,150 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5032
+2026-04-07 07:22:04,161 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:22:04,162 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:22:45,256 - panta.unit_test_generator - INFO - Generated test has passed: testPrototypeFactoryWithNullPrototype
+2026-04-07 07:22:45,258 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:22:45,258 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:23:26,751 - panta.unit_test_generator - INFO - Generated test has passed: testPrototypeFactoryWithNonSerializable
+2026-04-07 07:23:26,754 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:23:26,754 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:24:09,304 - panta.unit_test_generator - INFO - Generated test has passed: testPrototypeFactoryWithCloneMethodNotSet
+2026-04-07 07:24:09,307 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:24:09,308 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:24:44,635 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-07 07:24:44,637 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:24:44,637 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:25:26,535 - panta.unit_test_generator - INFO - Generated test has passed: testPrototypeFactoryWithIOExceptionDuringSerialization
+2026-04-07 07:25:26,535 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:26:06,484 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPrototypeFactoryWithSerializablePrototype() {
+    // test implementation
+  }
+new_tests:
+- test_behavior: |
+    Test that the prototype factory can create a clone of a serializable prototype without throwing a NotSerializableException.
+  test_name: |
+    testPrototypeFactoryWithSerializablePrototype
+  test_code: |
+    class SerializablePrototype implements Serializable {
+        private String value;
+        public SerializablePrototype(String value) {
+            this.value = value;
+        }
+        public String getValue() {
+            return value;
+        }
+    }
+
+    @Test
+    public void testPrototypeFactoryWithSerializablePrototype() {
+        SerializablePrototype prototype = new SerializablePrototype("test");
+        Factory<SerializablePrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        SerializablePrototype clone = factory.create();
+        assertNotSame(prototype, clone);
+        assertEquals(prototype.getValue(), clone.getValue());
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+```2026-04-07 07:26:12,188 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 3466
+2026-04-07 07:26:12,194 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:26:12,194 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:26:42,056 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPrototypeFactoryWithSerializablePrototype() {
+    // test implementation
+  }
+new_tests:
+- test_behavior: |
+    Test that the prototype factory correctly creates a clone of a serializable prototype.
+  test_name: |
+    testPrototypeFactoryWithSerializablePrototype
+  test_code: |
+    class SerializablePrototype implements Serializable {
+        private String value;
+        public SerializablePrototype(String value) {
+            this.value = value;
+        }
+        public String getValue() {
+            return value;
+        }
+    }
+
+    @Test
+    public void testPrototypeFactoryWithSerializablePrototype() {
+        SerializablePrototype prototype = new SerializablePrototype("test");
+        Factory<SerializablePrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        SerializablePrototype clone = factory.create();
+        assertNotSame(prototype, clone);
+        assertEquals(prototype.getValue(), clone.getValue());
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+```2026-04-07 07:26:47,459 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 3437
+2026-04-07 07:26:47,463 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:26:47,464 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:27:18,153 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPrototypeFactoryWithSerializablePrototype() {
+    // test implementation
+  }
+new_tests:
+- test_behavior: |
+    Test that the prototype factory can create a clone of a Serializable prototype.
+  test_name: |
+    testPrototypeFactoryWithSerializablePrototype
+  test_code: |
+    class SerializablePrototype implements Serializable {
+        private String value;
+        public SerializablePrototype(String value) {
+            this.value = value;
+        }
+        public String getValue() {
+            return value;
+        }
+    }
+
+    @Test
+    public void testPrototypeFactoryWithSerializablePrototype() {
+        SerializablePrototype prototype = new SerializablePrototype("test");
+        Factory<SerializablePrototype> factory = PrototypeFactory.prototypeFactory(prototype);
+        SerializablePrototype clone = factory.create();
+        assertNotSame(prototype, clone);
+        assertEquals(prototype.getValue(), clone.getValue());
+    }
+  new_imports_code: |
+    import static org.junit.Assert.*;
+    import org.junit.Test;
+```2026-04-07 07:27:23,209 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 3436
+2026-04-07 07:27:23,214 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+2026-04-07 07:27:23,214 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:27:54,656 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-07 07:27:54,657 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=PrototypeFactoryTest"
+2026-04-07 07:28:39,088 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+2026-04-07 07:28:39,104 - panta.panta - INFO - Reached above target coverage of 100% (Current Coverage: (100.0%, 100.0%)) in 4 iterations.
+2026-04-07 07:28:39,123 - panta.panta - INFO - Report generated successfully at: ../../result-files/control_gpt-4o-mini/
+
+

@@ -1,0 +1,23 @@
+# Batch Run R1
+
+- Batch name: collections28f-prototypefactory-2round-complexity-feedback
+- Timestamp: 2026-04-07_06:37:24
+- Round: 1 / 2
+- Baseline test file: original `defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java` contents
+- report_filepath: collections28f_prototypefactory_2round_complexity_feedback_r1_20260407_063724.html
+- Run status: completed
+- Process exit code: 0
+- Effective config overrides:
+  - code_coverage_report_path = defects4j-subjects-notests/Collections-28f/target/jacoco/jacoco.csv
+  - enable_advice_feedback = true
+  - enable_fixing = 3
+  - junit_version = 4
+  - llm_advice_activation_line_coverage = 100
+  - maximum_iterations = 16
+  - no_coverage_increase_iterations = 3
+  - project_directory = defects4j-subjects-notests/Collections-28f
+  - report_filepath = collections28f_prototypefactory_2round_complexity_feedback_r1_20260407_063724.html
+  - source_code_file = defects4j-subjects-notests/Collections-28f/src/main/java/org/apache/commons/collections4/functors/PrototypeFactory.java
+  - test_code_command_dir = defects4j-subjects-notests/Collections-28f
+  - test_code_file = defects4j-subjects-notests/Collections-28f/src/test/java/org/apache/commons/collections4/functors/PrototypeFactoryTest.java
+  - test_execution_command = mvn clean package -Dtest=PrototypeFactoryTest

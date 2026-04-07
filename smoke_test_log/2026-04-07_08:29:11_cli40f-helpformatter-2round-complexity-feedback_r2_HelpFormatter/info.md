@@ -1,0 +1,23 @@
+# Batch Run R2
+
+- Batch name: cli40f-helpformatter-2round-complexity-feedback
+- Timestamp: 2026-04-07_08:29:11
+- Round: 2 / 2
+- Baseline test file: original `defects4j-subjects-notests/Cli-40f/src/test/java/org/apache/commons/cli/HelpFormatterTest.java` contents
+- report_filepath: cli40f_helpformatter_2round_complexity_feedback_r2_20260407_082911.html
+- Run status: completed
+- Process exit code: 0
+- Effective config overrides:
+  - code_coverage_report_path = defects4j-subjects-notests/Cli-40f/target/jacoco/jacoco.csv
+  - enable_advice_feedback = true
+  - enable_fixing = 3
+  - junit_version = 4
+  - llm_advice_activation_line_coverage = 100
+  - maximum_iterations = 11
+  - no_coverage_increase_iterations = 3
+  - project_directory = defects4j-subjects-notests/Cli-40f
+  - report_filepath = cli40f_helpformatter_2round_complexity_feedback_r2_20260407_082911.html
+  - source_code_file = defects4j-subjects-notests/Cli-40f/src/main/java/org/apache/commons/cli/HelpFormatter.java
+  - test_code_command_dir = defects4j-subjects-notests/Cli-40f
+  - test_code_file = defects4j-subjects-notests/Cli-40f/src/test/java/org/apache/commons/cli/HelpFormatterTest.java
+  - test_execution_command = mvn clean package -Dtest=HelpFormatterTest
