@@ -17,6 +17,8 @@ from .utils import get_code_language
 from .yaml_parser_utils import load_yaml
 from .cfg_access import get_structural_cfg
 from .utils import read_file
+from .source_line_map import SourceLineMap
+from .branches_history import BranchHistory
 
 
 def count_leading_spaces(text):
@@ -50,6 +52,8 @@ def failed_test_to_string(failed_test: dict):
 
 
 class UnitTestGenerator:
+    DEFAULT_SELECTED_BRANCH_COUNT = 10
+
     def __init__(
         self,
         project_dir: str,
@@ -71,6 +75,7 @@ class UnitTestGenerator:
         additional_instructions: str = "",
         llm_advice_activation_line_coverage: float = 50.0,
         llm_advice_activation_no_growth: int = 1,
+        enable_feedback: bool = False,
         snapshotter=None,
     ):
         self.relevant_line_number_to_insert_tests_after = None
@@ -99,6 +104,7 @@ class UnitTestGenerator:
         self.llm_path_advice_model = llm_path_advice_model or llm_model
         self.llm_path_advice_temperature = llm_path_advice_temperature
         self.llm_light_advice_temperature = llm_light_advice_temperature
+        self.enable_feedback = enable_feedback
         # Semantic change: optional snapshotter for sidecar CFG recording.
         self.snapshotter = snapshotter
 
@@ -110,161 +116,40 @@ class UnitTestGenerator:
         self.failed_test_runs = []
         self.coverage_invalid_tests = []
         self.run_coverage()
+        self.source_line_map = SourceLineMap(read_file(self.source_code_file))
+        self.branches_history = BranchHistory()
+        self.branches_history.initialize_branches(self.branch_missed or [])
         self.prompt_type = prompt_type
         self.path_history = {}
-        self.selection_state = {}
-        self.current_iteration_results = []
+        self.current_selected_branch_lines = []
         # self.prompt = self.build_prompt(self.prompt_type)
         self.prompt = ""
 
-    def get_prompt_selection_state(self):
-        return self.selection_state
+    def get_branches_history(self):
+        return self.branches_history
 
-    def start_iteration_tracking(self):
-        self.current_iteration_results = []
-
-    def record_iteration_result(self, test_result: dict):
-        if not isinstance(test_result, dict):
-            return
-        self.current_iteration_results.append(dict(test_result))
-
-    def build_advice_feedback(self) -> str:
-        selection_state = self.get_prompt_selection_state() or {}
-        last_advice = selection_state.get("last_advice") or {}
-        if not last_advice:
-            return ""
-
-        design_lines = []
-        for design in last_advice.get("test_designs", [])[:4]:
-            if not isinstance(design, dict):
-                continue
-            design_name = str(design.get("design_name", "")).strip()
-            method_context = design.get("method_context") or {}
-            entry_hint = str(method_context.get("entry_hint", "")).strip()
-            if not design_name:
-                continue
-            if entry_hint:
-                design_lines.append(f'- "{design_name}" via `{entry_hint}`')
-            else:
-                design_lines.append(f'- "{design_name}"')
-
-        result_lines, note_lines = self._summarize_current_iteration_for_feedback()
-        lines = [
-            "## Previous Advice Feedback",
-            "The previous iteration's advice did not lead to any coverage increase.",
+    def select_branch_lines(self) -> list:
+        if not self.enable_feedback:
+            self.logger.warning(
+                "Branch selection is disabled because enable_feedback is false."
+            )
+            self.current_selected_branch_lines = []
+            return []
+        self.branches_history.initialize_branches(self.branch_missed or [])
+        branch_units = [
+            self.branches_history.get_branch(line_num)
+            for line_num in (self.branch_missed or [])
         ]
-        if design_lines:
-            lines.append("### Previous Advice Designs")
-            lines.extend(design_lines)
-        if result_lines:
-            lines.append("### Generated Tests And Fixing Summary")
-            lines.extend(result_lines)
-        if note_lines:
-            lines.append("### Notes")
-            lines.extend(note_lines)
-        return "\n".join(lines)
-
-    @staticmethod
-    def _categorize_test_result(test_result: dict) -> str:
-        if test_result.get("status") == "PASS":
-            return "passed"
-        reason = str(test_result.get("reason", "")).strip()
-        if reason == "Compilation failure":
-            return "compilation failure"
-        if reason == "Timeout":
-            return "timeout"
-        if reason == "Test failures":
-            return "runtime failure"
-        return "failed"
-
-    def _summarize_current_iteration_for_feedback(self):
-        per_test = {}
-        unresolved_failure_types = []
-        fixed_count = 0
-        passed_without_fix_count = 0
-
-        for test_result in self.current_iteration_results:
-            test = test_result.get("test") or {}
-            test_name = str(test.get("test_name", "")).strip() or "<unnamed test>"
-            label = str(test_result.get("label", ""))
-            phase = "fixing" if label.startswith("f_") else "generation"
-            category = self._categorize_test_result(test_result)
-            entry = per_test.setdefault(
-                test_name,
-                {"generation": [], "fixing": []},
-            )
-            entry[phase].append(category)
-
-        result_lines = []
-        for test_name, entry in per_test.items():
-            gen_results = entry["generation"]
-            fix_results = entry["fixing"]
-            first_gen = gen_results[0] if gen_results else ""
-            has_gen_failure = any(result != "passed" for result in gen_results)
-            has_fix_pass = any(result == "passed" for result in fix_results)
-            fix_failures = [result for result in fix_results if result != "passed"]
-
-            if has_gen_failure and has_fix_pass:
-                fixed_count += 1
-                result_lines.append(
-                    f"- `{test_name}`: generation {first_gen}, then fixing passed"
-                )
-                continue
-
-            if gen_results == ["passed"] and not fix_results:
-                passed_without_fix_count += 1
-                result_lines.append(f"- `{test_name}`: passed in generation")
-                continue
-
-            if has_gen_failure:
-                if fix_failures:
-                    unresolved_failure_types.extend(fix_failures)
-                    fix_summary = ", ".join(fix_failures[:2])
-                    if len(fix_failures) > 2:
-                        fix_summary += ", ..."
-                    result_lines.append(
-                        f"- `{test_name}`: generation {first_gen}; fixing still failed ({fix_summary})"
-                    )
-                else:
-                    unresolved_failure_types.extend(
-                        result for result in gen_results if result != "passed"
-                    )
-                    result_lines.append(f"- `{test_name}`: generation {first_gen}")
-                continue
-
-            if fix_results:
-                final_fix = "passed" if has_fix_pass else fix_results[-1]
-                if final_fix != "passed":
-                    unresolved_failure_types.append(final_fix)
-                result_lines.append(f"- `{test_name}`: fixing {final_fix}")
-
-        note_lines = []
-        if fixed_count:
-            note_lines.append(
-                f"- Fixing recovered {fixed_count} test(s), but the iteration still produced no coverage increase."
-            )
-        if unresolved_failure_types:
-            compilation_count = unresolved_failure_types.count("compilation failure")
-            runtime_count = unresolved_failure_types.count("runtime failure")
-            timeout_count = unresolved_failure_types.count("timeout")
-            if compilation_count and compilation_count >= runtime_count + timeout_count:
-                note_lines.append(
-                    "- Most unresolved tests failed at compilation time; prefer simpler, well-supported test code and imports."
-                )
-            elif runtime_count:
-                note_lines.append(
-                    "- Most unresolved tests reached execution but failed assertions or setup; reconsider the expected behavior and path setup."
-                )
-            elif timeout_count:
-                note_lines.append(
-                    "- Some unresolved tests timed out; avoid flows that may block or depend on unfinished iteration state."
-                )
-        if passed_without_fix_count and not fixed_count:
-            note_lines.append(
-                "- Some generated tests already passed but still did not add coverage; consider switching to a different uncovered region instead of refining the same direction."
-            )
-
-        return result_lines, note_lines
+        branch_units = [unit for unit in branch_units if unit is not None]
+        self.current_selected_branch_lines = BranchHistory.select_branch_lines(
+            branch_units,
+            max_count=self.DEFAULT_SELECTED_BRANCH_COUNT,
+        )
+        self.logger.info(
+            "Selected branch lines for current iteration: %s",
+            self.current_selected_branch_lines,
+        )
+        return list(self.current_selected_branch_lines)
 
     def run_coverage(self):
         """
@@ -338,6 +223,15 @@ class UnitTestGenerator:
             self.logger.error(str(e))
             raise
 
+    def finalize_branch_history(self, round_num: int):
+        if not self.enable_feedback or self.branches_history is None:
+            return
+        self.branches_history.initialize_branches(self.branch_missed or [])
+        self.branches_history.record_selections(
+            round_num, self.current_selected_branch_lines
+        )
+        self.branches_history.update_coverage(round_num, self.branch_missed or [])
+
     @staticmethod
     def get_included_files(included_files):
         if included_files:
@@ -366,7 +260,6 @@ class UnitTestGenerator:
         prompt_type,
         pick_two_paths=True,
         no_coverage_increase_count=0,
-        previous_advice_feedback="",
     ) -> dict:
         """
         Returns:
@@ -428,16 +321,15 @@ class UnitTestGenerator:
             llm_advice_activation_line_coverage=self.llm_advice_activation_line_coverage,
             llm_advice_activation_no_growth=self.llm_advice_activation_no_growth,
             snapshotter=self.snapshotter,
-            previous_advice_feedback=previous_advice_feedback,
+            source_line_map=self.source_line_map,
+            selected_branch_lines=self.current_selected_branch_lines,
         )
         if prompt_type == "control" and self.selection_mode == "comex":
             prompt = self.prompt_builder.build_prompt_cfa_guided(pick_two_paths)
             self.path_history = self.prompt_builder.get_current_path_history()
-            self.selection_state = self.prompt_builder.get_current_selection_state()
             return prompt
         elif prompt_type == "control" and self.selection_mode == "llm":
             prompt = self.prompt_builder.build_prompt_llm_guided()
-            self.selection_state = self.prompt_builder.get_current_selection_state()
             return prompt
         elif prompt_type == "coverage":
             return self.prompt_builder.build_prompt(coverage_enabled=True)
@@ -560,13 +452,15 @@ class UnitTestGenerator:
         max_tokens=4096,
         pick_two_paths=True,
         no_coverage_increase_count=0,
-        previous_advice_feedback="",
     ):
+        if self.enable_feedback:
+            self.select_branch_lines()
+        else:
+            self.current_selected_branch_lines = []
         self.prompt = self.build_prompt(
             self.prompt_type,
             pick_two_paths,
             no_coverage_increase_count=no_coverage_increase_count,
-            previous_advice_feedback=previous_advice_feedback,
         )
         # self.logger.info(f"{g_label}: {self.path_history}")
         tests_dict, token_count = self.generate_test_by_prompt_llm(

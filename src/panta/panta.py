@@ -56,7 +56,6 @@ class Panta:
         self.test_dependencies = self.extract_test_dependency()
         self.validate_paths()
         self.duplicate_test_file()
-
         self.test_gen = UnitTestGenerator(
             project_dir=args.project_directory,
             source_code_file=args.source_code_file,
@@ -77,6 +76,7 @@ class Panta:
             selection_mode=args.selection_mode,
             llm_advice_activation_line_coverage=args.llm_advice_activation_line_coverage,
             llm_advice_activation_no_growth=args.llm_advice_activation_no_growth,
+            enable_feedback=args.enable_advice_feedback,
             snapshotter=self.snapshotter,
         )
 
@@ -169,7 +169,6 @@ class Panta:
         iteration_count = 0
         test_results_list = []
         no_coverage_increase = 0
-        previous_advice_feedback = ""
 
         # self.test_gen.initial_test_suite_analysis()
         self.test_gen.initial_test_suite_analysis_AST()
@@ -180,7 +179,6 @@ class Panta:
                 and iteration_count < self.args.maximum_iterations
                 and no_coverage_increase < self.args.no_coverage_increase_iterations
             ):
-                self.test_gen.start_iteration_tracking()
                 cur_line_cov = round(self.test_gen.current_coverage[0] * 100, 2)
                 cur_branch_cov = round(self.test_gen.current_coverage[1] * 100, 2)
                 self.logger.info(
@@ -205,7 +203,6 @@ class Panta:
                             max_tokens=4096,
                             pick_two_paths=self.args.pick_two_paths,
                             no_coverage_increase_count=no_coverage_increase,
-                            previous_advice_feedback=previous_advice_feedback,
                         )
                     )
                 token_count += gen_token_count
@@ -213,7 +210,6 @@ class Panta:
                 for generated_test in generated_tests_dict.get("new_tests") or []:
                     test_result = self.test_gen.validate_test(generated_test)
                     test_result["label"] = g_label
-                    self.test_gen.record_iteration_result(test_result)
                     test_results_list.append(test_result)
 
                 # collect code coverage after generation phase
@@ -241,7 +237,6 @@ class Panta:
                     )
                     token_count += fix_token_count
                     for fix_result in fix_results_list:
-                        self.test_gen.record_iteration_result(fix_result)
                         test_results_list.append(fix_result)
 
                     # collect coverage after fixing phase
@@ -265,14 +260,13 @@ class Panta:
                 else:
                     self.logger.info("fixing phase is disabled.")
 
+                self.test_gen.finalize_branch_history(iteration_count)
+
                 if self.test_gen.current_coverage[0] < (
                     self.test_gen.target_coverage / 100
                 ):
                     new_line_cov = round(self.test_gen.current_coverage[0] * 100, 2)
                     new_branch_cov = round(self.test_gen.current_coverage[1] * 100, 2)
-                    selection_state = self.test_gen.get_prompt_selection_state()
-                    last_advice = (selection_state or {}).get("last_advice") or {}
-                    advice_mode = (selection_state or {}).get("mode") or ""
                     if new_line_cov > cur_line_cov or new_branch_cov > cur_branch_cov:
                         line_cov_increase = new_line_cov - cur_line_cov
                         branch_cov_increase = new_branch_cov - cur_branch_cov
@@ -282,22 +276,11 @@ class Panta:
                             f"branch coverage {round(branch_cov_increase, 2)}%"
                         )
                         no_coverage_increase = 0
-                        previous_advice_feedback = ""
                     else:
                         self.logger.info(
                             f"Iteration {iteration_count} cannot increase coverage."
                         )
                         no_coverage_increase += 1
-                        if (
-                            advice_mode in ("llm", "llm-light-advice")
-                            and last_advice
-                            and self.args.enable_advice_feedback
-                        ):
-                            previous_advice_feedback = (
-                                self.test_gen.build_advice_feedback()
-                            )
-                        else:
-                            previous_advice_feedback = ""
                     self.test_gen.clear_failed_test_runs()
 
                 iteration_count += 1
@@ -335,7 +318,7 @@ class Panta:
             "reason": "",
             "exit_code": 0,
             "stderr": "",
-            "stdout": self.test_gen.get_prompt_selection_state(),
+            "stdout": "",
             "test": "",
             "line_coverage": round(self.test_gen.current_coverage[0] * 100, 2),
             "branch_coverage": round(self.test_gen.current_coverage[1] * 100, 2),

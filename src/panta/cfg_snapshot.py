@@ -318,12 +318,6 @@ class CFGSnapshotter:
                         "selected_path_labels": prompt_ctx.get("selected_path_labels"),
                         "num_candidate_paths": prompt_ctx.get("num_candidate_paths"),
                         "token_count": prompt_ctx.get("token_count"),
-                        "has_previous_advice_feedback": bool(
-                            context.get("previous_advice_feedback")
-                        ),
-                        "previous_advice_feedback_length": len(
-                            context.get("previous_advice_feedback", "")
-                        ),
                         "prompt_length_chars": len(str(prompt_ctx.get("prompt", ""))),
                     }
                     self._write_json(
@@ -334,12 +328,6 @@ class CFGSnapshotter:
                     self._write_json(
                         stage_path, "rendered_prompt_context.json", prompt_ctx
                     )
-
-            if context.get("previous_advice_feedback"):
-                feedback_path = os.path.join(stage_path, "previous_advice_feedback.txt")
-                with open(feedback_path, "w", encoding="utf-8") as f:
-                    f.write(context["previous_advice_feedback"])
-
             # Write generation_outcome if present
             if "generation_outcome" in context:
                 self._write_json(

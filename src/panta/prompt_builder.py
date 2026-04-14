@@ -42,7 +42,8 @@ class PromptBuilder:
         llm_advice_activation_line_coverage=50.0,
         llm_advice_activation_no_growth=1,
         snapshotter=None,
-        previous_advice_feedback="",
+        source_line_map=None,
+        selected_branch_lines=None,
     ):
         if lines_missed is None:
             lines_missed = []
@@ -69,11 +70,11 @@ class PromptBuilder:
         self.llm_advice_activation_line_coverage = llm_advice_activation_line_coverage
         self.llm_advice_activation_no_growth = llm_advice_activation_no_growth
         self.snapshotter = snapshotter
-        self.previous_advice_feedback = previous_advice_feedback
+        self.source_line_map = source_line_map
+        self.selected_branch_lines = selected_branch_lines or []
         self.lines_missed = lines_missed
         self.branch_missed = branch_missed
         self.path_history = path_history
-        self.selection_state = {"mode": self.selection_mode}
         self.test_dependencies = test_dependencies
 
         self.logger = pantaLogger.initialize_logger(__name__)
@@ -129,10 +130,6 @@ class PromptBuilder:
         comex_prompt_builder = self._build_comex_path_prompt_builder()
         prompt = comex_prompt_builder.build_prompt_cfa_guided(pick_two_paths)
         self.path_history = comex_prompt_builder.get_current_path_history()
-        self.selection_state = {
-            "mode": "comex",
-            "path_history": self.path_history,
-        }
         return prompt
 
     def build_prompt_llm_guided(self) -> dict:
@@ -159,17 +156,13 @@ class PromptBuilder:
             llm_advice_activation_line_coverage=self.llm_advice_activation_line_coverage,
             llm_advice_activation_no_growth=self.llm_advice_activation_no_growth,
             snapshotter=self.snapshotter,
-            previous_advice_feedback=self.previous_advice_feedback,
+            source_line_map=self.source_line_map,
+            selected_branch_lines=self.selected_branch_lines,
         )
-        prompt = llm_prompt_builder.build_prompt_guided()
-        self.selection_state = llm_prompt_builder.get_current_selection_state()
-        return prompt
+        return llm_prompt_builder.build_prompt_guided()
 
     def get_current_path_history(self):
         return self.path_history
-
-    def get_current_selection_state(self):
-        return self.selection_state
 
     def build_prompt(self, coverage_enabled=False) -> dict:
         variables = {

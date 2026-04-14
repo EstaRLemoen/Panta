@@ -6,6 +6,7 @@ from jinja2 import Environment, StrictUndefined
 from .config_loader import get_settings
 from .model_invocation.llm_invocation import LLMInvocation
 from .panta_logger import pantaLogger
+from .source_line_map import SourceLineMap
 from .yaml_parser_utils import load_yaml
 
 
@@ -15,8 +16,9 @@ COMMENT_SUFFIX_BY_LANGUAGE = {
 
 
 class CoverageAnnotatedSourceBuilder:
-    def __init__(self, language: str):
+    def __init__(self, language: str, source_line_map: SourceLineMap = None):
         self.language = (language or "").lower()
+        self.source_line_map = source_line_map
         self.annotated_source = None
         self.uncovered_branches = None
         self.uncovered_branches_text = None
@@ -29,19 +31,21 @@ class CoverageAnnotatedSourceBuilder:
                 f"Annotated source is not implemented for language '{self.language}'"
             )
 
+        line_map = self.source_line_map or SourceLineMap(source_code)
         missed_lines = set(lines_missed or [])
         missed_branches = set(branch_missed or [])
         annotated_lines = []
         uncovered_branches = []
         uncovered_lines = []
-        for index, line in enumerate(source_code.splitlines(), start=1):
+        for line_num in range(1, line_map.total_lines() + 1):
+            line = line_map.get_line(line_num)
             tags = []
-            if index in missed_lines:
+            if line_num in missed_lines:
                 tags.append("uncovered-line")
-                uncovered_lines.append([index, line])
-            if index in missed_branches:
+                uncovered_lines.append([line_num, line])
+            if line_num in missed_branches:
                 tags.append("uncovered-branch")
-                uncovered_branches.append(f"{index}: {line}")
+                uncovered_branches.append(f"{line_num}: {line}")
 
             if tags:
                 annotation = f" {comment_suffix} PANTA: {', '.join(tags)}"
@@ -88,7 +92,8 @@ class LLMPathAdvicePromptBuilder:
         llm_advice_activation_line_coverage: float = 50.0,
         llm_advice_activation_no_growth: int = 1,
         snapshotter=None,
-        previous_advice_feedback: str = "",
+        source_line_map=None,
+        selected_branch_lines=None,
     ):
         self.source_code_file_path = source_code_file
         self.source_file_name = source_file_name
@@ -111,11 +116,11 @@ class LLMPathAdvicePromptBuilder:
         self.llm_path_advice_temperature = llm_path_advice_temperature
         self.llm_light_advice_temperature = llm_light_advice_temperature
         self.snapshotter = snapshotter
-        self.previous_advice_feedback = previous_advice_feedback
+        self.source_line_map = source_line_map
+        self.selected_branch_lines = selected_branch_lines or []
         self.llm_model = llm_model
         self.llm_invoker = LLMInvocation(model=llm_model)
         self.logger = pantaLogger.initialize_logger(__name__)
-        self.selection_state = {"mode": "llm", "advice_history": []}
         self.builder = None
         self.last_advice_fallback_reason = None
 
@@ -130,7 +135,6 @@ class LLMPathAdvicePromptBuilder:
                 light_mode=False,
             )
             prompt = self._build_final_generation_prompt(annotated_source_code, advice)
-            self.selection_state = self._build_selection_state(advice, mode="llm")
         else:
             advice = self._generate_advice(
                 annotated_source_code,
@@ -138,14 +142,7 @@ class LLMPathAdvicePromptBuilder:
                 light_mode=True,
             )
             prompt = self._build_final_generation_prompt(annotated_source_code, advice)
-            self.selection_state = self._build_selection_state(
-                advice,
-                mode="llm-light-advice",
-            )
         return prompt
-
-    def get_current_selection_state(self):
-        return self.selection_state
 
     def _should_use_advice(self) -> bool:
         current_line_coverage = (self.current_coverage[0] or 0.0) * 100
@@ -154,17 +151,33 @@ class LLMPathAdvicePromptBuilder:
         return self.no_coverage_increase_count >= self.llm_advice_activation_no_growth
 
     def _build_annotated_source(self):
-        self.builder = CoverageAnnotatedSourceBuilder(self.language)
+        self.builder = CoverageAnnotatedSourceBuilder(
+            self.language, source_line_map=self.source_line_map
+        )
         self.builder.build(self.source_file, self.lines_missed, self.branch_missed)
+
+    def _build_branch_focus_text(self) -> str:
+        selected_branch_texts = []
+        for line_num in self.selected_branch_lines:
+            line_text = self.source_line_map.get_line(line_num)
+            selected_branch_texts.append(f"{line_num}: {line_text}")
+        selected_branch_text = "\n".join(selected_branch_texts)
+        return (
+            "Please prioritize the following uncovered branches in this round:\n"
+            f"{selected_branch_text}"
+        )
 
     def _build_advice_prompt(
         self, annotated_source_code: str, uncovered_branches, light_mode: bool = False
     ) -> dict:
+        if self.selected_branch_lines:
+            uncovered_branches_text = self._build_branch_focus_text()
+        else:
+            uncovered_branches_text = self.builder.get_uncovered_branches_text()
         variables = {
             "source_file_name": self.source_file_name,
             "annotated_source_code": annotated_source_code,
-            "uncovered_branches": uncovered_branches,
-            "uncovered_branches_text": self.builder.get_uncovered_branches_text(),
+            "uncovered_branches_text": uncovered_branches_text,
             "language": self.language,
         }
         environment = Environment(undefined=StrictUndefined)
@@ -175,8 +188,6 @@ class LLMPathAdvicePromptBuilder:
             else settings.test_generation_llm_advice_selection_prompt
         )
         user_prompt = environment.from_string(prompt_setting.user).render(variables)
-        if self.previous_advice_feedback:
-            user_prompt += "\n\n" + self.previous_advice_feedback
         return {
             "system": environment.from_string(prompt_setting.system).render(variables),
             "user": user_prompt,
@@ -447,13 +458,6 @@ class LLMPathAdvicePromptBuilder:
         self._capture_final_prompt_snapshot(annotated_source_code, advice, prompt)
         return prompt
 
-    def _build_selection_state(self, advice: dict, mode: str = "llm") -> dict:
-        return {
-            "mode": mode,
-            "last_advice": advice,
-            "advice_history": [advice],
-        }
-
     def _capture_advice_snapshot(
         self,
         annotated_source_code: str,
@@ -476,11 +480,11 @@ class LLMPathAdvicePromptBuilder:
                 "prompt_context": {
                     "prompt": advice_prompt.get("user", ""),
                     "target_methods": advice.get("target_methods", []),
+                    "target_branches": self.selected_branch_lines,
                     "advice_summary": advice.get("focus_summary", ""),
                     "annotated_line_count": len(annotated_source_code.splitlines()),
                     "token_count": token_count,
                 },
-                "previous_advice_feedback": self.previous_advice_feedback,
                 "generation_outcome": advice,
             },
         )
@@ -498,10 +502,10 @@ class LLMPathAdvicePromptBuilder:
                 "prompt_context": {
                     "prompt": prompt.get("user", ""),
                     "target_methods": advice.get("target_methods", []),
+                    "target_branches": self.selected_branch_lines,
                     "advice_summary": advice.get("focus_summary", ""),
                     "annotated_line_count": len(annotated_source_code.splitlines()),
                 },
-                "previous_advice_feedback": self.previous_advice_feedback,
                 "generation_outcome": advice,
             },
         )
