@@ -358,10 +358,6 @@ for ((i=1; i<=ROUND_COUNT; i++)); do
 
     resolve_active_paths
     ensure_original_test_state_cached "$ACTIVE_TEST_FILE"
-    if [[ ! -d "$(dirname "$ACTIVE_TEST_FILE")" ]]; then
-        printf 'Test file parent directory not found: %s\n' "$(dirname "$ACTIVE_TEST_FILE")" >&2
-        exit 1
-    fi
 
     restore_baseline "$BASELINE_ABS"
     RUN_DIR="$LOG_DIR/${TIMESTAMP}_${BATCH_NAME}_r${i}_${ACTIVE_SUBJECT_LABEL}"
