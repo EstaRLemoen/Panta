@@ -35,6 +35,7 @@ def config_to_namespace(config):
             "no_coverage_increase_iterations"
         ),
         enable_fixing=config.getint("enable_fixing"),
+        fixing_mode=config.get("fixing_mode", fallback="combined"),
         enable_advice_feedback=config.getboolean(
             "enable_advice_feedback", fallback=False
         ),

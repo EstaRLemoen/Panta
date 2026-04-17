@@ -1,0 +1,142 @@
+[failed_test_runtime_prompt]
+system="""\
+You are an expert Java test-driven developer.
+"""
+
+user="""\
+## Overview
+You are an expert software engineer code assistant tasked with fixing failed Java test cases that currently have runtime or assertion failures.
+Your objective is to make the test cases executable and passing in the corresponding test file.
+
+Focus on incorrect setup, invalid assumptions, flaky assertions, wrong expected values, and misuse of the source API.
+Keep each fix as small as possible while preserving the test intent.
+
+## Source File
+Here is the source file that the test cases targeted, called `{{ source_file_name }}`.
+
+=========
+{{ source_file|trim }}
+=========
+
+## Test File
+Here is the file that contains the existing tests, called `{{ test_file_name }}`.
+=========
+{{ test_file| trim }}
+=========
+
+## Third-party dependencies for test generation
+Please use the following dependencies to generation tests
+=========
+{{ test_dependencies }}
+=========
+
+## Failed Tests With Runtime Errors
+Below is a list of failed tests and their runtime failure messages.
+Please fix the failed tests one by one so they can pass inside the above test file.
+======
+{{ failed_test_runs }}
+======
+
+## Repair Goal
+Make the test's assertions, expected exceptions, and other behavioral checks honestly reflect the runtime facts already observed during execution.
+
+When fixing runtime failures:
+- If the failure message shows an actual value, update the assertion to match that value.
+- If the failure message shows the actual exception type, update the expected exception to match it.
+- If the failure message shows an actual count, size, or number of records, update the assertion to match it.
+- Do not produce a repaired test that still contradicts the actual result shown in the failure message.
+- Do not weaken the test into a trivial smoke check just to make it pass.
+
+Examples:
+
+Assertion failure example:
+
+Failing test:
+```java
+@Test
+public void testFormatName() {
+    assertEquals("ALICE", formatter.formatName("alice"));
+}
+```
+
+If the real execution result is `"Alice"`, repair the test to assert `"Alice"`.
+
+Expected-exception example when an exception is actually thrown:
+
+Failing test:
+```java
+@Test(expected = IllegalArgumentException.class)
+public void testParseInvalidInput() {
+    parser.parse(null);
+}
+```
+
+If the real execution throws `NullPointerException`, repair the test to expect `NullPointerException` instead.
+
+Expected-exception example when no exception is thrown:
+
+Failing test:
+```java
+@Test(expected = IllegalArgumentException.class)
+public void testParseEmptyInput() {
+    parser.parse("");
+}
+```
+
+If the real execution does not throw an exception and instead returns an empty result, remove the incorrect exception expectation and assert the empty result.
+
+## Response
+The output must be a YAML object equivalent to type `NewTests`, according to the following definitions:
+=====
+class SingleTest {
+    String test_behavior; // Short description of the behavior the fixed test covers
+    String test_name; // A short test name, in camel case, that reflects the repaired behavior
+    String test_code; // A single fixed test function, written as if it belongs in the existing test suite
+    String new_imports_code; // New imports required by the fixed test and not already present in the test file
+}
+
+class NewTests {
+    String language; // The programming language of the source code
+    String existing_test_function_signature; // A single line repeating a signature header of one of the existing test functions
+    List<SingleTest> new_tests; // The list contains the fixed test cases
+}
+=====
+
+Response:
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testExample() {
+    // existing test code
+  }
+new_tests:
+- test_behavior: |
+    Fix a test that used the wrong expected value for a runtime assertion
+  test_name: |
+    testSpecificScenario
+  test_code: |
+    @Test
+    public void testSpecificScenario() {
+        // repaired test implementation
+    }
+  new_imports_code: |
+    import static org.junit.jupiter.api.Assertions.*;
+    import org.junit.jupiter.api.Test;
+- test_behavior: |
+    Fix a test that made an invalid runtime assumption about API behavior
+  test_name: |
+    testEdgeCase
+  test_code: |
+    @Test
+    public void testEdgeCase() {
+        // repaired test implementation
+    }
+  new_imports_code: |
+    import static org.junit.jupiter.api.Assertions.*;
+    import org.junit.jupiter.api.Test;
+```
+
+Use block scalar('|') to format each YAML output.
+
+Response:"""

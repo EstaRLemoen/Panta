@@ -1,6 +1,7 @@
 import json
 import os
 import re
+from typing import Tuple
 
 from .command_executor import CommandExecutor
 from .coverage.jacoco_coverage import JacocoCoverage
@@ -51,6 +52,15 @@ def failed_test_to_string(failed_test: dict):
     return failed_test_str
 
 
+def failed_test_to_string_with_index(failed_test: dict, index: int):
+    failed_test_str = failed_test_to_string(failed_test)
+    if not failed_test_str:
+        return ""
+    return (
+        f"=========Failed compilation test index: {index}=========\n{failed_test_str}"
+    )
+
+
 class UnitTestGenerator:
     DEFAULT_SELECTED_BRANCH_COUNT = 10
 
@@ -76,6 +86,7 @@ class UnitTestGenerator:
         llm_advice_activation_line_coverage: float = 50.0,
         llm_advice_activation_no_growth: int = 1,
         enable_feedback: bool = False,
+        fixing_mode: str = "combined",
         snapshotter=None,
     ):
         self.relevant_line_number_to_insert_tests_after = None
@@ -105,6 +116,7 @@ class UnitTestGenerator:
         self.llm_path_advice_temperature = llm_path_advice_temperature
         self.llm_light_advice_temperature = llm_light_advice_temperature
         self.enable_feedback = enable_feedback
+        self.fixing_mode = fixing_mode
         # Semantic change: optional snapshotter for sidecar CFG recording.
         self.snapshotter = snapshotter
 
@@ -813,11 +825,176 @@ class UnitTestGenerator:
         self.failed_test_runs = []
         return prompt_builder.build_prompt_for_fixing()
 
-    def fix_failed_tests(self, f_label, iter_num, max_tokens=4096):
-        # Check for existence of failed tests, fix until failed tests are empty or at most 5 iterations
+    def build_prompt_for_fixing_separate(self, error_type: str) -> Tuple[dict, list]:
+        failed_test_runs_value = ""
+        remaining_failed_tests = []
+        selected_failed_tests = []
+
+        for failed_test in self.failed_test_runs:
+            if failed_test.get("error_type") == error_type:
+                selected_failed_tests.append(failed_test)
+            else:
+                remaining_failed_tests.append(failed_test)
+
+        for index, failed_test in enumerate(selected_failed_tests, start=1):
+            if error_type == "compilation":
+                failed_test_runs_value += failed_test_to_string_with_index(
+                    failed_test, index
+                )
+            else:
+                failed_test_runs_value += failed_test_to_string(failed_test)
+
+        self.failed_test_runs = remaining_failed_tests
+
+        prompt_builder = PromptBuilder(
+            project_dir=self.project_dir,
+            source_code_file=self.source_code_file,
+            test_code_file=self.test_code_file,
+            failed_test_runs=failed_test_runs_value,
+            language=self.language,
+            test_dependencies=self.test_dependencies,
+        )
+
+        if error_type == "compilation":
+            return (
+                prompt_builder.build_prompt_for_fixing_compilation(),
+                selected_failed_tests,
+            )
+        if error_type == "runtime":
+            return (
+                prompt_builder.build_prompt_for_fixing_runtime(),
+                selected_failed_tests,
+            )
+
+        # Restore entries if an unsupported type is requested.
+        self.failed_test_runs.extend(selected_failed_tests)
+        raise ValueError(f"Unsupported fixing error type: {error_type}")
+
+    def build_skipped_fix_result(
+        self,
+        failed_test: dict,
+        label: str,
+        reason: str,
+        explanation: str,
+    ) -> dict:
+        return {
+            "status": "SKIP",
+            "reason": reason,
+            "exit_code": None,
+            "stderr": "",
+            "stdout": explanation,
+            "test": failed_test.get("code", {}),
+            "line_coverage": round(self.current_coverage[0] * 100, 2),
+            "branch_coverage": round(self.current_coverage[1] * 100, 2),
+            "label": label,
+        }
+
+    def consume_fixing_response(
+        self,
+        fixed_tests: dict,
+        label: str,
+        fix_results_list: list,
+        selected_failed_tests: list = None,
+        allow_skipped_tests: bool = False,
+    ):
+        for fixed_test in fixed_tests.get("new_tests", []):
+            test_result = self.validate_test(fixed_test)
+            test_result["label"] = label
+            fix_results_list.append(test_result)
+
+        if not allow_skipped_tests:
+            return
+
+        for skipped_test in fixed_tests.get("skipped_tests", []):
+            if not selected_failed_tests:
+                continue
+
+            failed_test = None
+            skipped_name = skipped_test.get("failed_test_name")
+            if isinstance(skipped_name, str):
+                skipped_name = skipped_name.strip()
+            if skipped_name:
+                for candidate in selected_failed_tests:
+                    candidate_name = (
+                        candidate.get("code", {}).get("test_name", "").strip()
+                    )
+                    if candidate_name == skipped_name:
+                        failed_test = candidate
+                        break
+
+            if failed_test is None:
+                skipped_index = skipped_test.get("failed_test_index")
+                if not isinstance(skipped_index, int):
+                    continue
+                if skipped_index < 1 or skipped_index > len(selected_failed_tests):
+                    continue
+                failed_test = selected_failed_tests[skipped_index - 1]
+
+            fix_results_list.append(
+                self.build_skipped_fix_result(
+                    failed_test=failed_test,
+                    label=label,
+                    reason=skipped_test.get("reason", "is_obviously_repeated"),
+                    explanation=skipped_test.get("explanation", ""),
+                )
+            )
+
+    def fix_failed_tests_separate(self, f_label, iter_num, max_tokens=4096):
         fix_results_list = []
         iter_count = 0
         token_count = 0
+
+        while self.failed_test_runs and iter_count < iter_num:
+            fixable_failed_tests = [
+                failed_test
+                for failed_test in self.failed_test_runs
+                if failed_test.get("error_type") in {"compilation", "runtime"}
+            ]
+            if not fixable_failed_tests:
+                break
+
+            for error_type, label_suffix in (
+                ("compilation", "comp"),
+                ("runtime", "rt"),
+            ):
+                if not any(
+                    failed_test.get("error_type") == error_type
+                    for failed_test in self.failed_test_runs
+                ):
+                    continue
+
+                try:
+                    fixing_prompt, selected_failed_tests = (
+                        self.build_prompt_for_fixing_separate(error_type)
+                    )
+                    fixed_tests, tokens = self.generate_test_by_prompt_llm(
+                        fixing_prompt, max_tokens
+                    )
+                    token_count += tokens
+                    self.consume_fixing_response(
+                        fixed_tests=fixed_tests,
+                        label=f"{f_label}_{iter_count + 1}_{label_suffix}",
+                        fix_results_list=fix_results_list,
+                        selected_failed_tests=selected_failed_tests,
+                        allow_skipped_tests=error_type == "compilation",
+                    )
+                except Exception as e:
+                    self.logger.error(
+                        f"Error processing {error_type} failed test runs: {e}"
+                    )
+
+            iter_count += 1
+
+        return fix_results_list, token_count
+
+    def fix_failed_tests(self, f_label, iter_num, max_tokens=4096):
+        if self.fixing_mode == "separate":
+            return self.fix_failed_tests_separate(f_label, iter_num, max_tokens)
+
+        fix_results_list = []
+        iter_count = 0
+        token_count = 0
+
         while self.failed_test_runs and iter_count < iter_num:
             try:
                 fixing_prompt = self.build_prompt_for_fixing()

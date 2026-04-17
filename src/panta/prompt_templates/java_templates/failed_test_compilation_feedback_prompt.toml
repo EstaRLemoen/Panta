@@ -1,0 +1,339 @@
+[failed_test_compilation_prompt]
+system="""\
+You are an expert Java test-driven developer.
+"""
+
+user="""\
+## Overview
+You are an expert software engineer code assistant tasked with fixing failed Java test cases that currently have compilation errors.
+Your objective is to make the test cases compile cleanly in the corresponding test file.
+
+Focus on syntax errors, missing or incorrect imports, unresolved symbols, incompatible APIs, and incorrect test structure.
+Do not broaden the task beyond what is necessary to resolve the compilation failures.
+
+## Source File
+Here is the source file that the test cases targeted, called `{{ source_file_name }}`.
+
+=========
+{{ source_file|trim }}
+=========
+
+## Test File
+Here is the file that contains the existing tests, called `{{ test_file_name }}`.
+=========
+{{ test_file| trim }}
+=========
+
+## Third-party dependencies for test generation
+Please use the following dependencies to generation tests
+=========
+{{ test_dependencies }}
+=========
+
+## Failed Tests With Compilation Errors
+Below is a list of failed tests and their compiler feedback.
+Please handle every failed compilation test exactly once.
+Your decisions must be based on the input failed tests below, compared against the existing tests already present in the test file above.
+
+For each input failed test, choose exactly one action:
+- skip it only if it is `is_obviously_repeated` with an existing test already present in the test file, or
+- repair it so it can compile inside the above test file.
+
+Work in this order:
+1. Review the input failed tests below.
+2. Compare each input failed test against the existing tests already present in the test file above.
+3. First decide which input failed tests, if any, must be skipped as `is_obviously_repeated`.
+4. Record those skip decisions in `skipped_tests`.
+5. Then generate `new_tests` only for the remaining non-skipped input failed tests.
+
+Never decide whether to skip by comparing against tests you are generating in the current response.
+`skipped_tests` must refer only to input failed tests from the list below.
+======
+{{ failed_test_runs }}
+======
+
+## Skip Rule For `is_obviously_repeated`
+For each failed test, choose exactly one action:
+- skip it as `is_obviously_repeated`, or
+- repair it and return it in `new_tests`.
+
+These two actions are mutually exclusive.
+
+You may skip an input failed compilation test only when both conditions hold:
+1. Its compilation failure is caused by conflict with an already-existing test in the test file above, such as duplicate naming, duplicate definition, or an already-existing obvious duplicate test.
+2. That input failed test is `is_obviously_repeated` with that already-existing test.
+
+Duplicate-name compilation conflicts are common. Do NOT skip by default just because an input failed test has the same name as an existing test already present in the test file.
+Only skip when the strict `is_obviously_repeated` condition is fully satisfied.
+Otherwise, repair the input failed test and rename it to reflect its distinct behavior.
+
+A test is `is_obviously_repeated` only if:
+- it has the same test name, and
+- it performs the same sequence of test operations, and
+- any differences are limited to comments or formatting.
+
+It is NOT `is_obviously_repeated` if there is any difference in arguments, literals, called methods, assertions, setup, or execution steps.
+If uncertain, repair the test instead of skipping it.
+
+## Repeated-Test Constraints
+- Decide `skipped_tests` before writing any `new_tests`.
+- If a failed test is skipped, do not also return it in `new_tests`.
+- Only non-skipped tests may be repaired and renamed.
+- Do not rename an obviously repeated test just to avoid skipping it.
+- Apply repeated-test decisions consistently across the whole batch.
+- Do not skip one obvious repeat while returning another equivalent repeated test under a different name.
+- `skipped_tests` must name input failed tests, not tests generated in the current response.
+
+Examples for `is_obviously_repeated`:
+
+This IS `is_obviously_repeated` because only comments/formatting differ:
+```java
+@Test
+public void testAddPositiveNumbers() {
+    assertEquals(5, add(2, 3));
+}
+```
+
+```java
+@Test
+public void testAddPositiveNumbers() { // same behavior
+    assertEquals(5, add(2, 3));
+}
+```
+
+This is NOT `is_obviously_repeated` because the arguments differ:
+```java
+@Test
+public void testAddPositiveNumbers() {
+    assertEquals(5, add(2, 3));
+}
+```
+
+```java
+@Test
+public void testAddPositiveNumbers() {
+    assertEquals(6, add(2, 4));
+}
+```
+
+This is NOT `is_obviously_repeated` because the asserted behavior differs:
+```java
+@Test
+public void testLoadUser() {
+    User user = service.load("alice");
+    assertEquals("alice", user.getName());
+}
+```
+
+```java
+@Test
+public void testLoadUser() {
+    User user = service.load("alice");
+    assertTrue(user.isActive());
+}
+```
+
+This is NOT `is_obviously_repeated` even if the duplicate name causes a compilation conflict:
+```java
+@Test
+public void testLoadUser() {
+    User user = service.load("alice");
+    assertEquals("alice", user.getName());
+}
+```
+
+```java
+@Test
+public void testLoadUser() {
+    User user = service.load("alice");
+    assertTrue(user.isActive());
+}
+```
+
+Repair and rename the second test to reflect its distinct behavior.
+Do not skip the input failed test as `is_obviously_repeated`.
+
+## Batch Example For Skip And Rename
+Suppose the existing test file already contains this test:
+
+```java
+@Test
+public void testLoadUser() {
+    User user = service.load("alice");
+    assertEquals("alice", user.getName());
+}
+```
+
+Now suppose the input failed tests to repair are:
+
+Failed compilation test 1:
+```java
+@Test
+public void testLoadUser() {
+    User user = service.load("alice");
+    assertTrue(user.isActive());
+}
+```
+
+Failed compilation test 2:
+```java
+@Test
+public void testLoadUser() { // same behavior, only comment differs
+    User user = service.load("alice");
+    assertEquals("alice", user.getName());
+}
+```
+
+Failed compilation test 3:
+```java
+@Test
+public void testLoadUserWithNullProfile() {
+    User user = service.load("alice");
+    assertNull(user.getProfile());
+}
+```
+
+Correct decision:
+- Failed test 1 must be repaired and renamed, because it conflicts with an existing test name but checks different behavior.
+- Failed test 2 must be skipped, because it is `is_obviously_repeated` with the existing test in the test file.
+- Failed test 3 must be repaired, not skipped, because it checks distinct behavior.
+
+Correct output shape:
+```yaml
+skipped_tests:
+- failed_test_name: |
+    testLoadUser
+
+new_tests:
+- test_behavior: |
+    Repair a distinct test that checks whether the loaded user is active
+  test_name: |
+    testLoadUserReturnsActiveUser
+  test_code: |
+    @Test
+    public void testLoadUserReturnsActiveUser() {
+        User user = service.load("alice");
+        assertTrue(user.isActive());
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertTrue;
+
+- test_behavior: |
+    Repair a distinct test that checks whether the loaded user has a null profile
+  test_name: |
+    testLoadUserWithNullProfile
+  test_code: |
+    @Test
+    public void testLoadUserWithNullProfile() {
+        User user = service.load("alice");
+        assertNull(user.getProfile());
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertNull;
+```
+
+In this example:
+- the skipped test is an input failed test that is obviously repeated with an already-existing test in the test file
+- the renamed test is not repeated; it only shares a conflicting name with an existing test
+- skip and repair are decided before writing the final output
+
+## Renaming Guidance
+If a failed compilation test has the same name as an existing test but is NOT `is_obviously_repeated`:
+- do not skip it
+- repair it and rename it to reflect the distinct behavior
+- prefer names that capture the distinguishing input, configuration, or asserted outcome
+- longer test names are acceptable when needed to describe the real behavioral difference clearly
+- do not use vague suffixes like `Fixed`, `Updated`, `New`, `Retry`, `Another`, or numeric suffixes by default
+
+Examples for renaming distinct behaviors:
+
+Existing test:
+```java
+@Test
+public void testAddPositiveNumbers() {
+    assertEquals(5, add(2, 3));
+}
+```
+
+New test with a different behavior:
+```java
+@Test
+public void testAddPositiveNumbers() {
+    assertEquals(6, add(2, 4));
+}
+```
+
+Do not rename it to `testAddPositiveNumbersFixed`.
+Prefer a name like `testAddPositiveNumbersWithDifferentOperands`.
+
+Existing test:
+```java
+@Test
+public void testLoadUser() {
+    User user = service.load("alice");
+    assertEquals("alice", user.getName());
+}
+```
+
+New test with a different behavior:
+```java
+@Test
+public void testLoadUser() {
+    User user = service.load("alice");
+    assertTrue(user.isActive());
+}
+```
+
+Do not rename it to `testLoadUserFixed`.
+Prefer a name like `testLoadUserReturnsActiveUser`.
+
+## Response
+The output must be a YAML object equivalent to the following types:
+=====
+class SingleTest {
+    String test_behavior; // Short description of the behavior the fixed test covers
+    String test_name; // A short test name, in camel case, that reflects the repaired behavior
+    String test_code; // A single fixed test function, written as if it belongs in the existing test suite
+    String new_imports_code; // New imports required by the fixed test and not already present in the test file
+}
+
+class SkippedTest {
+    String failed_test_name; // The exact input failed test name being skipped
+}
+
+class NewTests {
+    String language; // The programming language of the source code
+    List<SkippedTest> skipped_tests; // The list contains skipped tests that are obviously repeated
+    List<SingleTest> new_tests; // The list contains the fixed test cases
+}
+=====
+
+If you skip a test, use the exact input failed test name in `failed_test_name`.
+Do not use numeric indices by themselves to identify skipped tests.
+
+In the YAML response below, `skipped_tests` must name input failed tests that are being dropped, while `new_tests` must contain only repaired versions of the remaining non-skipped input failed tests.
+
+Response:
+```yaml
+language: Java
+skipped_tests:
+- failed_test_name: |
+    testRepeatedScenario
+new_tests:
+- test_behavior: |
+    Fix a test with a missing import and a wrong API call so it compiles cleanly
+  test_name: |
+    testSpecificScenario
+  test_code: |
+    @Test
+    public void testSpecificScenario() {
+        // repaired test implementation
+    }
+  new_imports_code: |
+    import static org.junit.jupiter.api.Assertions.*;
+    import org.junit.jupiter.api.Test;
+```
+
+Use block scalar('|') to format each YAML output.
+
+Response:"""

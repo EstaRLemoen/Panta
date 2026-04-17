@@ -262,3 +262,55 @@ class PromptBuilder:
             return {"system": "", "user": ""}
 
         return {"system": system_prompt, "user": user_prompt}
+
+    def build_prompt_for_fixing_compilation(self) -> dict:
+        variables = {
+            "source_file_name": self.source_file_name,
+            "test_file_name": self.test_file_name,
+            "source_file": self.source_file,
+            "test_file": self.test_file,
+            "test_dependencies": self.test_dependencies,
+            "failed_test_runs": self.failed_test_runs,
+            "language": self.language,
+        }
+        environment = Environment(undefined=StrictUndefined)
+        try:
+            system_prompt = environment.from_string(
+                get_settings().failed_test_compilation_prompt.system
+            ).render(variables)
+            user_prompt = environment.from_string(
+                get_settings().failed_test_compilation_prompt.user
+            ).render(variables)
+            self.logger.debug(f"system_prompt: {system_prompt}")
+            self.logger.debug(f"user_prompt: {user_prompt}")
+        except Exception as e:
+            logging.error(f"Error rendering prompt: {e}")
+            return {"system": "", "user": ""}
+
+        return {"system": system_prompt, "user": user_prompt}
+
+    def build_prompt_for_fixing_runtime(self) -> dict:
+        variables = {
+            "source_file_name": self.source_file_name,
+            "test_file_name": self.test_file_name,
+            "source_file": self.source_file,
+            "test_file": self.test_file,
+            "test_dependencies": self.test_dependencies,
+            "failed_test_runs": self.failed_test_runs,
+            "language": self.language,
+        }
+        environment = Environment(undefined=StrictUndefined)
+        try:
+            system_prompt = environment.from_string(
+                get_settings().failed_test_runtime_prompt.system
+            ).render(variables)
+            user_prompt = environment.from_string(
+                get_settings().failed_test_runtime_prompt.user
+            ).render(variables)
+            self.logger.debug(f"system_prompt: {system_prompt}")
+            self.logger.debug(f"user_prompt: {user_prompt}")
+        except Exception as e:
+            logging.error(f"Error rendering prompt: {e}")
+            return {"system": "", "user": ""}
+
+        return {"system": system_prompt, "user": user_prompt}

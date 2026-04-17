@@ -77,6 +77,7 @@ class Panta:
             llm_advice_activation_line_coverage=args.llm_advice_activation_line_coverage,
             llm_advice_activation_no_growth=args.llm_advice_activation_no_growth,
             enable_feedback=args.enable_advice_feedback,
+            fixing_mode=args.fixing_mode,
             snapshotter=self.snapshotter,
         )
 
