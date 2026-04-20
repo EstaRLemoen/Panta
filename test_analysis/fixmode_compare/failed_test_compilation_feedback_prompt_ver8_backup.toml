@@ -1,0 +1,221 @@
+[failed_test_compilation_prompt]
+system="""\
+You are an expert Java test-driven developer.
+"""
+
+user="""\
+## Overview
+You are an expert software engineer code assistant tasked with fixing failed Java test cases that currently have compilation errors.
+Your objective is to make the test cases compile cleanly in the corresponding test file.
+
+Focus on syntax errors, missing or incorrect imports, unresolved symbols, incompatible APIs, and incorrect test structure.
+Do not broaden the task beyond what is necessary to resolve the compilation failures.
+
+## Source File
+Here is the source file that the test cases targeted, called `{{ source_file_name }}`.
+
+=========
+{{ source_file|trim }}
+=========
+
+## Test File
+Here is the file that contains the existing tests, called `{{ test_file_name }}`.
+=========
+{{ test_file| trim }}
+=========
+
+## Third-party dependencies for test generation
+Please use the following dependencies to generation tests
+=========
+{{ test_dependencies }}
+=========
+
+## Failed Tests With Compilation Errors
+Below is a list of failed tests and their compiler feedback.
+Please handle every failed compilation test exactly once.
+For each failed test, either repair it so it can compile inside the above test file, or skip it only when it is `is_obviously_repeated`.
+`skipped_tests` must refer to failed tests from the input list below, not to tests generated in the current response.
+======
+{{ failed_test_runs }}
+======
+
+## Skip Rule For `is_obviously_repeated`
+For each failed test, choose exactly one action:
+- skip it as `is_obviously_repeated`, or
+- repair it and return it in `new_tests`.
+
+These two actions are mutually exclusive.
+
+You may skip a failed compilation test only when both conditions hold:
+1. The failed test's error message shows that the compilation failure is caused by duplicate naming or duplicate definition against a test that already exists in the current test file.
+2. The failed test is `is_obviously_repeated` with that already-existing test.
+
+Duplicate-name compilation conflicts are common. Do NOT skip by default just because a test name already exists.
+Only skip when the strict `is_obviously_repeated` condition is fully satisfied.
+Otherwise, repair the test and rename it to reflect its distinct behavior.
+
+A test is `is_obviously_repeated` only if:
+- it has the same test name, and
+- it performs the same sequence of test operations, and
+- any differences are limited to comments or formatting.
+
+It is NOT `is_obviously_repeated` if there is any difference in arguments, literals, called methods, assertions, setup, or execution steps.
+If uncertain, repair the test instead of skipping it.
+
+## Repeated-Test Constraints
+- If a failed test is skipped, do not also return it in `new_tests`.
+- Only non-skipped tests may be repaired and renamed.
+- Do not rename an obviously repeated test just to avoid skipping it.
+- If multiple input failed tests are each obviously repeated with tests that already exist in the current test file, handle those repeated-test decisions consistently.
+- Do not skip one obvious repeat while returning another equivalent repeated test under a different name.
+
+Examples for `is_obviously_repeated`:
+
+This IS `is_obviously_repeated` because only comments/formatting differ:
+```java
+@Test
+public void testAddPositiveNumbers() {
+    assertEquals(5, add(2, 3));
+}
+```
+
+```java
+@Test
+public void testAddPositiveNumbers() { // same behavior
+    assertEquals(5, add(2, 3));
+}
+```
+
+This is NOT `is_obviously_repeated` because the arguments differ:
+```java
+@Test
+public void testAddPositiveNumbers() {
+    assertEquals(5, add(2, 3));
+}
+```
+
+```java
+@Test
+public void testAddPositiveNumbers() {
+    assertEquals(6, add(2, 4));
+}
+```
+
+This is NOT `is_obviously_repeated` because the asserted behavior differs:
+```java
+@Test
+public void testLoadUser() {
+    User user = service.load("alice");
+    assertEquals("alice", user.getName());
+}
+```
+
+```java
+@Test
+public void testLoadUser() {
+    User user = service.load("alice");
+    assertTrue(user.isActive());
+}
+```
+
+## Renaming Guidance
+If a failed compilation test has the same name as an existing test but is NOT `is_obviously_repeated`:
+- do not skip it
+- repair it and rename it to reflect the distinct behavior
+- prefer names that capture the distinguishing input, configuration, or asserted outcome
+- longer test names are acceptable when needed to describe the real behavioral difference clearly
+- do not use vague suffixes like `Fixed`, `Updated`, `New`, `Retry`, `Another`, or numeric suffixes by default
+
+Examples for renaming distinct behaviors:
+
+Existing test:
+```java
+@Test
+public void testAddPositiveNumbers() {
+    assertEquals(5, add(2, 3));
+}
+```
+
+New test with a different behavior:
+```java
+@Test
+public void testAddPositiveNumbers() {
+    assertEquals(6, add(2, 4));
+}
+```
+
+Do not rename it to `testAddPositiveNumbersFixed`.
+Prefer a name like `testAddPositiveNumbersWithDifferentOperands`.
+
+Existing test:
+```java
+@Test
+public void testLoadUser() {
+    User user = service.load("alice");
+    assertEquals("alice", user.getName());
+}
+```
+
+New test with a different behavior:
+```java
+@Test
+public void testLoadUser() {
+    User user = service.load("alice");
+    assertTrue(user.isActive());
+}
+```
+
+Do not rename it to `testLoadUserFixed`.
+Prefer a name like `testLoadUserReturnsActiveUser`.
+
+## Response
+The output must be a YAML object equivalent to the following types:
+=====
+class SingleTest {
+    String test_behavior; // Short description of the behavior the fixed test covers
+    String test_name; // A short test name, in camel case, that reflects the repaired behavior
+    String test_code; // A single fixed test function, written as if it belongs in the existing test suite
+    String new_imports_code; // New imports required by the fixed test and not already present in the test file
+}
+
+class SkippedTest {
+    String failed_test_name; // The exact input failed test name being skipped
+    String reason; // Must be `is_obviously_repeated`
+}
+
+class NewTests {
+    String language; // The programming language of the source code
+    List<SingleTest> new_tests; // The list contains the fixed test cases
+    List<SkippedTest> skipped_tests; // The list contains skipped tests that are obviously repeated
+}
+=====
+
+If you skip a test, `reason` must be `is_obviously_repeated`.
+Use the exact input failed test name shown in the failed test input block.
+
+Response:
+```yaml
+language: Java
+new_tests:
+- test_behavior: |
+    Fix a test with a missing import and a wrong API call so it compiles cleanly
+  test_name: |
+    testSpecificScenario
+  test_code: |
+    @Test
+    public void testSpecificScenario() {
+        // repaired test implementation
+    }
+  new_imports_code: |
+    import static org.junit.jupiter.api.Assertions.*;
+    import org.junit.jupiter.api.Test;
+skipped_tests:
+- failed_test_name: |
+    testRepeatedScenario
+  reason: |
+    is_obviously_repeated
+```
+
+Use block scalar('|') to format each YAML output.
+
+Response:"""
