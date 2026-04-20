@@ -561,6 +561,7 @@ class UnitTestGenerator:
                         failure_details = {
                             "status": "FAIL",
                             "reason": "Compilation failure",
+                            "error_type": "compilation",
                             "exit_code": exit_code,
                             "stderr": stderr,
                             "stdout": error_message,
@@ -580,6 +581,7 @@ class UnitTestGenerator:
                         failure_details = {
                             "status": "FAIL",
                             "reason": "Timeout",
+                            "error_type": "timeout",
                             "exit_code": exit_code,
                             "stderr": stderr,
                             "stdout": "Timeout",
@@ -600,6 +602,7 @@ class UnitTestGenerator:
                         failure_details = {
                             "status": "FAIL",
                             "reason": "Test failures",
+                            "error_type": "runtime",
                             "exit_code": exit_code,
                             "stderr": stderr,
                             "stdout": error_message,
@@ -695,6 +698,7 @@ class UnitTestGenerator:
                 pass_details = {
                     "status": "PASS",
                     "reason": "",
+                    "error_type": None,
                     "exit_code": exit_code,
                     "stderr": stderr,
                     "stdout": "",
@@ -717,6 +721,7 @@ class UnitTestGenerator:
             return {
                 "status": "FAIL",
                 "reason": f"Error validating test: {e}",
+                "error_type": "validation",
                 "exit_code": None,
                 "stderr": str(e),
                 "stdout": "",
@@ -880,6 +885,7 @@ class UnitTestGenerator:
         return {
             "status": "SKIP",
             "reason": reason,
+            "error_type": "skipped",
             "exit_code": None,
             "stderr": "",
             "stdout": explanation,

@@ -13,6 +13,7 @@ from .cfg_access import get_structural_cfg
 from .utils import read_file
 from .utils import get_code_language
 from .cfg_snapshot import CFGSnapshotter, generate_run_id
+from .artifact_snapshot import ArtifactSnapshotter
 
 
 def get_class_name(file_path):
@@ -32,6 +33,12 @@ class Panta:
             dump_dir=args.cfg_dump_dir,
             dump_level=args.cfg_dump_level,
             prompt_mode=args.cfg_dump_prompt_mode,
+            run_id=self.run_id,
+            logger=self.logger,
+        )
+        self.artifact_snapshotter = ArtifactSnapshotter(
+            enabled=args.artifact_snapshot_enabled,
+            dump_dir=args.artifact_snapshot_dir,
             run_id=self.run_id,
             logger=self.logger,
         )
@@ -79,6 +86,33 @@ class Panta:
             enable_feedback=args.enable_advice_feedback,
             fixing_mode=args.fixing_mode,
             snapshotter=self.snapshotter,
+        )
+
+    def _record_result(self, test_results_list, result, label, phase, parent_label):
+        result["label"] = label
+        test_results_list.append(result)
+        self.artifact_snapshotter.capture_result(
+            phase=phase,
+            parent_label=parent_label,
+            result=result,
+        )
+
+    def _capture_round_summary(
+        self,
+        phase,
+        label,
+        results,
+        token_count=None,
+        duration_seconds=None,
+    ):
+        self.artifact_snapshotter.capture_summary(
+            phase=phase,
+            label=label,
+            results=results,
+            line_coverage=round(self.test_gen.current_coverage[0] * 100, 2),
+            branch_coverage=round(self.test_gen.current_coverage[1] * 100, 2),
+            token_count=token_count,
+            duration_seconds=duration_seconds,
         )
 
     def extract_test_dependency(self):
@@ -190,6 +224,7 @@ class Panta:
 
                 time_start = time.time()
                 token_count = 0
+                generation_start = time.time()
                 if int(cur_line_cov) == 0 and int(cur_branch_cov) == 0:
                     self.logger.info(
                         f"initial tests generation using baseline type of prompt"
@@ -210,8 +245,13 @@ class Panta:
 
                 for generated_test in generated_tests_dict.get("new_tests") or []:
                     test_result = self.test_gen.validate_test(generated_test)
-                    test_result["label"] = g_label
-                    test_results_list.append(test_result)
+                    self._record_result(
+                        test_results_list=test_results_list,
+                        result=test_result,
+                        label=g_label,
+                        phase="generation",
+                        parent_label=g_label,
+                    )
 
                 # collect code coverage after generation phase
                 self.test_gen.run_coverage()
@@ -229,16 +269,35 @@ class Panta:
                     ),
                 }
                 test_results_list.append(info_dict_gen)
+                generation_results = [
+                    result
+                    for result in test_results_list
+                    if result.get("label") == g_label and result.get("status") != "INFO"
+                ]
+                self._capture_round_summary(
+                    phase="generation",
+                    label=g_label,
+                    results=generation_results,
+                    token_count=gen_token_count,
+                    duration_seconds=time.time() - generation_start,
+                )
 
                 if self.args.enable_fixing:
                     # a separate phase to fix the failed tests in current generation iteration
                     iter_num = self.args.enable_fixing
+                    fixing_start = time.time()
                     fix_results_list, fix_token_count = self.test_gen.fix_failed_tests(
                         f_label, iter_num, max_tokens=4096
                     )
                     token_count += fix_token_count
                     for fix_result in fix_results_list:
-                        test_results_list.append(fix_result)
+                        self._record_result(
+                            test_results_list=test_results_list,
+                            result=fix_result,
+                            label=fix_result.get("label", f_label),
+                            phase="fixing",
+                            parent_label=f_label,
+                        )
 
                     # collect coverage after fixing phase
                     self.test_gen.run_coverage()
@@ -258,6 +317,18 @@ class Panta:
                         ),
                     }
                     test_results_list.append(info_dict_fix)
+                    fixing_results = [
+                        result
+                        for result in test_results_list
+                        if str(result.get("label", "")).startswith(f"{f_label}_")
+                    ]
+                    self._capture_round_summary(
+                        phase="fixing",
+                        label=f_label,
+                        results=fixing_results,
+                        token_count=fix_token_count,
+                        duration_seconds=time.time() - fixing_start,
+                    )
                 else:
                     self.logger.info("fixing phase is disabled.")
 
@@ -348,8 +419,22 @@ class Panta:
         for method in generated_tests.keys():
             for index, g_test in enumerate(generated_tests[method]):
                 test_result = self.test_gen.validate_test(g_test)
-                test_result["label"] = f"{method}_{index}"
-                test_results_list.append(test_result)
+                label = f"{method}_{index}"
+                self._record_result(
+                    test_results_list=test_results_list,
+                    result=test_result,
+                    label=label,
+                    phase="generation",
+                    parent_label=method,
+                )
+        symprompt_results = [
+            result for result in test_results_list if result.get("status") != "INFO"
+        ]
+        self._capture_round_summary(
+            phase="generation",
+            label="symprompt",
+            results=symprompt_results,
+        )
         self.test_gen.run_coverage()
         info_dict = {
             "status": "INFO",

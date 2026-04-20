@@ -65,6 +65,12 @@ def config_to_namespace(config):
         ),
         cfg_dump_level=config.get("cfg_dump_level", fallback="full"),
         cfg_dump_prompt_mode=config.get("cfg_dump_prompt_mode", fallback="summary"),
+        artifact_snapshot_enabled=config.getboolean(
+            "artifact_snapshot_enabled", fallback=False
+        ),
+        artifact_snapshot_dir=config.get(
+            "artifact_snapshot_dir", fallback="artifact_snapshot"
+        ),
     )
 
 

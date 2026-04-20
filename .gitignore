@@ -44,3 +44,7 @@ cfg_snapshot_test/*.env
 evaluation/*.csv
 evaluation/debug.txt
 evaluation/defects4j-codefiles/*.json
+
+# local artifact snapshot
+artifact_snapshot/intermediate/
+
