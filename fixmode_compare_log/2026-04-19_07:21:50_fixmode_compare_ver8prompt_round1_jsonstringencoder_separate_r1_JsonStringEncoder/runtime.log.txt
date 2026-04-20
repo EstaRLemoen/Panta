@@ -1,0 +1,36 @@
+2026-04-19 07:22:08,732 - panta.panta - INFO - CFG snapshot directory created: cfg_snapshot_test/intermediate/cfg/JsonStringEncoder_20260419_072208_48508825
+2026-04-19 07:22:28,522 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-19 07:22:55,801 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-19 07:22:55,858 - panta.panta - INFO - Current line Coverage: 0.0%, branch coverage: 0.0%
+2026-04-19 07:22:55,859 - panta.panta - INFO - initial tests generation using baseline type of prompt
+2026-04-19 07:24:05,163 - panta.panta - ERROR - iteration stops due to error: Max retries exceeded. Could not complete API call.
+2026-04-19 07:24:05,171 - panta.panta - INFO - Report generated successfully at: ../../result-files/control_gpt-4o-mini/
+Function timed out after 5 seconds
+JsonStringEncoder quoteAsString [(173, 178), (178, 184), (178, 193), (193, 203), (203, 214), (214, 222), (222, 227), (227, 236), (236, 241), (241, 243), (255, 264), (264, 276), (264, 278), (286, 293), (293, 297), (297, 304), (304, 311), (304, 251), (313, 323), (323, 330), (330, 349), (349, 360), (349, 414), (360, 369), (369, 375), (369, 385), (385, 392), (392, 399), (399, 409), (409, 243), (414, 424), (424, 243), (428, 434), (434, 2), (162, 173), (184, 193), (243, 249), (243, 428), (249, 251), (251, 255), (251, 313), (278, 286), (278, 297), (311, 2), (375, 385)]
+Function timed out after 5 seconds
+JsonStringEncoder quoteAsString [(451, 462), (462, 470), (470, 475), (475, 484), (484, 486), (484, 2), (498, 507), (507, 519), (507, 521), (521, 527), (527, 534), (527, 494), (439, 451), (486, 492), (486, 2), (492, 494), (494, 498), (534, 2)]
+
+[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new[0m
+LiteLLM.Info: If you need to debug this error, use `litellm._turn_on_debug()'.
+
+Rate limit exceeded. Retrying in 2.84 seconds... (Attempt 1/5)
+
+[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new[0m
+LiteLLM.Info: If you need to debug this error, use `litellm._turn_on_debug()'.
+
+Rate limit exceeded. Retrying in 4.17 seconds... (Attempt 2/5)
+
+[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new[0m
+LiteLLM.Info: If you need to debug this error, use `litellm._turn_on_debug()'.
+
+Rate limit exceeded. Retrying in 8.73 seconds... (Attempt 3/5)
+
+[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new[0m
+LiteLLM.Info: If you need to debug this error, use `litellm._turn_on_debug()'.
+
+Rate limit exceeded. Retrying in 16.90 seconds... (Attempt 4/5)
+
+[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new[0m
+LiteLLM.Info: If you need to debug this error, use `litellm._turn_on_debug()'.
+
+Rate limit exceeded. Retrying in 32.43 seconds... (Attempt 5/5)

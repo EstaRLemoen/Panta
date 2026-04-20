@@ -1,0 +1,26 @@
+# Batch Run R1
+
+- Batch name: fixmode_compare_ver4_gson_separate
+- Timestamp: 2026-04-17_19:38:22
+- Round: 1 / 1
+- Baseline test file: original `defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java` contents
+- report_filepath: fixmode_compare_ver4_gson_separate_r1_20260417_193823.html
+- Run status: completed
+- Process exit code: 0
+- Effective config overrides:
+  - code_coverage_report_path = defects4j-subjects-notests/Gson-16f/gson/target/jacoco/jacoco.csv
+  - enable_advice_feedback = true
+  - enable_fixing = 3
+  - fixing_mode = separate
+  - junit_version = 4
+  - llm_advice_activation_line_coverage = 100
+  - maximum_iterations = 22
+  - no_coverage_increase_iterations = 3
+  - project_directory = defects4j-subjects-notests/Gson-16f/gson
+  - prompt_type = control
+  - report_filepath = fixmode_compare_ver4_gson_separate_r1_20260417_193823.html
+  - selection_mode = llm
+  - source_code_file = defects4j-subjects-notests/Gson-16f/gson/src/main/java/com/google/gson/Gson.java
+  - test_code_command_dir = defects4j-subjects-notests/Gson-16f/gson
+  - test_code_file = defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+  - test_execution_command = mvn clean package -Dtest=GsonTest

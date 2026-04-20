@@ -1,0 +1,1402 @@
+2026-04-18 11:46:56,508 - panta.panta - INFO - CFG snapshot directory created: cfg_snapshot_test/intermediate/cfg/Gson_20260418_114656_a3a9bb56
+2026-04-18 11:47:03,868 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:47:21,576 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Gson-16f/gson/target/jacoco/jacoco.csv
+2026-04-18 11:47:21,664 - panta.panta - INFO - Current line Coverage: 0.0%, branch coverage: 0.0%
+2026-04-18 11:47:21,664 - panta.panta - INFO - initial tests generation using baseline type of prompt
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that Gson correctly serializes a null object to JSON.
+  test_name: |
+    testSerializeNullObject
+  test_code: |
+    @Test
+    public void testSerializeNullObject() {
+        Gson gson = new Gson();
+        String json = gson.toJson(null);
+        assertEquals("null", json);
+    }
+  new_imports_code: ""
+- test_behavior: |
+    Test that Gson correctly deserializes a JSON null value to a null object.
+  test_name: |
+    testDeserializeNullJson
+  test_code: |
+    @Test
+    public void testDeserializeNullJson() {
+        Gson gson = new Gson();
+        Object obj = gson.fromJson("null", Object.class);
+        assertNull(obj);
+    }
+  new_imports_code: ""
+- test_behavior: |
+    Test that Gson throws JsonSyntaxException when given malformed JSON.
+  test_name: |
+    testMalformedJson
+  test_code: |
+    @Test(expected = JsonSyntaxException.class)
+    public void testMalformedJson() {
+        Gson gson = new Gson();
+        gson.fromJson("{invalidJson", Object.class);
+    }
+  new_imports_code: ""
+- test_behavior: |
+    Test that Gson correctly serializes a simple object to JSON.
+  test_name: |
+    testSerializeSimpleObject
+  test_code: |
+    @Test
+    public void testSerializeSimpleObject() {
+        Gson gson = new Gson();
+        MyClass obj = new MyClass("test", 123);
+        String json = gson.toJson(obj);
+        assertEquals("{\"name\":\"test\",\"value\":123}", json);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+    
+class MyClass {
+    private String name;
+    private int value;
+
+    public MyClass(String name, int value) {
+        this.name = name;
+        this.value = value;
+    }
+}
+- test_behavior: |
+    Test that Gson correctly deserializes a JSON string to a simple object.
+  test_name: |
+    testDeserializeSimpleObject
+  test_code: |
+    @Test
+    public void testDeserializeSimpleObject() {
+        Gson gson = new Gson();
+        String json = "{\"name\":\"test\",\"value\":123}";
+        MyClass obj = gson.fromJson(json, MyClass.class);
+        assertEquals("test", obj.name);
+        assertEquals(123, obj.value);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+
+class MyClass {
+    private String name;
+    private int value;
+
+    public MyClass(String name, int value) {
+        this.name = name;
+        this.value = value;
+    }
+}
+```2026-04-18 11:47:36,094 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 13007
+2026-04-18 11:47:36,243 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:47:36,243 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:47:54,308 - panta.unit_test_generator - INFO - Generated test has passed: testSerializeNullObject
+
+2026-04-18 11:47:54,311 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:47:54,311 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:48:13,234 - panta.unit_test_generator - INFO - Generated test has passed: testDeserializeNullJson
+
+2026-04-18 11:48:13,237 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:48:13,238 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:48:31,960 - panta.unit_test_generator - INFO - Generated test has passed: testMalformedJson
+
+2026-04-18 11:48:31,962 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:48:31,962 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:48:45,335 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 11:48:45,338 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:49:02,724 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Gson-16f/gson/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testSerializeNullObject() {
+    Gson gson = new Gson();
+    String json = gson.toJson(null);
+    assertEquals("null", json);
+  }
+skipped_tests: []
+new_tests:
+- test_behavior: |
+    Add a test for serializing a simple object to JSON
+  test_name: |
+    testSerializeSimpleObject
+  test_code: |
+    @Test
+    public void testSerializeSimpleObject() {
+        Gson gson = new Gson();
+        MyClass obj = new MyClass("test", 123);
+        String json = gson.toJson(obj);
+        assertEquals("{\"name\":\"test\",\"value\":123}", json);
+    }
+  new_imports_code: |
+    class MyClass {
+        private String name;
+        private int value;
+
+        public MyClass(String name, int value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+```2026-04-18 11:49:09,019 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 12837
+2026-04-18 11:49:09,023 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:49:09,023 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:49:27,066 - panta.unit_test_generator - INFO - Generated test has passed: testSerializeSimpleObject
+
+2026-04-18 11:49:27,067 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:49:44,803 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Gson-16f/gson/target/jacoco/jacoco.csv
+2026-04-18 11:49:44,854 - panta.panta - INFO - Iteration 0 increased line coverage 69.96%, branch coverage 35.19%
+2026-04-18 11:49:44,855 - panta.panta - INFO - Current line Coverage: 69.96%, branch coverage: 35.19%
+2026-04-18 11:49:44,855 - panta.unit_test_generator - INFO - Selected branch lines for current iteration: [275, 280, 287, 299, 304, 311, 323, 331, 336, 343]
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test handling of special floating-point values during serialization.
+    method_context:
+      method_signature_hint: |
+        private TypeAdapter<Number> doubleAdapter(boolean serializeSpecialFloatingPointValues)
+    entry_hint: |
+        public String toJson(Object src)
+    execution_flow: |
+      1. Call toJson() with an object that contains a double field set to NaN or Infinity.
+      2. The doubleAdapter(...) method is invoked, and the branch for serializeSpecialFloatingPointValues is taken.
+      3. The special floating-point value is serialized according to the configuration.
+    input_focus: |
+      Create an object with a double field that is set to NaN or Infinity and pass it to toJson().
+    observable_behavior: |
+      Verify that the serialized JSON correctly represents the special floating-point value according to the specified behavior.
+
+  - design_name: |
+      Test null handling in float serialization.
+    method_context:
+      method_signature_hint: |
+        private TypeAdapter<Number> floatAdapter(boolean serializeSpecialFloatingPointValues)
+    entry_hint: |
+        public String toJson(Object src)
+    execution_flow: |
+      1. Call toJson() with an object that contains a float field set to null.
+      2. The floatAdapter(...) method is reached, and the branch for null value handling is taken.
+      3. The null value is processed and serialized accordingly.
+    input_focus: |
+      Construct an object with a float field explicitly set to null and pass it to toJson().
+    observable_behavior: |
+      Check that the serialized JSON output reflects the null value correctly, such as using the appropriate JSON null representation.
+
+  - design_name: |
+      Test null handling in long serialization.
+    method_context:
+      method_signature_hint: |
+        private TypeAdapter<Number> longAdapter(LongSerializationPolicy longSerializationPolicy)
+    entry_hint: |
+        public String toJson(Object src)
+    execution_flow: |
+      1. Call toJson() with an object that contains a long field set to null.
+      2. The longAdapter(...) method is invoked, and the branch for null value handling is taken.
+      3. The null value is processed and serialized accordingly.
+    input_focus: |
+      Create an object with a long field explicitly set to null and pass it to toJson().
+    observable_behavior: |
+      Verify that the serialized JSON output correctly represents the null value, ensuring it adheres to the expected JSON format.
+
+  - design_name: |
+      Test behavior when JSON input is empty.
+    method_context:
+      method_signature_hint: |
+        public <T> T fromJson(JsonReader reader, Type typeOfT)
+    entry_hint: |
+        public <T> T fromJson(String json, Type typeOfT)
+    execution_flow: |
+      1. Call fromJson() with an empty JSON string.
+      2. The fromJson(JsonReader reader, Type typeOfT) method is reached, and the EOF branch is taken.
+      3. The method handles the empty input appropriately.
+    input_focus: |
+      Provide an empty string as the JSON input to fromJson().
+    observable_behavior: |
+      Check that the method returns null without throwing exceptions, indicating proper handling of empty JSON input.
+
+  - design_name: |
+      Test exception handling for malformed JSON input.
+    method_context:
+      method_signature_hint: |
+        public <T> T fromJson(JsonReader reader, Type typeOfT)
+    entry_hint: |
+        public <T> T fromJson(String json, Type typeOfT)
+    execution_flow: |
+      1. Call fromJson() with a malformed JSON string.
+      2. The fromJson(JsonReader reader, Type typeOfT) method is reached, and an exception is expected to be thrown.
+      3. The method processes the malformed input and raises the appropriate exception.
+    input_focus: |
+      Pass a malformed JSON string (e.g., missing brackets or quotes) to fromJson().
+    observable_behavior: |
+      Verify that the method throws a JsonSyntaxException, indicating that it correctly identifies and handles malformed JSON input.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testSerializeNullObject()
+new_tests:
+  - test_behavior: Test handling of special floating-point values during serialization.
+    test_name: testSerializeSpecialFloatingPointValues
+    test_code: |
+      @Test
+      public void testSerializeSpecialFloatingPointValues() {
+          Gson gson = new GsonBuilder().serializeSpecialFloatingPointValues().create();
+          String jsonNaN = gson.toJson(new MyClass("testNaN", Double.NaN));
+          String jsonInfinity = gson.toJson(new MyClass("testInfinity", Double.POSITIVE_INFINITY));
+          assertEquals("{\"name\":\"testNaN\",\"value\":NaN}", jsonNaN);
+          assertEquals("{\"name\":\"testInfinity\",\"value\":Infinity}", jsonInfinity);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test null handling in float serialization.
+    test_name: testSerializeNullFloat
+    test_code: |
+      @Test
+      public void testSerializeNullFloat() {
+          Gson gson = new Gson();
+          String json = gson.toJson(new MyClass(null, 123.0f));
+          assertEquals("{\"name\":null,\"value\":123.0}", json);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test null handling in long serialization.
+    test_name: testSerializeNullLong
+    test_code: |
+      @Test
+      public void testSerializeNullLong() {
+          Gson gson = new Gson();
+          String json = gson.toJson(new MyClass(null, null));
+          assertEquals("{\"name\":null,\"value\":null}", json);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test behavior when JSON input is empty.
+    test_name: testFromJsonEmptyInput
+    test_code: |
+      @Test
+      public void testFromJsonEmptyInput() {
+          Gson gson = new Gson();
+          Object obj = gson.fromJson("", Object.class);
+          assertNull(obj);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test exception handling for malformed JSON input.
+    test_name: testFromJsonMalformedInput
+    test_code: |
+      @Test(expected = JsonSyntaxException.class)
+      public void testFromJsonMalformedInput() {
+          Gson gson = new Gson();
+          gson.fromJson("{invalidJson", Object.class);
+      }
+    new_imports_code: ''
+```2026-04-18 11:50:10,074 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 14630
+2026-04-18 11:50:10,083 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:50:10,083 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:50:23,061 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 11:50:23,063 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:50:23,064 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:50:35,905 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 11:50:35,907 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:50:35,908 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:50:48,867 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 11:50:48,869 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:50:48,869 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:51:07,250 - panta.unit_test_generator - INFO - Generated test has passed: testFromJsonEmptyInput
+2026-04-18 11:51:07,252 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:51:07,252 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:51:25,747 - panta.unit_test_generator - INFO - Generated test has passed: testFromJsonMalformedInput
+2026-04-18 11:51:25,748 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:51:44,760 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Gson-16f/gson/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testSerializeNullLong() {
+    Gson gson = new Gson();
+    String json = gson.toJson(new MyClass(null, null));
+    assertEquals("{\"name\":null,\"value\":null}", json);
+  }
+skipped_tests:
+- failed_test_name: |
+    testSerializeNullLong
+new_tests:
+- test_behavior: |
+    Fix a test that attempts to serialize a null value for an int field, which is incompatible.
+  test_name: |
+    testSerializeSpecialFloatingPointValues
+  test_code: |
+    @Test
+    public void testSerializeSpecialFloatingPointValues() {
+        Gson gson = new GsonBuilder().serializeSpecialFloatingPointValues().create();
+        String jsonNaN = gson.toJson(new MyClass("testNaN", (int) Double.NaN));
+        String jsonInfinity = gson.toJson(new MyClass("testInfinity", (int) Double.POSITIVE_INFINITY));
+        assertEquals("{\"name\":\"testNaN\",\"value\":NaN}", jsonNaN);
+        assertEquals("{\"name\":\"testInfinity\",\"value\":Infinity}", jsonInfinity);
+    }
+  new_imports_code: |
+    import com.google.gson.GsonBuilder;
+```2026-04-18 11:51:50,951 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 13379
+2026-04-18 11:51:50,957 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:51:50,957 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:52:03,743 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testSerializeSpecialFloatingPointValues() {
+      Gson gson = new GsonBuilder().serializeSpecialFloatingPointValues().create();
+      String jsonNaN = gson.toJson(new MyClass("testNaN", (int) Double.NaN));
+      String jsonInfinity = gson.toJson(new MyClass("testInfinity", (int) Double.POSITIVE_INFINITY));
+      assertEquals("{\"name\":\"testNaN\",\"value\":NaN}", jsonNaN);
+      assertEquals("{\"name\":\"testInfinity\",\"value\":Infinity}", jsonInfinity);
+  }
+skipped_tests: []
+new_tests:
+- test_behavior: |
+    Fix a test that requires an additional import for GsonBuilder to compile cleanly.
+  test_name: |
+    testSerializeSpecialFloatingPointValuesWithGsonBuilder
+  test_code: |
+    @Test
+    public void testSerializeSpecialFloatingPointValuesWithGsonBuilder() {
+        Gson gson = new GsonBuilder().serializeSpecialFloatingPointValues().create();
+        String jsonNaN = gson.toJson(new MyClass("testNaN", (int) Double.NaN));
+        String jsonInfinity = gson.toJson(new MyClass("testInfinity", (int) Double.POSITIVE_INFINITY));
+        assertEquals("{\"name\":\"testNaN\",\"value\":NaN}", jsonNaN);
+        assertEquals("{\"name\":\"testInfinity\",\"value\":Infinity}", jsonInfinity);
+    }
+  new_imports_code: |
+    import com.google.gson.GsonBuilder;
+```2026-04-18 11:52:11,017 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 13099
+2026-04-18 11:52:11,022 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:52:11,022 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:52:24,180 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testSerializeSpecialFloatingPointValuesWithGsonBuilder() {
+    // existing test code
+  }
+skipped_tests: []
+new_tests:
+- test_behavior: |
+    Fix a test that was missing the GsonBuilder import and had a compilation error.
+  test_name: |
+    testSerializeSpecialFloatingPointValuesWithGsonBuilder
+  test_code: |
+    @Test
+    public void testSerializeSpecialFloatingPointValuesWithGsonBuilder() {
+        Gson gson = new GsonBuilder().serializeSpecialFloatingPointValues().create();
+        String jsonNaN = gson.toJson(new MyClass("testNaN", (int) Double.NaN));
+        String jsonInfinity = gson.toJson(new MyClass("testInfinity", (int) Double.POSITIVE_INFINITY));
+        assertEquals("{\"name\":\"testNaN\",\"value\":NaN}", jsonNaN);
+        assertEquals("{\"name\":\"testInfinity\",\"value\":Infinity}", jsonInfinity);
+    }
+  new_imports_code: |
+    import com.google.gson.GsonBuilder;
+```2026-04-18 11:52:29,967 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 13017
+2026-04-18 11:52:29,972 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:52:29,972 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:52:42,735 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 11:52:42,738 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:53:01,201 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Gson-16f/gson/target/jacoco/jacoco.csv
+2026-04-18 11:53:01,252 - panta.panta - INFO - Iteration 1 increased line coverage 0.41%, branch coverage 1.85%
+2026-04-18 11:53:01,252 - panta.panta - INFO - Current line Coverage: 70.37%, branch coverage: 37.04%
+2026-04-18 11:53:01,253 - panta.unit_test_generator - INFO - Selected branch lines for current iteration: [368, 376, 383, 399, 400, 414, 422, 493, 498, 499]
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test handling of empty AtomicLongArray during serialization.
+    method_context:
+      method_signature_hint: |
+        private TypeAdapter<AtomicLongArray> atomicLongArrayAdapter(final TypeAdapter<Number> longAdapter)
+      entry_hint: |
+        public String toJson(Object src, Type typeOfSrc)
+    execution_flow: |
+      1. Call toJson() with an AtomicLongArray that is empty.
+      2. The atomicLongArrayAdapter(...) is reached during serialization.
+      3. The empty array branch is taken, and serialization proceeds.
+    input_focus: |
+      Create an AtomicLongArray with no elements and pass it to toJson().
+    observable_behavior: |
+      Verify that the output JSON reflects an empty array structure.
+
+  - design_name: |
+      Test handling of non-empty AtomicLongArray during serialization.
+    method_context:
+      method_signature_hint: |
+        private TypeAdapter<AtomicLongArray> atomicLongArrayAdapter(final TypeAdapter<Number> longAdapter)
+      entry_hint: |
+        public String toJson(Object src, Type typeOfSrc)
+    execution_flow: |
+      1. Call toJson() with an AtomicLongArray containing several elements.
+      2. The atomicLongArrayAdapter(...) is reached during serialization.
+      3. The non-empty array branch is taken, and serialization proceeds.
+    input_focus: |
+      Create an AtomicLongArray with multiple elements and pass it to toJson().
+    observable_behavior: |
+      Check that the output JSON accurately represents the contents of the AtomicLongArray.
+
+  - design_name: |
+      Test retrieval of TypeAdapter from cache when available.
+    method_context:
+      method_signature_hint: |
+        private <T> TypeAdapter<T> getAdapter(TypeToken<T> type)
+      entry_hint: |
+        public <T> TypeAdapter<T> getAdapter(Class<T> type)
+    execution_flow: |
+      1. Call getAdapter() with a specific class type that has a cached TypeAdapter.
+      2. The getAdapter(TypeToken<T>) method is reached.
+      3. The cached TypeAdapter branch is taken, returning the cached adapter.
+    input_focus: |
+      Use a class type that has a previously cached TypeAdapter in the typeTokenCache.
+    observable_behavior: |
+      Verify that the returned TypeAdapter is the expected cached instance.
+
+  - design_name: |
+      Test behavior when no TypeAdapter is found in factories.
+    method_context:
+      method_signature_hint: |
+        private <T> TypeAdapter<T> getAdapter(TypeToken<T> type)
+      entry_hint: |
+        public <T> TypeAdapter<T> getAdapter(Class<T> type)
+    execution_flow: |
+      1. Call getAdapter() with a class type that does not have a registered TypeAdapter.
+      2. The getAdapter(TypeToken<T>) method is reached.
+      3. The branch for handling the absence of a TypeAdapter is taken, leading to an exception.
+    input_focus: |
+      Use a class type that has no corresponding TypeAdapter registered in the factories.
+    observable_behavior: |
+      Check that an IllegalArgumentException is thrown indicating the type cannot be handled.
+
+  - design_name: |
+      Test behavior when the skipPast factory is not found.
+    method_context:
+      method_signature_hint: |
+        public <T> TypeAdapter<T> getDelegateAdapter(TypeAdapterFactory skipPast, TypeToken<T> type)
+      entry_hint: |
+        public <T> TypeAdapter<T> getAdapter(Class<T> type)
+    execution_flow: |
+      1. Call getAdapter() with a class type that requires a delegate adapter.
+      2. The getDelegateAdapter(...) method is reached.
+      3. The branch for handling a missing skipPast factory is taken.
+    input_focus: |
+      Use a TypeAdapterFactory that is not registered in the factories list.
+    observable_behavior: |
+      Verify that the returned TypeAdapter is the expected delegate adapter or that an appropriate exception is thrown.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testSerializeNullObject()
+new_tests:
+  - test_behavior: Test handling of empty AtomicLongArray during serialization.
+    test_name: testSerializeEmptyAtomicLongArray
+    test_code: |
+      @Test
+      public void testSerializeEmptyAtomicLongArray() {
+          Gson gson = new Gson();
+          AtomicLongArray emptyArray = new AtomicLongArray(0);
+          String json = gson.toJson(emptyArray);
+          assertEquals("[]", json);
+      }
+    new_imports_code: |
+      import java.util.concurrent.atomic.AtomicLongArray;
+
+  - test_behavior: Test handling of non-empty AtomicLongArray during serialization.
+    test_name: testSerializeNonEmptyAtomicLongArray
+    test_code: |
+      @Test
+      public void testSerializeNonEmptyAtomicLongArray() {
+          Gson gson = new Gson();
+          AtomicLongArray array = new AtomicLongArray(3);
+          array.set(0, 1L);
+          array.set(1, 2L);
+          array.set(2, 3L);
+          String json = gson.toJson(array);
+          assertEquals("[1,2,3]", json);
+      }
+    new_imports_code: |
+      import java.util.concurrent.atomic.AtomicLongArray;
+
+  - test_behavior: Test retrieval of TypeAdapter from cache when available.
+    test_name: testGetAdapterFromCache
+    test_code: |
+      @Test
+      public void testGetAdapterFromCache() {
+          Gson gson = new Gson();
+          TypeAdapter<MyClass> adapter1 = gson.getAdapter(MyClass.class);
+          TypeAdapter<MyClass> adapter2 = gson.getAdapter(MyClass.class);
+          assertSame(adapter1, adapter2);
+      }
+    new_imports_code: |
+      import static org.junit.Assert.assertSame;
+
+  - test_behavior: Test behavior when no TypeAdapter is found in factories.
+    test_name: testGetAdapterThrowsExceptionForUnknownType
+    test_code: |
+      @Test(expected = IllegalArgumentException.class)
+      public void testGetAdapterThrowsExceptionForUnknownType() {
+          Gson gson = new Gson();
+          gson.getAdapter(Object.class); // Object has no registered TypeAdapter
+      }
+    new_imports_code: |
+
+  - test_behavior: Test behavior when the skipPast factory is not found.
+    test_name: testGetDelegateAdapterWithUnknownFactory
+    test_code: |
+      @Test
+      public void testGetDelegateAdapterWithUnknownFactory() {
+          Gson gson = new Gson();
+          TypeAdapterFactory unknownFactory = new TypeAdapterFactory() {
+              @Override
+              public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+                  return null; // Simulate unknown factory
+              }
+          };
+          TypeAdapter<MyClass> adapter = gson.getDelegateAdapter(unknownFactory, TypeToken.get(MyClass.class));
+          assertNotNull(adapter); // Should return the default adapter
+      }
+    new_imports_code: |
+      import static org.junit.Assert.assertNotNull;
+```2026-04-18 11:53:27,513 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 14833
+2026-04-18 11:53:27,521 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:53:27,521 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:53:45,643 - panta.unit_test_generator - INFO - Generated test has passed: testSerializeEmptyAtomicLongArray
+2026-04-18 11:53:45,646 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:53:45,646 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:54:03,277 - panta.unit_test_generator - INFO - Generated test has passed: testSerializeNonEmptyAtomicLongArray
+2026-04-18 11:54:03,279 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:54:03,281 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:54:15,981 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 11:54:15,984 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:54:15,984 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:54:31,189 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 11:54:31,193 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:54:31,194 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:54:43,697 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 11:54:43,699 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:55:02,007 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Gson-16f/gson/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testSerializeNullObject() {
+    Gson gson = new Gson();
+    String json = gson.toJson(null);
+    assertEquals("null", json);
+  }
+skipped_tests:
+- failed_test_name: |
+    testGetAdapterFromCache
+- failed_test_name: |
+    testGetDelegateAdapterWithUnknownFactory
+new_tests:
+- test_behavior: |
+    Fix a test that checks adapter caching for a specific class
+  test_name: |
+    testGetAdapterFromCacheForMyClass
+  test_code: |
+    @Test
+    public void testGetAdapterFromCacheForMyClass() {
+        Gson gson = new Gson();
+        TypeAdapter<MyClass> adapter1 = gson.getAdapter(MyClass.class);
+        TypeAdapter<MyClass> adapter2 = gson.getAdapter(MyClass.class);
+        assertSame(adapter1, adapter2);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertSame;
+- test_behavior: |
+    Fix a test that checks getting a delegate adapter with an unknown factory
+  test_name: |
+    testGetDelegateAdapterWithUnknownFactoryForMyClass
+  test_code: |
+    @Test
+    public void testGetDelegateAdapterWithUnknownFactoryForMyClass() {
+        Gson gson = new Gson();
+        TypeAdapterFactory unknownFactory = new TypeAdapterFactory() {
+            @Override
+            public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+                return null; // Simulate unknown factory
+            }
+        };
+        TypeAdapter<MyClass> adapter = gson.getDelegateAdapter(unknownFactory, TypeToken.get(MyClass.class));
+        assertNotNull(adapter); // Should return the default adapter
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertNotNull;
+```2026-04-18 11:55:09,818 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 13459
+2026-04-18 11:55:09,823 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:55:09,823 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:55:22,490 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 11:55:22,492 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:55:22,493 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:55:35,449 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test(expected = JsonSyntaxException.class)
+  public void testMalformedJson() {
+      Gson gson = new Gson();
+      gson.fromJson("{invalidJson", Object.class);
+  }
+new_tests:
+- test_behavior: |
+    Fix a test that expected an exception for an unknown type but did not throw it.
+  test_name: |
+    testGetAdapterThrowsExceptionForUnknownType
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetAdapterThrowsExceptionForUnknownType() {
+        Gson gson = new Gson();
+        gson.getAdapter(Object.class); // Object has no registered TypeAdapter
+    }
+  new_imports_code: |
+    import com.google.gson.JsonSyntaxException;
+```2026-04-18 11:55:39,895 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 12574
+2026-04-18 11:55:39,899 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:55:39,899 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:55:53,190 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testSerializeNullObject() {
+      Gson gson = new Gson();
+      String json = gson.toJson(null);
+      assertEquals("null", json);
+  }
+skipped_tests:
+- failed_test_name: |
+    testGetAdapterFromCacheForMyClass
+- failed_test_name: |
+    testGetDelegateAdapterWithUnknownFactoryForMyClass
+- failed_test_name: |
+    testGetAdapterThrowsExceptionForUnknownType
+new_tests:
+- test_behavior: |
+    Test to ensure that the adapter for MyClass can be retrieved from the cache.
+  test_name: |
+    testGetAdapterFromCacheForMyClassDistinct
+  test_code: |
+    @Test
+    public void testGetAdapterFromCacheForMyClassDistinct() {
+        Gson gson = new Gson();
+        TypeAdapter<MyClass> adapter1 = gson.getAdapter(MyClass.class);
+        TypeAdapter<MyClass> adapter2 = gson.getAdapter(MyClass.class);
+        assertSame(adapter1, adapter2);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertSame;
+- test_behavior: |
+    Test to ensure that the default adapter is returned when an unknown factory is used.
+  test_name: |
+    testGetDelegateAdapterWithUnknownFactoryForMyClassDistinct
+  test_code: |
+    @Test
+    public void testGetDelegateAdapterWithUnknownFactoryForMyClassDistinct() {
+        Gson gson = new Gson();
+        TypeAdapterFactory unknownFactory = new TypeAdapterFactory() {
+            @Override
+            public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+                return null; // Simulate unknown factory
+            }
+        };
+        TypeAdapter<MyClass> adapter = gson.getDelegateAdapter(unknownFactory, TypeToken.get(MyClass.class));
+        assertNotNull(adapter); // Should return the default adapter
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertNotNull;
+- test_behavior: |
+    Test to ensure that an exception is thrown when trying to get an adapter for an unknown type.
+  test_name: |
+    testGetAdapterThrowsExceptionForUnknownTypeDistinct
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetAdapterThrowsExceptionForUnknownTypeDistinct() {
+        Gson gson = new Gson();
+        gson.getAdapter(Object.class); // Object has no registered TypeAdapter
+    }
+  new_imports_code: |
+    import com.google.gson.JsonSyntaxException;
+```2026-04-18 11:56:03,592 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 13750
+2026-04-18 11:56:03,601 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:56:03,601 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:56:16,717 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 11:56:16,718 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:56:16,719 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:56:29,833 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 11:56:29,834 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:56:29,834 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:56:42,682 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testSerializeNullObject() {
+    Gson gson = new Gson();
+    String json = gson.toJson(null);
+    assertEquals("null", json);
+  }
+skipped_tests:
+- failed_test_name: |
+    testGetAdapterFromCacheForMyClassDistinct
+- failed_test_name: |
+    testGetDelegateAdapterWithUnknownFactoryForMyClassDistinct
+- failed_test_name: |
+    testGetAdapterThrowsExceptionForUnknownTypeDistinct
+new_tests:
+- test_behavior: |
+    Test to ensure that the adapter for MyClass can be retrieved from the cache.
+  test_name: |
+    testGetAdapterFromCacheForMyClass
+  test_code: |
+    @Test
+    public void testGetAdapterFromCacheForMyClass() {
+        Gson gson = new Gson();
+        TypeAdapter<MyClass> adapter1 = gson.getAdapter(MyClass.class);
+        TypeAdapter<MyClass> adapter2 = gson.getAdapter(MyClass.class);
+        assertSame(adapter1, adapter2);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertSame;
+- test_behavior: |
+    Test to ensure that the default adapter is returned when using an unknown factory.
+  test_name: |
+    testGetDelegateAdapterWithUnknownFactoryForMyClass
+  test_code: |
+    @Test
+    public void testGetDelegateAdapterWithUnknownFactoryForMyClass() {
+        Gson gson = new Gson();
+        TypeAdapterFactory unknownFactory = new TypeAdapterFactory() {
+            @Override
+            public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
+                return null; // Simulate unknown factory
+            }
+        };
+        TypeAdapter<MyClass> adapter = gson.getDelegateAdapter(unknownFactory, TypeToken.get(MyClass.class));
+        assertNotNull(adapter); // Should return the default adapter
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertNotNull;
+    import com.google.gson.TypeAdapterFactory;
+- test_behavior: |
+    Test to ensure that an exception is thrown when trying to get an adapter for an unknown type.
+  test_name: |
+    testGetAdapterThrowsExceptionForUnknownType
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetAdapterThrowsExceptionForUnknownType() {
+        Gson gson = new Gson();
+        gson.getAdapter(Object.class); // Object has no registered TypeAdapter
+    }
+  new_imports_code: |
+    import com.google.gson.JsonSyntaxException;
+```2026-04-18 11:56:52,748 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 13761
+2026-04-18 11:56:52,753 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:56:52,753 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:57:05,609 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 11:57:05,611 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:57:05,611 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:57:17,851 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 11:57:17,853 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:57:17,853 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:57:30,257 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 11:57:30,264 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:57:48,292 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Gson-16f/gson/target/jacoco/jacoco.csv
+2026-04-18 11:57:48,353 - panta.panta - INFO - Iteration 2 cannot increase coverage.
+2026-04-18 11:57:48,354 - panta.panta - INFO - Current line Coverage: 70.37%, branch coverage: 37.04%
+2026-04-18 11:57:48,354 - panta.unit_test_generator - INFO - Selected branch lines for current iteration: [500, 507, 538, 580, 622, 713, 717, 797, 859, 949]
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test behavior when the factory is skipped in type adapter retrieval.
+    method_context:
+      method_signature_hint: |
+        private <T> TypeAdapter<T> getDelegateAdapter(TypeAdapterFactory skipPast, TypeToken<T> type)
+      entry_hint: |
+        public <T> TypeAdapter<T> getAdapter(TypeToken<T> type)
+    execution_flow: |
+      1. Call getAdapter() with a TypeToken that requires a specific type adapter.
+      2. Inside getAdapter(), getDelegateAdapter(...) is called with a factory that is skipped.
+      3. The method checks for the next available type adapter and returns it.
+    input_focus: |
+      Provide a TypeToken for a type that has a registered type adapter and specify a factory to skip.
+    observable_behavior: |
+      Verify that the returned type adapter is the correct one that follows the skipped factory.
+
+  - design_name: |
+      Test handling of null input in fromJson() method.
+    method_context:
+      method_signature_hint: |
+        public <T> T fromJson(String json, Type typeOfT)
+      entry_hint: |
+        public <T> T fromJson(String json, Class<T> classOfT)
+    execution_flow: |
+      1. Call fromJson() with a null JSON string.
+      2. The method checks for null and returns null without further processing.
+    input_focus: |
+      Pass a null value as the JSON string to the fromJson() method.
+    observable_behavior: |
+      Ensure that the method returns null without throwing any exceptions.
+
+  - design_name: |
+      Test behavior when JSON document is not fully consumed.
+    method_context:
+      method_signature_hint: |
+        private static void assertFullConsumption(Object obj, JsonReader reader)
+      entry_hint: |
+        public <T> T fromJson(JsonReader reader, Type typeOfT)
+    execution_flow: |
+      1. Call fromJson() with a JsonReader that has extra data after a valid JSON object.
+      2. Inside fromJson(), assertFullConsumption(...) is called to check for remaining tokens.
+      3. The assertion fails, leading to an exception being thrown.
+    input_focus: |
+      Create a JsonReader from a JSON string that includes additional unexpected data after a valid object.
+    observable_behavior: |
+      Verify that the method throws a JsonIOException indicating that the JSON document was not fully consumed.
+
+  - design_name: |
+      Test behavior when generating non-executable JSON.
+    method_context:
+      method_signature_hint: |
+        public JsonWriter newJsonWriter(Writer writer)
+      entry_hint: |
+        public String toJson(Object src)
+    execution_flow: |
+      1. Call toJson() with a valid object that should generate JSON.
+      2. Inside toJson(), newJsonWriter(...) is called, which checks if non-executable JSON is to be generated.
+      3. The JSON prefix is written if the flag is set, and the JSON output is returned.
+    input_focus: |
+      Set the Gson instance to generate non-executable JSON and provide a valid object for serialization.
+    observable_behavior: |
+      Check that the output JSON starts with the non-executable prefix if the flag is enabled.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testSerializeNullObject()
+new_tests:
+  - test_behavior: Test behavior when the factory is skipped in type adapter retrieval.
+    test_name: testGetAdapterWithSkippedFactory
+    test_code: |
+      @Test
+      public void testGetAdapterWithSkippedFactory() {
+          Gson gson = new Gson();
+          TypeToken<MyClass> typeToken = TypeToken.get(MyClass.class);
+          TypeAdapter<MyClass> adapter = gson.getAdapter(typeToken);
+          // Assuming a factory that should be skipped is registered
+          TypeAdapterFactory skipFactory = new JsonAdapterAnnotationTypeAdapterFactory(new ConstructorConstructor(Collections.emptyMap()));
+          TypeAdapter<MyClass> delegateAdapter = gson.getDelegateAdapter(skipFactory, typeToken);
+          assertNotNull(delegateAdapter);
+          // Verify that the returned adapter is indeed the correct one
+          MyClass myObject = new MyClass("test", 123);
+          String json = delegateAdapter.toJson(myObject);
+          assertEquals("{\"name\":\"test\",\"value\":123}", json);
+      }
+    new_imports_code: |
+      import com.google.gson.reflect.TypeToken;
+
+  - test_behavior: Test handling of null input in fromJson() method.
+    test_name: testFromJsonNullInput
+    test_code: |
+      @Test
+      public void testFromJsonNullInput() {
+          Gson gson = new Gson();
+          Object obj = gson.fromJson(null, Object.class);
+          assertNull(obj);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test behavior when JSON document is not fully consumed.
+    test_name: testFromJsonNotFullyConsumed
+    test_code: |
+      @Test(expected = JsonIOException.class)
+      public void testFromJsonNotFullyConsumed() {
+          Gson gson = new Gson();
+          String json = "{\"name\":\"test\"} extra data";
+          gson.fromJson(json, MyClass.class);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test behavior when generating non-executable JSON.
+    test_name: testNewJsonWriterNonExecutable
+    test_code: |
+      @Test
+      public void testNewJsonWriterNonExecutable() throws IOException {
+          Gson gson = new GsonBuilder().generateNonExecutableJson().create();
+          String json = gson.toJson(new MyClass("test", 123));
+          assertTrue(json.startsWith(")]}'\n")); // Check for non-executable prefix
+      }
+    new_imports_code: |
+      import com.google.gson.GsonBuilder;
+```2026-04-18 11:58:11,318 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 14593
+2026-04-18 11:58:11,326 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:58:11,326 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:58:24,880 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 11:58:24,883 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:58:24,883 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:58:37,704 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 11:58:37,706 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:58:37,706 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:58:52,944 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 11:58:52,947 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:58:52,947 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:59:05,975 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 11:59:05,977 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:59:24,446 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Gson-16f/gson/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testSerializeNullObject() {
+    Gson gson = new Gson();
+    String json = gson.toJson(null);
+    assertEquals("null", json);
+  }
+skipped_tests:
+- failed_test_name: |
+    testFromJsonNullInput
+new_tests:
+- test_behavior: |
+    Fix a test that has an ambiguous method call due to overloaded methods
+  test_name: |
+    testFromJsonWithNullInput
+  test_code: |
+    @Test
+    public void testFromJsonWithNullInput() {
+        Gson gson = new Gson();
+        Object obj = gson.fromJson((String) null, Object.class);
+        assertNull(obj);
+    }
+  new_imports_code: |
+    import com.google.gson.JsonSyntaxException;
+    import com.google.gson.JsonIOException;
+    import com.google.gson.Gson;
+```2026-04-18 11:59:29,413 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 13517
+2026-04-18 11:59:29,418 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:59:29,418 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:59:42,278 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test(expected = JsonIOException.class)
+  public void testFromJsonNotFullyConsumed() {
+      Gson gson = new Gson();
+      String json = "{\"name\":\"test\"} extra data";
+      gson.fromJson(json, MyClass.class);
+  }
+new_tests:
+- test_behavior: |
+    Fix a test that expected a JsonIOException but received a JsonSyntaxException due to malformed JSON.
+  test_name: |
+    testFromJsonNotFullyConsumed
+  test_code: |
+    @Test(expected = JsonSyntaxException.class)
+    public void testFromJsonNotFullyConsumed() {
+        Gson gson = new Gson();
+        String json = "{\"name\":\"test\"} extra data";
+        gson.fromJson(json, MyClass.class);
+    }
+  new_imports_code: |
+    import com.google.gson.JsonSyntaxException;
+```2026-04-18 11:59:47,264 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 12988
+2026-04-18 11:59:47,266 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 11:59:47,266 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 11:59:59,716 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testSerializeNullObject() {
+    Gson gson = new Gson();
+    String json = gson.toJson(null);
+    assertEquals("null", json);
+  }
+skipped_tests:
+- failed_test_name: |
+    testFromJsonWithNullInput
+new_tests:
+- test_behavior: |
+    Fix a test that checks deserialization from a null input string
+  test_name: |
+    testFromJsonWithNullStringInput
+  test_code: |
+    @Test
+    public void testFromJsonWithNullStringInput() {
+        Gson gson = new Gson();
+        Object obj = gson.fromJson((String) null, Object.class);
+        assertNull(obj);
+    }
+  new_imports_code: |
+    import com.google.gson.JsonSyntaxException;
+- test_behavior: |
+    Fix a test that checks deserialization when the JSON is not fully consumed
+  test_name: |
+    testFromJsonWithExtraData
+  test_code: |
+    @Test(expected = JsonSyntaxException.class)
+    public void testFromJsonWithExtraData() {
+        Gson gson = new Gson();
+        String json = "{\"name\":\"test\"} extra data";
+        gson.fromJson(json, MyClass.class);
+    }
+  new_imports_code: |
+    import com.google.gson.JsonSyntaxException;
+```2026-04-18 12:00:06,266 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 13392
+2026-04-18 12:00:06,271 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 12:00:06,272 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 12:00:19,165 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 12:00:19,166 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 12:00:19,167 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 12:00:31,923 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testFromJsonEmptyInput() {
+    Gson gson = new Gson();
+    Object obj = gson.fromJson("", Object.class);
+    assertNull(obj);
+  }
+skipped_tests:
+- failed_test_name: |
+    testFromJsonWithNullStringInput
+new_tests:
+- test_behavior: |
+    Fix a test that attempts to deserialize a null string input
+  test_name: |
+    testFromJsonWithNullStringInput
+  test_code: |
+    @Test
+    public void testFromJsonWithNullStringInput() {
+        Gson gson = new Gson();
+        Object obj = gson.fromJson((String) null, Object.class);
+        assertNull(obj);
+    }
+  new_imports_code: |
+    import com.google.gson.JsonSyntaxException;
+- test_behavior: |
+    Fix a test that checks for extra data in JSON input during deserialization
+  test_name: |
+    testFromJsonWithExtraData
+  test_code: |
+    @Test(expected = JsonSyntaxException.class)
+    public void testFromJsonWithExtraData() {
+        Gson gson = new Gson();
+        String json = "{\"name\":\"test\"} extra data";
+        gson.fromJson(json, MyClass.class);
+    }
+  new_imports_code: |
+    import com.google.gson.JsonSyntaxException;
+```2026-04-18 12:00:38,741 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 13277
+2026-04-18 12:00:38,747 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 12:00:38,748 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 12:00:51,655 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 12:00:51,656 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 12:00:51,657 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 12:01:04,310 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 12:01:04,314 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=GsonTest"
+2026-04-18 12:01:21,750 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Gson-16f/gson/target/jacoco/jacoco.csv
+2026-04-18 12:01:21,811 - panta.panta - INFO - Iteration 3 cannot increase coverage.
+2026-04-18 12:01:21,812 - panta.panta - INFO - Current line Coverage: 70.37%, branch coverage: 37.04%
+2026-04-18 12:01:21,812 - panta.unit_test_generator - INFO - Selected branch lines for current iteration: [959, 966, 973, 275, 280, 287, 299, 304, 311, 323]
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test handling of null values during serialization.
+    method_context:
+      method_signature_hint: |
+        private TypeAdapter<Number> doubleAdapter(boolean serializeSpecialFloatingPointValues)
+      entry_hint: |
+        public String toJson(Object src)
+    execution_flow: |
+      1. Call toJson() with an object that contains a null value.
+      2. The doubleAdapter(...) method is invoked during serialization.
+      3. The branch handling null values is executed.
+    input_focus: |
+      Create an object with a field that is explicitly set to null.
+    observable_behavior: |
+      Verify that the serialized JSON output does not include the null field.
+
+  - design_name: |
+      Test serialization of special floating-point values.
+    method_context:
+      method_signature_hint: |
+        private TypeAdapter<Number> doubleAdapter(boolean serializeSpecialFloatingPointValues)
+      entry_hint: |
+        public String toJson(Object src)
+    execution_flow: |
+      1. Call toJson() with an object containing a special floating-point value (e.g., NaN).
+      2. The doubleAdapter(...) method is invoked with serializeSpecialFloatingPointValues set to true.
+      3. The branch for handling special floating-point values is executed.
+    input_focus: |
+      Construct an object with a field that has a value of NaN or Infinity.
+    observable_behavior: |
+      Check that the serialized JSON correctly represents the special floating-point value.
+
+  - design_name: |
+      Test behavior when the delegate adapter is not set.
+    method_context:
+      method_signature_hint: |
+        private void write(JsonWriter out, T value)
+      entry_hint: |
+        public <T> TypeAdapter<T> getAdapter(TypeToken<T> type)
+    execution_flow: |
+      1. Call getAdapter() with a type that has no registered adapter.
+      2. The FutureTypeAdapter's write(...) method is reached without a delegate.
+      3. The branch checking for a null delegate is executed.
+    input_focus: |
+      Use a TypeToken for a type that has not been registered with any adapter.
+    observable_behavior: |
+      Verify that an IllegalStateException is thrown due to the absence of a delegate.
+
+  - design_name: |
+      Test handling of null values during deserialization.
+    method_context:
+      method_signature_hint: |
+        private <T> T fromJson(JsonReader reader, Type typeOfT)
+      entry_hint: |
+        public <T> T fromJson(String json, Type typeOfT)
+    execution_flow: |
+      1. Call fromJson() with a JSON string that represents a null value.
+      2. The fromJson(JsonReader, Type) method is invoked.
+      3. The branch handling the null value in the JSON is executed.
+    input_focus: |
+      Provide a JSON string that is either "null" or an empty JSON object.
+    observable_behavior: |
+      Check that the returned object is null or the expected default value.
+
+  - design_name: |
+      Test exception handling for malformed JSON input.
+    method_context:
+      method_signature_hint: |
+        private <T> T fromJson(JsonReader reader, Type typeOfT)
+      entry_hint: |
+        public <T> T fromJson(String json, Type typeOfT)
+    execution_flow: |
+      1. Call fromJson() with a malformed JSON string.
+      2. The fromJson(JsonReader, Type) method is invoked.
+      3. The exception handling branch for malformed JSON is executed.
+    input_focus: |
+      Use a JSON string that is improperly formatted (e.g., missing quotes or brackets).
+    observable_behavior: |
+      Verify that a JsonSyntaxException is thrown due to the malformed input.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testSerializeNullObject()
+new_tests:
+  - test_behavior: Test handling of null values during serialization.
+    test_name: testSerializeObjectWithNullField
+    test_code: |
+      @Test
+      public void testSerializeObjectWithNullField() {
+          Gson gson = new Gson();
+          MyClass obj = new MyClass(null, 123);
+          String json = gson.toJson(obj);
+          assertEquals("{\"value\":123}", json);
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test serialization of special floating-point values.
+    test_name: testSerializeNaNValue
+    test_code: |
+      @Test
+      public void testSerializeNaNValue() {
+          Gson gson = new Gson();
+          MyClass obj = new MyClass("test", Double.NaN);
+          String json = gson.toJson(obj);
+          assertTrue(json.contains("NaN"));
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test handling of null values during deserialization.
+    test_name: testDeserializeNullJsonString
+    test_code: |
+      @Test
+      public void testDeserializeNullJsonString() {
+          Gson gson = new Gson();
+          MyClass obj = gson.fromJson("null", MyClass.class);
+          assertNull(obj);
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test exception handling for malformed JSON input.
+    test_name: testFromJsonMalformedInput
+    test_code: |
+      @Test(expected = JsonSyntaxException.class)
+      public void testFromJsonMalformedInput() {
+          Gson gson = new Gson();
+          gson.fromJson("{invalidJson", MyClass.class);
+      }
+    new_imports_code: ""
+```2026-04-18 12:01:42,611 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 14553
+2026-04-18 12:01:42,618 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 12:01:42,619 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 12:02:00,927 - panta.unit_test_generator - INFO - Generated test has passed: testSerializeObjectWithNullField
+2026-04-18 12:02:00,930 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 12:02:00,930 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 12:02:13,586 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 12:02:13,588 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 12:02:13,588 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 12:02:32,127 - panta.unit_test_generator - INFO - Generated test has passed: testDeserializeNullJsonString
+2026-04-18 12:02:32,129 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 12:02:32,130 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 12:02:45,667 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 12:02:45,668 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=GsonTest"
+2026-04-18 12:03:03,601 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Gson-16f/gson/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testFromJsonMalformedInput() {
+      Gson gson = new Gson();
+      gson.fromJson("{invalidJson", MyClass.class);
+  }
+skipped_tests:
+- failed_test_name: |
+    testFromJsonMalformedInput
+new_tests:
+- test_behavior: |
+    Fix a test that attempts to serialize a NaN value, which causes a type mismatch
+  test_name: |
+    testSerializeNaNValue
+  test_code: |
+    @Test
+    public void testSerializeNaNValue() {
+        Gson gson = new Gson();
+        MyClass obj = new MyClass("test", Double.NaN); // Change int to double
+        String json = gson.toJson(obj);
+        assertTrue(json.contains("NaN"));
+    }
+  new_imports_code: |
+    import java.util.concurrent.atomic.AtomicLongArray;
+```2026-04-18 12:03:08,929 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 13286
+2026-04-18 12:03:08,933 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 12:03:08,934 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 12:03:21,654 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testSerializeNaNValue() {
+      Gson gson = new Gson();
+      MyClass obj = new MyClass("test", Double.NaN); // Change int to double
+      String json = gson.toJson(obj);
+      assertTrue(json.contains("NaN"));
+  }
+skipped_tests: []
+new_tests:
+- test_behavior: |
+    Fix a test that attempts to serialize a NaN value by changing the field type from int to double
+  test_name: |
+    testSerializeNaNValueWithDouble
+  test_code: |
+    @Test
+    public void testSerializeNaNValueWithDouble() {
+        Gson gson = new Gson();
+        MyClass obj = new MyClass("test", Double.NaN); // Changed int to double
+        String json = gson.toJson(obj);
+        assertTrue(json.contains("NaN"));
+    }
+  new_imports_code: |
+    import java.util.concurrent.atomic.AtomicLongArray;
+```2026-04-18 12:03:26,904 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 13191
+2026-04-18 12:03:26,906 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 12:03:26,907 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 12:03:40,139 - panta.unit_test_generator - INFO - Test generated with compilation error.
+
+
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testSerializeNaNValueWithDouble() {
+      Gson gson = new Gson();
+      MyClass obj = new MyClass("test", Double.NaN); // Changed int to double
+      String json = gson.toJson(obj);
+      assertTrue(json.contains("NaN"));
+  }
+skipped_tests: []
+new_tests:
+- test_behavior: |
+    Fix a test that attempts to serialize a NaN value by changing the field type from int to double.
+  test_name: |
+    testSerializeNaNValueWithDoubleCorrected
+  test_code: |
+    @Test
+    public void testSerializeNaNValueWithDoubleCorrected() {
+        Gson gson = new Gson();
+        MyClass obj = new MyClass("test", Double.NaN); // Changed int to double
+        String json = gson.toJson(obj);
+        assertTrue(json.contains("NaN"));
+    }
+  new_imports_code: |
+    import java.util.concurrent.atomic.AtomicLongArray;
+```2026-04-18 12:03:45,785 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 13201
+2026-04-18 12:03:45,790 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/Gson-16f/gson/src/test/java/com/google/gson/GsonTest.java
+2026-04-18 12:03:45,790 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=GsonTest"
+2026-04-18 12:03:58,650 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 12:03:58,654 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=GsonTest"
+2026-04-18 12:04:17,295 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/Gson-16f/gson/target/jacoco/jacoco.csv
+2026-04-18 12:04:17,353 - panta.panta - INFO - Iteration 4 cannot increase coverage.
+2026-04-18 12:04:17,354 - panta.panta - ERROR - Reached maximum iteration limit without improving coverage. Current Coverage: (70.37%, 37.04%)
+2026-04-18 12:04:17,367 - panta.panta - INFO - Report generated successfully at: ../../result-files/control_gpt-4o-mini/
+
+

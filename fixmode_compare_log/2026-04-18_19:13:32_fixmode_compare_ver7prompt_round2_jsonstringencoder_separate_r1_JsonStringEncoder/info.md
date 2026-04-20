@@ -1,0 +1,26 @@
+# Batch Run R1
+
+- Batch name: fixmode_compare_ver7prompt_round2_jsonstringencoder_separate
+- Timestamp: 2026-04-18_19:13:32
+- Round: 1 / 2
+- Baseline test file: original `defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java` contents
+- report_filepath: fixmode_compare_ver7prompt_round2_jsonstringencoder_separate_r1_20260418_191332.html
+- Run status: completed
+- Process exit code: 0
+- Effective config overrides:
+  - code_coverage_report_path = defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+  - enable_advice_feedback = true
+  - enable_fixing = 3
+  - fixing_mode = separate
+  - junit_version = 4
+  - llm_advice_activation_line_coverage = 100
+  - maximum_iterations = 18
+  - no_coverage_increase_iterations = 3
+  - project_directory = defects4j-subjects-notests/JacksonCore-26f
+  - prompt_type = control
+  - report_filepath = fixmode_compare_ver7prompt_round2_jsonstringencoder_separate_r1_20260418_191332.html
+  - selection_mode = llm
+  - source_code_file = defects4j-subjects-notests/JacksonCore-26f/src/main/java/com/fasterxml/jackson/core/io/JsonStringEncoder.java
+  - test_code_command_dir = defects4j-subjects-notests/JacksonCore-26f
+  - test_code_file = defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+  - test_execution_command = mvn clean package -Dtest=TestJsonStringEncoder

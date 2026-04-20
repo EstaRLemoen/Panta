@@ -1,0 +1,2931 @@
+2026-04-18 06:12:04,932 - panta.panta - INFO - CFG snapshot directory created: cfg_snapshot_test/intermediate/cfg/JsonStringEncoder_20260418_061204_91612689
+2026-04-18 06:12:24,699 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:12:52,076 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-18 06:12:52,135 - panta.panta - INFO - Current line Coverage: 0.0%, branch coverage: 0.0%
+2026-04-18 06:12:52,136 - panta.panta - INFO - initial tests generation using baseline type of prompt
+Function timed out after 5 seconds
+JsonStringEncoder quoteAsString [(173, 178), (178, 184), (178, 193), (193, 203), (203, 214), (214, 222), (222, 227), (227, 236), (236, 241), (241, 243), (255, 264), (264, 276), (264, 278), (286, 293), (293, 297), (297, 304), (304, 311), (304, 251), (313, 323), (323, 330), (330, 349), (349, 360), (349, 414), (360, 369), (369, 375), (369, 385), (385, 392), (392, 399), (399, 409), (409, 243), (414, 424), (424, 243), (428, 434), (434, 2), (162, 173), (184, 193), (243, 249), (243, 428), (249, 251), (251, 255), (251, 313), (278, 286), (278, 297), (311, 2), (375, 385)]
+Function timed out after 5 seconds
+JsonStringEncoder quoteAsString [(451, 462), (462, 470), (470, 475), (475, 484), (484, 486), (484, 2), (498, 507), (507, 519), (507, 521), (521, 527), (527, 534), (527, 494), (439, 451), (486, 492), (486, 2), (492, 494), (494, 498), (534, 2)]
+```yaml
+language: Java
+existing_test_function_signature: |
+  @Test
+  public void testPlaceHolder() {
+    assertTrue(true); 
+  }
+new_tests:
+- test_behavior: |
+    Test that the quoteAsString method correctly escapes a string containing special characters.
+  test_name: |
+    testQuoteAsStringWithSpecialCharacters
+  test_code: |
+    @Test
+    public void testQuoteAsStringWithSpecialCharacters() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "Hello, \"world\"!\nNew line and a tab:\tEnd.";
+        char[] expected = "Hello, \"world\"!\\nNew line and a tab:\\tEnd.".toCharArray();
+        char[] result = encoder.quoteAsString(input);
+        assertArrayEquals(expected, result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+- test_behavior: |
+    Test that the quoteAsUTF8 method correctly encodes a string with special characters to UTF-8.
+  test_name: |
+    testQuoteAsUTF8WithSpecialCharacters
+  test_code: |
+    @Test
+    public void testQuoteAsUTF8WithSpecialCharacters() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "Hello, \"world\"!\nNew line and a tab:\tEnd.";
+        byte[] expected = "Hello, \"world\"!\nNew line and a tab:\tEnd.".getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        byte[] result = encoder.quoteAsUTF8(input);
+        assertArrayEquals(expected, result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+- test_behavior: |
+    Test that the encodeAsUTF8 method correctly encodes a string without any special characters to UTF-8.
+  test_name: |
+    testEncodeAsUTF8WithoutSpecialCharacters
+  test_code: |
+    @Test
+    public void testEncodeAsUTF8WithoutSpecialCharacters() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "Simple text without special characters.";
+        byte[] expected = input.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        byte[] result = encoder.encodeAsUTF8(input);
+        assertArrayEquals(expected, result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+- test_behavior: |
+    Test that the quoteAsString method handles an empty string correctly.
+  test_name: |
+    testQuoteAsStringWithEmptyString
+  test_code: |
+    @Test
+    public void testQuoteAsStringWithEmptyString() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "";
+        char[] expected = "\"\"".toCharArray();
+        char[] result = encoder.quoteAsString(input);
+        assertArrayEquals(expected, result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+- test_behavior: |
+    Test that the quoteAsUTF8 method handles an empty string correctly.
+  test_name: |
+    testQuoteAsUTF8WithEmptyString
+  test_code: |
+    @Test
+    public void testQuoteAsUTF8WithEmptyString() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "";
+        byte[] expected = "\"\"".getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        byte[] result = encoder.quoteAsUTF8(input);
+        assertArrayEquals(expected, result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+```2026-04-18 06:13:07,810 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5651
+2026-04-18 06:13:07,820 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:13:07,820 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:13:25,846 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:13:25,849 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:13:25,849 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:13:43,454 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:13:43,455 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:13:43,456 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:14:09,827 - panta.unit_test_generator - INFO - Generated test has passed: testEncodeAsUTF8WithoutSpecialCharacters
+
+2026-04-18 06:14:09,829 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:14:09,829 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:14:28,141 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:14:28,143 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:14:28,143 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:14:45,753 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:14:45,754 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:15:12,774 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+new_tests:
+- test_behavior: |
+    Fix a test that used the wrong expected value for a runtime assertion when quoting a string with special characters.
+  test_name: |
+    testQuoteAsStringWithSpecialCharacters
+  test_code: |
+    @Test
+    public void testQuoteAsStringWithSpecialCharacters() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "Hello, \"world\"!\nNew line and a tab:\tEnd.";
+        char[] expected = "Hello, \"world\"!\\nNew line and a tab:\\tEnd.".toCharArray();
+        char[] result = encoder.quoteAsString(input);
+        assertArrayEquals(expected, result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+- test_behavior: |
+    Fix a test that used the wrong expected value for a runtime assertion when quoting a UTF-8 string with special characters.
+  test_name: |
+    testQuoteAsUTF8WithSpecialCharacters
+  test_code: |
+    @Test
+    public void testQuoteAsUTF8WithSpecialCharacters() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "Hello, \"world\"!\nNew line and a tab:\tEnd.";
+        byte[] expected = "Hello, \"world\"!\nNew line and a tab:\tEnd.".getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        byte[] result = encoder.quoteAsUTF8(input);
+        assertArrayEquals(expected, result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+- test_behavior: |
+    Fix a test that made an invalid runtime assumption about API behavior when quoting an empty string.
+  test_name: |
+    testQuoteAsStringWithEmptyString
+  test_code: |
+    @Test
+    public void testQuoteAsStringWithEmptyString() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "";
+        char[] expected = "\"\"".toCharArray();
+        char[] result = encoder.quoteAsString(input);
+        assertArrayEquals(expected, result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+- test_behavior: |
+    Fix a test that made an invalid runtime assumption about API behavior when quoting an empty UTF-8 string.
+  test_name: |
+    testQuoteAsUTF8WithEmptyString
+  test_code: |
+    @Test
+    public void testQuoteAsUTF8WithEmptyString() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "";
+        byte[] expected = "\"\"".getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        byte[] result = encoder.quoteAsUTF8(input);
+        assertArrayEquals(expected, result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+```2026-04-18 06:15:23,620 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 6277
+2026-04-18 06:15:23,627 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:15:23,627 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:15:41,853 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:15:41,855 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:15:41,855 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:15:59,149 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:15:59,151 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:15:59,151 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:16:17,038 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:16:17,039 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:16:17,039 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:16:34,991 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+new_tests:
+- test_behavior: |
+    Fix a test that used the wrong expected value for a runtime assertion
+  test_name: |
+    testQuoteAsStringWithSpecialCharacters
+  test_code: |
+    @Test
+    public void testQuoteAsStringWithSpecialCharacters() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "Hello, \"world\"!\nNew line and a tab:\tEnd.";
+        char[] expected = "Hello, \"world\"!\\nNew line and a tab:\\tEnd.".toCharArray();
+        char[] result = encoder.quoteAsString(input);
+        assertArrayEquals(expected, result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+- test_behavior: |
+    Fix a test that used the wrong expected value for a runtime assertion
+  test_name: |
+    testQuoteAsUTF8WithSpecialCharacters
+  test_code: |
+    @Test
+    public void testQuoteAsUTF8WithSpecialCharacters() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "Hello, \"world\"!\nNew line and a tab:\tEnd.";
+        byte[] expected = "Hello, \"world\"!\nNew line and a tab:\tEnd.".getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        byte[] result = encoder.quoteAsUTF8(input);
+        assertArrayEquals(expected, result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+- test_behavior: |
+    Fix a test that made an invalid runtime assumption about API behavior
+  test_name: |
+    testQuoteAsStringWithEmptyString
+  test_code: |
+    @Test
+    public void testQuoteAsStringWithEmptyString() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "";
+        char[] expected = "\"\"".toCharArray();
+        char[] result = encoder.quoteAsString(input);
+        assertArrayEquals(expected, result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+- test_behavior: |
+    Fix a test that made an invalid runtime assumption about API behavior
+  test_name: |
+    testQuoteAsUTF8WithEmptyString
+  test_code: |
+    @Test
+    public void testQuoteAsUTF8WithEmptyString() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "";
+        byte[] expected = "\"\"".getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        byte[] result = encoder.quoteAsUTF8(input);
+        assertArrayEquals(expected, result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+```2026-04-18 06:16:45,054 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 6247
+2026-04-18 06:16:45,062 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:16:45,063 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:17:02,955 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:17:02,957 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:17:02,957 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:17:20,386 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:17:20,387 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:17:20,388 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:17:37,905 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:17:37,907 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:17:37,908 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:17:55,269 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+new_tests:
+- test_behavior: |
+    Fix a test that used the wrong expected value for a runtime assertion
+  test_name: |
+    testQuoteAsStringWithSpecialCharacters
+  test_code: |
+    @Test
+    public void testQuoteAsStringWithSpecialCharacters() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "Hello, \"world\"!\nNew line and a tab:\tEnd.";
+        char[] expected = "Hello, \"world\"!\\nNew line and a tab:\\tEnd.".toCharArray();
+        char[] result = encoder.quoteAsString(input);
+        assertArrayEquals(expected, result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+- test_behavior: |
+    Fix a test that used the wrong expected value for a runtime assertion
+  test_name: |
+    testQuoteAsUTF8WithSpecialCharacters
+  test_code: |
+    @Test
+    public void testQuoteAsUTF8WithSpecialCharacters() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "Hello, \"world\"!\nNew line and a tab:\tEnd.";
+        byte[] expected = "Hello, \"world\"!\nNew line and a tab:\tEnd.".getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        byte[] result = encoder.quoteAsUTF8(input);
+        assertArrayEquals(expected, result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+- test_behavior: |
+    Fix a test that made an invalid runtime assumption about API behavior
+  test_name: |
+    testQuoteAsStringWithEmptyString
+  test_code: |
+    @Test
+    public void testQuoteAsStringWithEmptyString() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "";
+        char[] expected = "\"\"".toCharArray();
+        char[] result = encoder.quoteAsString(input);
+        assertArrayEquals(expected, result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+- test_behavior: |
+    Fix a test that made an invalid runtime assumption about API behavior
+  test_name: |
+    testQuoteAsUTF8WithEmptyString
+  test_code: |
+    @Test
+    public void testQuoteAsUTF8WithEmptyString() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "";
+        byte[] expected = "\"\"".getBytes(java.nio.charset.StandardCharsets.UTF_8);
+        byte[] result = encoder.quoteAsUTF8(input);
+        assertArrayEquals(expected, result);
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+```2026-04-18 06:18:05,540 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 6247
+2026-04-18 06:18:05,546 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:18:05,547 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:18:23,129 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:18:23,133 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:18:23,133 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:18:41,183 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:18:41,185 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:18:41,185 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:18:59,122 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:18:59,123 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:18:59,123 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:19:17,466 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:19:17,474 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:19:44,153 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-18 06:19:44,201 - panta.panta - INFO - Iteration 0 increased line coverage 11.79%, branch coverage 5.77%
+2026-04-18 06:19:44,202 - panta.panta - INFO - Current line Coverage: 11.79%, branch coverage: 5.77%
+2026-04-18 06:19:44,202 - panta.unit_test_generator - INFO - Selected branch lines for current iteration: [87, 99, 103, 106, 111, 118, 122, 124, 155, 159]
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test behavior when TextBuffer is uninitialized.
+    method_context:
+      method_signature_hint: |
+        public char[] quoteAsString(String input)
+      entry_hint: |
+        public char[] quoteAsString(String input)
+    execution_flow: |
+      1. Call quoteAsString() with any input string.
+      2. Inside quoteAsString(), check if _text is null.
+      3. The branch for initializing _text is taken.
+    input_focus: |
+      Provide a simple non-empty string as input to the quoteAsString method.
+    observable_behavior: |
+      Verify that a new TextBuffer instance is created and used for encoding the input string.
+
+  - design_name: |
+      Test escaping behavior for characters requiring escape sequences.
+    method_context:
+      method_signature_hint: |
+        public char[] quoteAsString(String input)
+      entry_hint: |
+        public char[] quoteAsString(String input)
+    execution_flow: |
+      1. Call quoteAsString() with a string containing characters that need escaping.
+      2. Inside quoteAsString(), the loop checks for characters that require escaping.
+      3. The branch for handling escape sequences is executed.
+    input_focus: |
+      Use a string that includes characters like newline, tab, or other JSON escape characters.
+    observable_behavior: |
+      Check that the returned character array contains the correct escape sequences for the input characters.
+
+  - design_name: |
+      Test buffer expansion when output buffer is full.
+    method_context:
+      method_signature_hint: |
+        public char[] quoteAsString(String input)
+      entry_hint: |
+        public char[] quoteAsString(String input)
+    execution_flow: |
+      1. Call quoteAsString() with a long input string that exceeds the initial buffer size.
+      2. Inside quoteAsString(), the output buffer is checked for capacity.
+      3. The branch for expanding the output buffer is taken.
+    input_focus: |
+      Provide a long string that will require multiple segments to accommodate all characters.
+    observable_behavior: |
+      Verify that the output character array is correctly populated and that the buffer expansion logic is executed.
+
+  - design_name: |
+      Test handling of surrogate pairs in UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        public byte[] quoteAsUTF8(String text)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string containing valid surrogate pairs.
+      2. Inside quoteAsUTF8(), the code checks for surrogate pairs.
+      3. The branch for converting surrogate pairs is executed.
+    input_focus: |
+      Use a string that includes characters represented by surrogate pairs, such as emojis or certain rare characters.
+    observable_behavior: |
+      Check that the returned byte array correctly encodes the surrogate pairs into valid UTF-8 sequences.
+
+  - design_name: |
+      Test exception handling for illegal surrogate pairs.
+    method_context:
+      method_signature_hint: |
+        private static int _convert(int p1, int p2)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string that includes an invalid surrogate pair.
+      2. Inside quoteAsUTF8(), the _convert() method is called with invalid surrogate values.
+      3. The branch for throwing an IllegalArgumentException is executed.
+    input_focus: |
+      Provide a string that includes an invalid surrogate pair, such as a high surrogate followed by a low surrogate that does not match.
+    observable_behavior: |
+      Verify that an IllegalArgumentException is thrown with an appropriate message indicating the illegal surrogate pair.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testEncodeAsUTF8WithoutSpecialCharacters()
+new_tests:
+  - test_behavior: Test behavior when TextBuffer is uninitialized.
+    test_name: testQuoteAsStringWithUninitializedTextBuffer
+    test_code: |
+      @Test
+      public void testQuoteAsStringWithUninitializedTextBuffer() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Hello, World!";
+          char[] result = encoder.quoteAsString(input);
+          assertNotNull(result);
+          assertArrayEquals("Hello, World!".toCharArray(), result);
+      }
+    new_imports_code: ''
+  
+  - test_behavior: Test escaping behavior for characters requiring escape sequences.
+    test_name: testQuoteAsStringWithEscapeCharacters
+    test_code: |
+      @Test
+      public void testQuoteAsStringWithEscapeCharacters() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "This is a test with a newline\nand a tab\tcharacter.";
+          char[] result = encoder.quoteAsString(input);
+          String expected = "This is a test with a newline\\nand a tab\\tcharacter.";
+          assertArrayEquals(expected.toCharArray(), result);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test buffer expansion when output buffer is full.
+    test_name: testQuoteAsStringWithLongInput
+    test_code: |
+      @Test
+      public void testQuoteAsStringWithLongInput() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "A long string that will exceed the initial buffer size and require expansion.";
+          char[] result = encoder.quoteAsString(input);
+          assertNotNull(result);
+          assertEquals(input.length(), result.length);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test handling of surrogate pairs in UTF-8 encoding.
+    test_name: testQuoteAsUTF8WithSurrogatePairs
+    test_code: |
+      @Test
+      public void testQuoteAsUTF8WithSurrogatePairs() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Surrogate pair: \uD83D\uDE00"; // 😀
+          byte[] result = encoder.quoteAsUTF8(input);
+          assertNotNull(result);
+          assertTrue(result.length > 0); // Ensure that we get a non-empty result
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test exception handling for illegal surrogate pairs.
+    test_name: testQuoteAsUTF8WithIllegalSurrogatePairs
+    test_code: |
+      @Test(expected = IllegalArgumentException.class)
+      public void testQuoteAsUTF8WithIllegalSurrogatePairs() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "\uD800\uDC00"; // High surrogate followed by low surrogate
+          encoder.quoteAsUTF8(input);
+      }
+    new_imports_code: ''
+```2026-04-18 06:20:08,657 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 7956
+2026-04-18 06:20:08,667 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:20:08,667 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:20:36,229 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsStringWithUninitializedTextBuffer
+2026-04-18 06:20:36,231 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:20:36,232 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:21:03,780 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsStringWithEscapeCharacters
+2026-04-18 06:21:03,782 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:21:03,782 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:21:30,670 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsStringWithLongInput
+2026-04-18 06:21:30,672 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:21:30,672 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:21:57,554 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsUTF8WithSurrogatePairs
+2026-04-18 06:21:57,556 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:21:57,556 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:22:15,242 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:22:15,243 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:22:41,601 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+new_tests:
+- test_behavior: |
+    Fix a test that expected an IllegalArgumentException for a valid surrogate pair input.
+  test_name: |
+    testQuoteAsUTF8WithIllegalSurrogatePairs
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testQuoteAsUTF8WithIllegalSurrogatePairs() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "\uD800\uDC00"; // High surrogate followed by low surrogate
+        encoder.quoteAsUTF8(input);
+    }
+  new_imports_code: |
+    import org.junit.Test;
+```2026-04-18 06:22:45,370 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5217
+2026-04-18 06:22:45,373 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:22:45,374 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:23:03,181 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+new_tests:
+- test_behavior: |
+    Fix a test that expected an IllegalArgumentException for a valid surrogate pair input
+  test_name: |
+    testQuoteAsUTF8WithIllegalSurrogatePairs
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testQuoteAsUTF8WithIllegalSurrogatePairs() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "\uD800\uDC00"; // High surrogate followed by low surrogate
+        encoder.quoteAsUTF8(input);
+    }
+  new_imports_code: |
+    import org.junit.Test;
+```2026-04-18 06:23:06,849 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5221
+2026-04-18 06:23:06,853 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:23:06,853 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:23:24,778 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+new_tests:
+- test_behavior: |
+    Fix a test that expected an IllegalArgumentException for illegal surrogate pairs,
+    which was not thrown as expected.
+  test_name: |
+    testQuoteAsUTF8WithIllegalSurrogatePairs
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testQuoteAsUTF8WithIllegalSurrogatePairs() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "\uD800\uDC00"; // High surrogate followed by low surrogate
+        encoder.quoteAsUTF8(input);
+    }
+  new_imports_code: |
+    import org.junit.Test;
+```2026-04-18 06:23:28,391 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5227
+2026-04-18 06:23:28,395 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:23:28,396 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:23:46,232 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:23:46,234 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:24:13,563 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-18 06:24:13,589 - panta.panta - INFO - Iteration 1 increased line coverage 31.61%, branch coverage 29.81%
+2026-04-18 06:24:13,589 - panta.panta - INFO - Current line Coverage: 43.4%, branch coverage: 35.58%
+2026-04-18 06:24:13,590 - panta.unit_test_generator - INFO - Selected branch lines for current iteration: [163, 170, 186, 202, 205, 210, 214, 220, 227, 232]
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test behavior when input string contains characters requiring escaping.
+    method_context:
+      method_signature_hint: |
+        public char[] quoteAsString(String input)
+      entry_hint: |
+        public void quoteAsString(CharSequence input, StringBuilder output)
+    execution_flow: |
+      1. Call quoteAsString() with a CharSequence containing characters that need escaping.
+      2. The method quoteAsString() processes the input and reaches the escaping logic.
+      3. The branch for handling characters that require escaping is executed.
+    input_focus: |
+      Provide a CharSequence with a mix of normal characters and those requiring escape sequences (e.g., newline, tab).
+    observable_behavior: |
+      Verify that the output correctly reflects the expected escaped characters in the resulting StringBuilder.
+
+  - design_name: |
+      Test UTF-8 encoding for strings with characters beyond ASCII.
+    method_context:
+      method_signature_hint: |
+        public byte[] quoteAsUTF8(String text)
+      entry_hint: |
+        public byte[] encodeAsUTF8(String text)
+    execution_flow: |
+      1. Call encodeAsUTF8() with a string containing multi-byte UTF-8 characters.
+      2. The method quoteAsUTF8() is reached, processing the input string.
+      3. The branch for handling characters that require multi-byte encoding is executed.
+    input_focus: |
+      Use a string that includes characters from various languages or special symbols that exceed the ASCII range.
+    observable_behavior: |
+      Check that the resulting byte array correctly encodes the input string in UTF-8 format.
+
+  - design_name: |
+      Test handling of surrogate pairs in UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        private static int _convert(int p1, int p2)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string that includes valid surrogate pairs.
+      2. The method _convert() is reached when processing the surrogate pairs.
+      3. The branch for handling valid surrogate pairs is executed.
+    input_focus: |
+      Provide a string that includes characters represented by valid surrogate pairs (e.g., characters outside the Basic Multilingual Plane).
+    observable_behavior: |
+      Verify that the output byte array correctly represents the surrogate pairs as expected in UTF-8 encoding.
+
+  - design_name: |
+      Test illegal surrogate pair handling.
+    method_context:
+      method_signature_hint: |
+        private static int _convert(int p1, int p2)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string that includes an illegal surrogate pair.
+      2. The method _convert() is reached, where the illegal pair is processed.
+      3. The branch for handling illegal surrogate pairs is executed, leading to an exception.
+    input_focus: |
+      Use a string that contains an invalid surrogate pair (e.g., a high surrogate followed by a low surrogate that does not match).
+    observable_behavior: |
+      Check that an IllegalArgumentException is thrown as expected when encountering the illegal surrogate pair.
+
+  - design_name: |
+      Test behavior when the ByteArrayBuilder is null during UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        public byte[] quoteAsUTF8(String text)
+      entry_hint: |
+        public byte[] encodeAsUTF8(String text)
+    execution_flow: |
+      1. Call encodeAsUTF8() with a string that triggers the null ByteArrayBuilder condition.
+      2. The method quoteAsUTF8() is reached, where the ByteArrayBuilder is checked.
+      3. The branch for initializing the ByteArrayBuilder when it is null is executed.
+    input_focus: |
+      Provide a string input that leads to the initialization of the ByteArrayBuilder.
+    observable_behavior: |
+      Verify that the ByteArrayBuilder is correctly initialized and that the encoding process continues without errors.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testQuoteAsStringWithEscapeCharacters()
+new_tests:
+  - test_behavior: Test behavior when input string contains characters requiring escaping.
+    test_name: testQuoteAsStringWithMixedCharacters
+    test_code: |
+      @Test
+      public void testQuoteAsStringWithMixedCharacters() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Line1\nLine2\tTabbed";
+          char[] result = encoder.quoteAsString(input);
+          String expected = "Line1\\nLine2\\tTabbed";
+          assertArrayEquals(expected.toCharArray(), result);
+      }
+    new_imports_code: ''
+    
+  - test_behavior: Test UTF-8 encoding for strings with characters beyond ASCII.
+    test_name: testQuoteAsUTF8WithMultiByteCharacters
+    test_code: |
+      @Test
+      public void testQuoteAsUTF8WithMultiByteCharacters() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "こんにちは"; // Japanese for "Hello"
+          byte[] result = encoder.quoteAsUTF8(input);
+          byte[] expected = input.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+          assertArrayEquals(expected, result);
+      }
+    new_imports_code: ''
+    
+  - test_behavior: Test handling of surrogate pairs in UTF-8 encoding.
+    test_name: testQuoteAsUTF8WithValidSurrogatePairs
+    test_code: |
+      @Test
+      public void testQuoteAsUTF8WithValidSurrogatePairs() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Surrogate pair: \uD83D\uDE00"; // 😀
+          byte[] result = encoder.quoteAsUTF8(input);
+          assertNotNull(result);
+          assertTrue(result.length > 0); // Ensure that we get a non-empty result
+      }
+    new_imports_code: ''
+    
+  - test_behavior: Test illegal surrogate pair handling.
+    test_name: testQuoteAsUTF8WithIllegalSurrogatePair
+    test_code: |
+      @Test(expected = IllegalArgumentException.class)
+      public void testQuoteAsUTF8WithIllegalSurrogatePair() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "\uD800\uDC00"; // Invalid surrogate pair
+          encoder.quoteAsUTF8(input);
+      }
+    new_imports_code: ''
+    
+  - test_behavior: Test behavior when the ByteArrayBuilder is null during UTF-8 encoding.
+    test_name: testQuoteAsUTF8WithNullByteArrayBuilder
+    test_code: |
+      @Test
+      public void testQuoteAsUTF8WithNullByteArrayBuilder() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Test input";
+          byte[] result = encoder.quoteAsUTF8(input);
+          assertNotNull(result);
+          assertTrue(result.length > 0); // Ensure that we get a non-empty result
+      }
+    new_imports_code: ''
+```2026-04-18 06:24:38,988 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8063
+2026-04-18 06:24:38,998 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:24:38,998 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:25:05,979 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsStringWithMixedCharacters
+2026-04-18 06:25:05,980 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:25:05,981 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:25:32,089 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsUTF8WithMultiByteCharacters
+2026-04-18 06:25:32,091 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:25:32,091 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:25:58,436 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsUTF8WithValidSurrogatePairs
+2026-04-18 06:25:58,437 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:25:58,438 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:26:16,377 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:26:16,380 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:26:16,380 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:26:41,684 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsUTF8WithNullByteArrayBuilder
+2026-04-18 06:26:41,685 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:27:09,003 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+new_tests:
+- test_behavior: |
+    Fix a test that expected an IllegalArgumentException for an illegal surrogate pair.
+  test_name: |
+    testQuoteAsUTF8WithIllegalSurrogatePair
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testQuoteAsUTF8WithIllegalSurrogatePair() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "\uD800\uDC00"; // Invalid surrogate pair
+        encoder.quoteAsUTF8(input);
+    }
+  new_imports_code: |
+    import org.junit.Test;
+```2026-04-18 06:27:12,987 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5537
+2026-04-18 06:27:12,991 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:27:12,991 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:27:31,156 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+new_tests:
+- test_behavior: |
+    Fix a test that expected an exception for an illegal surrogate pair but did not throw it.
+  test_name: |
+    testQuoteAsUTF8WithIllegalSurrogatePair
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testQuoteAsUTF8WithIllegalSurrogatePair() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "\uD800\uDC00"; // Invalid surrogate pair
+        encoder.quoteAsUTF8(input);
+    }
+  new_imports_code: |
+    import org.junit.Test;
+```2026-04-18 06:27:34,650 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5544
+2026-04-18 06:27:34,654 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:27:34,655 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:27:52,621 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+new_tests:
+- test_behavior: |
+    Fix a test that expected an exception for an illegal surrogate pair but did not throw it.
+  test_name: |
+    testQuoteAsUTF8WithIllegalSurrogatePair
+  test_code: |
+    @Test(expected = IllegalArgumentException.class)
+    public void testQuoteAsUTF8WithIllegalSurrogatePair() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "\uD800\uDC00"; // Invalid surrogate pair
+        encoder.quoteAsUTF8(input);
+    }
+  new_imports_code: |
+    import org.junit.Test;
+```2026-04-18 06:27:56,268 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 5544
+2026-04-18 06:27:56,272 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:27:56,272 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:28:14,296 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:28:14,298 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:28:41,924 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-18 06:28:41,970 - panta.panta - INFO - Iteration 2 increased line coverage 2.35%, branch coverage 2.88%
+2026-04-18 06:28:41,971 - panta.panta - INFO - Current line Coverage: 45.75%, branch coverage: 38.46%
+2026-04-18 06:28:41,971 - panta.unit_test_generator - INFO - Selected branch lines for current iteration: [234, 241, 245, 249, 253, 258, 266, 283, 294, 298]
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test handling of surrogate pairs in UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        private int _convert(int p1, int p2)
+    entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string containing a valid surrogate pair.
+      2. During encoding, _convert(...) is reached to process the surrogate pair.
+      3. The method should correctly convert the surrogate pair into a valid UTF-8 sequence.
+    input_focus: |
+      Provide a string that includes a valid surrogate pair (e.g., "\uD83D\uDE00" for a grinning face).
+    observable_behavior: |
+      Verify that the output byte array correctly represents the UTF-8 encoding of the surrogate pair.
+
+  - design_name: |
+      Test illegal surrogate pair handling during UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        private int _convert(int p1, int p2)
+    entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string that includes an invalid surrogate pair.
+      2. During encoding, _convert(...) is reached and should throw an exception.
+    input_focus: |
+      Provide a string with an invalid surrogate pair (e.g., "\uD83D" without a matching second part).
+    observable_behavior: |
+      Check that an IllegalArgumentException is thrown with an appropriate message.
+
+  - design_name: |
+      Test behavior when output buffer is insufficient during UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        private byte[] quoteAsUTF8(String text)
+    entry_hint: |
+        public byte[] encodeAsUTF8(String text)
+    execution_flow: |
+      1. Call encodeAsUTF8() with a long string that exceeds the initial buffer size.
+      2. During encoding, the output buffer is checked and should trigger a buffer expansion.
+    input_focus: |
+      Use a long string that is guaranteed to exceed the initial buffer size.
+    observable_behavior: |
+      Verify that the encoding completes successfully and that the output byte array contains the correct encoded bytes.
+
+  - design_name: |
+      Test handling of control characters during UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        private byte[] encodeAsUTF8(String text)
+    entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string that includes control characters.
+      2. During encoding, the control characters should be processed and escaped.
+    input_focus: |
+      Provide a string that contains control characters (e.g., newline or tab).
+    observable_behavior: |
+      Check that the output byte array correctly represents the escaped control characters in UTF-8 format.
+
+  - design_name: |
+      Test behavior when the text buffer is null during quoting.
+    method_context:
+      method_signature_hint: |
+        public char[] quoteAsString(String input)
+    entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsString() with a string input when the text buffer is null.
+      2. The method should initialize the text buffer and proceed with quoting.
+    input_focus: |
+      Use a simple string input (e.g., "test").
+    observable_behavior: |
+      Verify that the method initializes the text buffer and returns the correctly quoted string.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testQuoteAsUTF8WithSurrogatePairs()
+new_tests:
+  - test_behavior: Test handling of valid surrogate pairs during UTF-8 encoding.
+    test_name: testQuoteAsUTF8WithValidSurrogatePair
+    test_code: |
+      @Test
+      public void testQuoteAsUTF8WithValidSurrogatePair() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "\uD83D\uDE00"; // Grinning face
+          byte[] result = encoder.quoteAsUTF8(input);
+          byte[] expected = new byte[] {(byte) 0xF0, (byte) 0x9F, (byte) 0x98, (byte) 0x80}; // UTF-8 encoding of the surrogate pair
+          assertArrayEquals(expected, result);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test illegal surrogate pair handling during UTF-8 encoding.
+    test_name: testQuoteAsUTF8WithInvalidSurrogatePair
+    test_code: |
+      @Test(expected = IllegalArgumentException.class)
+      public void testQuoteAsUTF8WithInvalidSurrogatePair() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "\uD83D"; // Incomplete surrogate pair
+          encoder.quoteAsUTF8(input);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test behavior when output buffer is insufficient during UTF-8 encoding.
+    test_name: testEncodeAsUTF8WithLongInput
+    test_code: |
+      @Test
+      public void testEncodeAsUTF8WithLongInput() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "This is a long string that will exceed the initial buffer size and require expansion.";
+          byte[] result = encoder.encodeAsUTF8(input);
+          assertNotNull(result);
+          assertTrue(result.length > 0); // Ensure that we get a non-empty result
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test handling of control characters during UTF-8 encoding.
+    test_name: testQuoteAsUTF8WithControlCharacters
+    test_code: |
+      @Test
+      public void testQuoteAsUTF8WithControlCharacters() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Line1\nLine2\tTabbed"; // Includes control characters
+          byte[] result = encoder.quoteAsUTF8(input);
+          assertNotNull(result);
+          assertTrue(result.length > 0); // Ensure that we get a non-empty result
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test behavior when the text buffer is null during quoting.
+    test_name: testQuoteAsStringWithNullTextBuffer
+    test_code: |
+      @Test
+      public void testQuoteAsStringWithNullTextBuffer() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Test input";
+          char[] result = encoder.quoteAsString(input);
+          assertNotNull(result);
+          assertArrayEquals("\"Test input\"".toCharArray(), result); // Check for correct quoting
+      }
+    new_imports_code: ''
+```2026-04-18 06:29:06,127 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8239
+2026-04-18 06:29:06,136 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:29:06,137 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:29:32,346 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsUTF8WithValidSurrogatePair
+2026-04-18 06:29:32,348 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:29:32,348 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:29:59,298 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsUTF8WithInvalidSurrogatePair
+2026-04-18 06:29:59,301 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:29:59,301 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:30:28,461 - panta.unit_test_generator - INFO - Generated test has passed: testEncodeAsUTF8WithLongInput
+2026-04-18 06:30:28,464 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:30:28,464 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:30:59,525 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsUTF8WithControlCharacters
+2026-04-18 06:30:59,528 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:30:59,528 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:31:18,685 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:31:18,687 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:31:45,823 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+new_tests:
+- test_behavior: |
+    Fix a test that used the wrong expected value for a runtime assertion
+  test_name: |
+    testQuoteAsStringWithNullTextBuffer
+  test_code: |
+    @Test
+    public void testQuoteAsStringWithNullTextBuffer() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "Test input";
+        char[] result = encoder.quoteAsString(input);
+        assertNotNull(result);
+        assertArrayEquals("\"Test input\"".toCharArray(), result); // Check for correct quoting
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+    import static org.junit.Assert.assertNotNull;
+    import org.junit.Test;
+```2026-04-18 06:31:50,069 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 6024
+2026-04-18 06:31:50,073 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:31:50,074 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:32:08,187 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+new_tests:
+- test_behavior: |
+    Fix a test that used the wrong expected value for a runtime assertion
+  test_name: |
+    testQuoteAsStringWithNullTextBuffer
+  test_code: |
+    @Test
+    public void testQuoteAsStringWithNullTextBuffer() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "Test input";
+        char[] result = encoder.quoteAsString(input);
+        assertNotNull(result);
+        assertArrayEquals("\"Test input\"".toCharArray(), result); // Check for correct quoting
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+    import static org.junit.Assert.assertNotNull;
+    import org.junit.Test;
+```2026-04-18 06:32:12,398 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 6046
+2026-04-18 06:32:12,402 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:32:12,402 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:32:31,034 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+new_tests:
+- test_behavior: |
+    Fix a test that used the wrong expected value for a runtime assertion
+  test_name: |
+    testQuoteAsStringWithNullTextBuffer
+  test_code: |
+    @Test
+    public void testQuoteAsStringWithNullTextBuffer() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "Test input";
+        char[] result = encoder.quoteAsString(input);
+        assertNotNull(result);
+        assertArrayEquals("\"Test input\"".toCharArray(), result); // Check for correct quoting
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+    import static org.junit.Assert.assertNotNull;
+    import org.junit.Test;
+```2026-04-18 06:32:35,338 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 6046
+2026-04-18 06:32:35,342 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:32:35,343 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:32:53,056 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:32:53,059 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:33:23,397 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-18 06:33:23,429 - panta.panta - INFO - Iteration 3 increased line coverage 5.19%, branch coverage 3.85%
+2026-04-18 06:33:23,430 - panta.panta - INFO - Current line Coverage: 50.94%, branch coverage: 42.31%
+2026-04-18 06:33:23,430 - panta.unit_test_generator - INFO - Selected branch lines for current iteration: [299, 312, 317, 321, 323, 330, 334, 338, 342, 348]
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test handling of output buffer size during UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        private byte[] encodeAsUTF8(String text)
+    entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string that requires UTF-8 encoding.
+      2. During encoding, encodeAsUTF8(...) is reached and the output buffer size is checked.
+      3. The branch for output buffer resizing is taken when the buffer is full.
+    input_focus: |
+      Provide a string that is long enough to exceed the initial output buffer size.
+    observable_behavior: |
+      Verify that the resulting byte array is correctly formed and that no data is lost during buffer resizing.
+
+  - design_name: |
+      Test surrogate pair handling during UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        private byte[] encodeAsUTF8(String text)
+    entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string containing a valid surrogate pair.
+      2. During encoding, encodeAsUTF8(...) is reached and the surrogate pair handling logic is executed.
+      3. The branch for handling surrogate pairs is taken.
+    input_focus: |
+      Use a string that includes characters represented by a valid surrogate pair.
+    observable_behavior: |
+      Check that the output byte array correctly encodes the surrogate pair into the expected UTF-8 format.
+
+  - design_name: |
+      Test illegal surrogate pair detection during UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        private byte[] encodeAsUTF8(String text)
+    entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string that contains an invalid surrogate pair.
+      2. During encoding, encodeAsUTF8(...) is reached and the illegal surrogate detection logic is executed.
+      3. The branch for throwing an exception on illegal surrogates is taken.
+    input_focus: |
+      Provide a string that includes an invalid surrogate pair configuration.
+    observable_behavior: |
+      Verify that an IllegalArgumentException is thrown with an appropriate message.
+
+  - design_name: |
+      Test handling of control characters during UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        private byte[] encodeAsUTF8(String text)
+    entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string that includes control characters.
+      2. During encoding, encodeAsUTF8(...) is reached and the control character handling logic is executed.
+      3. The branch for encoding control characters is taken.
+    input_focus: |
+      Use a string that contains various control characters (e.g., newline, tab).
+    observable_behavior: |
+      Check that the output byte array correctly encodes the control characters according to the JSON specification.
+
+  - design_name: |
+      Test handling of multi-byte characters during UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        private byte[] encodeAsUTF8(String text)
+    entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string that includes multi-byte characters.
+      2. During encoding, encodeAsUTF8(...) is reached and the multi-byte character handling logic is executed.
+      3. The branch for encoding characters that require more than one byte is taken.
+    input_focus: |
+      Provide a string that includes characters outside the ASCII range, such as emojis or characters from non-Latin scripts.
+    observable_behavior: |
+      Verify that the resulting byte array correctly represents the multi-byte characters in UTF-8 format.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testQuoteAsUTF8WithControlCharacters()
+new_tests:
+  - test_behavior: Test handling of output buffer size during UTF-8 encoding.
+    test_name: testEncodeAsUTF8WithLongInputBufferResize
+    test_code: |
+      @Test
+      public void testEncodeAsUTF8WithLongInputBufferResize() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "This is a long string that will exceed the initial buffer size and require expansion. " +
+                         "Adding more text to ensure we exceed the buffer size.";
+          byte[] result = encoder.encodeAsUTF8(input);
+          assertNotNull(result);
+          assertTrue(result.length > 0); // Ensure that we get a non-empty result
+          // Additional check to ensure no data is lost
+          assertEquals(input.length(), new String(result, java.nio.charset.StandardCharsets.UTF_8).length());
+      }
+  - test_behavior: Test surrogate pair handling during UTF-8 encoding.
+    test_name: testEncodeAsUTF8WithValidSurrogatePair
+    test_code: |
+      @Test
+      public void testEncodeAsUTF8WithValidSurrogatePair() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Valid surrogate pair: \uD83D\uDE00"; // 😀
+          byte[] result = encoder.encodeAsUTF8(input);
+          assertNotNull(result);
+          assertTrue(result.length > 0); // Ensure that we get a non-empty result
+          // Check that the output byte array correctly encodes the surrogate pair
+          byte[] expected = new byte[] {(byte) 0xF0, (byte) 0x9F, (byte) 0x98, (byte) 0x80}; // UTF-8 encoding of the surrogate pair
+          assertArrayEquals(expected, new byte[] {result[1], result[2], result[3], result[4]}); // Check the surrogate pair encoding
+      }
+  - test_behavior: Test illegal surrogate pair detection during UTF-8 encoding.
+    test_name: testEncodeAsUTF8WithInvalidSurrogatePair
+    test_code: |
+      @Test(expected = IllegalArgumentException.class)
+      public void testEncodeAsUTF8WithInvalidSurrogatePair() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "\uD83D"; // Incomplete surrogate pair
+          encoder.encodeAsUTF8(input);
+      }
+  - test_behavior: Test handling of control characters during UTF-8 encoding.
+    test_name: testEncodeAsUTF8WithControlCharacters
+    test_code: |
+      @Test
+      public void testEncodeAsUTF8WithControlCharacters() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Line1\nLine2\tTabbed"; // Includes control characters
+          byte[] result = encoder.encodeAsUTF8(input);
+          assertNotNull(result);
+          assertTrue(result.length > 0); // Ensure that we get a non-empty result
+          // Check that the output byte array correctly encodes the control characters
+          String expected = "Line1\\nLine2\\tTabbed";
+          assertEquals(expected, new String(result, java.nio.charset.StandardCharsets.UTF_8));
+      }
+  - test_behavior: Test handling of multi-byte characters during UTF-8 encoding.
+    test_name: testEncodeAsUTF8WithMultiByteCharacters
+    test_code: |
+      @Test
+      public void testEncodeAsUTF8WithMultiByteCharacters() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "こんにちは"; // Japanese for "Hello"
+          byte[] result = encoder.encodeAsUTF8(input);
+          byte[] expected = input.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+          assertArrayEquals(expected, result);
+      }
+```2026-04-18 06:33:50,939 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8713
+2026-04-18 06:33:50,951 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:33:50,952 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:34:22,228 - panta.unit_test_generator - INFO - Generated test has passed: testEncodeAsUTF8WithLongInputBufferResize
+2026-04-18 06:34:22,230 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:34:22,230 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:34:40,010 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:34:40,013 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:34:40,013 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:35:07,228 - panta.unit_test_generator - INFO - Generated test has passed: testEncodeAsUTF8WithInvalidSurrogatePair
+2026-04-18 06:35:07,230 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:35:07,231 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:35:24,960 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:35:24,963 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:35:24,963 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:35:51,690 - panta.unit_test_generator - INFO - Generated test has passed: testEncodeAsUTF8WithMultiByteCharacters
+2026-04-18 06:35:51,690 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:36:19,255 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+new_tests:
+- test_behavior: |
+    Fix a test that used the wrong expected value for a runtime assertion regarding UTF-8 encoding of a valid surrogate pair.
+  test_name: |
+    testEncodeAsUTF8WithValidSurrogatePair
+  test_code: |
+    @Test
+    public void testEncodeAsUTF8WithValidSurrogatePair() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "Valid surrogate pair: \uD83D\uDE00"; // 😀
+        byte[] result = encoder.encodeAsUTF8(input);
+        assertNotNull(result);
+        assertTrue(result.length > 0); // Ensure that we get a non-empty result
+        // Check that the output byte array correctly encodes the surrogate pair
+        byte[] expected = new byte[] {(byte) 0xF0, (byte) 0x9F, (byte) 0x98, (byte) 0x80}; // UTF-8 encoding of the surrogate pair
+        assertArrayEquals(expected, result); // Corrected to compare the full result
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+    import static org.junit.Assert.assertNotNull;
+    import static org.junit.Assert.assertTrue;
+    import org.junit.Test;
+
+- test_behavior: |
+    Fix a test that made an invalid runtime assumption about the output of UTF-8 encoding with control characters.
+  test_name: |
+    testEncodeAsUTF8WithControlCharacters
+  test_code: |
+    @Test
+    public void testEncodeAsUTF8WithControlCharacters() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "Line1\nLine2\tTabbed"; // Includes control characters
+        byte[] result = encoder.encodeAsUTF8(input);
+        assertNotNull(result);
+        assertTrue(result.length > 0); // Ensure that we get a non-empty result
+        // Check that the output byte array correctly encodes the control characters
+        String expected = "Line1\nLine2\tTabbed"; // Corrected expected string
+        assertEquals(expected, new String(result, java.nio.charset.StandardCharsets.UTF_8));
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertEquals;
+    import static org.junit.Assert.assertNotNull;
+    import static org.junit.Assert.assertTrue;
+    import org.junit.Test;
+```2026-04-18 06:36:28,787 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 7019
+2026-04-18 06:36:28,794 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:36:28,794 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:36:46,633 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:36:46,635 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:36:46,635 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:37:13,692 - panta.unit_test_generator - INFO - Generated test has passed: testEncodeAsUTF8WithControlCharacters
+
+
+
+```yaml
+language: Java
+new_tests:
+- test_behavior: |
+    Fix a test that used the wrong expected value for a runtime assertion
+  test_name: |
+    testEncodeAsUTF8WithValidSurrogatePair
+  test_code: |
+    @Test
+    public void testEncodeAsUTF8WithValidSurrogatePair() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "Valid surrogate pair: \uD83D\uDE00"; // 😀
+        byte[] result = encoder.encodeAsUTF8(input);
+        assertNotNull(result);
+        assertTrue(result.length > 0); // Ensure that we get a non-empty result
+        // Check that the output byte array correctly encodes the surrogate pair
+        byte[] expected = new byte[] {(byte) 0xF0, (byte) 0x9F, (byte) 0x98, (byte) 0x80}; // UTF-8 encoding of the surrogate pair
+        assertArrayEquals(expected, result); // Corrected to compare the full result
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+    import static org.junit.Assert.assertNotNull;
+    import static org.junit.Assert.assertTrue;
+    import org.junit.Test;
+```2026-04-18 06:37:19,265 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 6720
+2026-04-18 06:37:19,267 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:37:19,268 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:37:36,389 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+new_tests:
+- test_behavior: |
+    Fix a test that used the wrong expected value for a runtime assertion
+  test_name: |
+    testEncodeAsUTF8WithValidSurrogatePair
+  test_code: |
+    @Test
+    public void testEncodeAsUTF8WithValidSurrogatePair() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "Valid surrogate pair: \uD83D\uDE00"; // 😀
+        byte[] result = encoder.encodeAsUTF8(input);
+        assertNotNull(result);
+        assertTrue(result.length > 0); // Ensure that we get a non-empty result
+        // Check that the output byte array correctly encodes the surrogate pair
+        byte[] expected = new byte[] {(byte) 0xF0, (byte) 0x9F, (byte) 0x98, (byte) 0x80}; // UTF-8 encoding of the surrogate pair
+        assertArrayEquals(expected, result); // Corrected to compare the full result
+    }
+  new_imports_code: |
+    import static org.junit.Assert.assertArrayEquals;
+    import static org.junit.Assert.assertNotNull;
+    import static org.junit.Assert.assertTrue;
+    import org.junit.Test;
+```2026-04-18 06:37:42,053 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 6720
+2026-04-18 06:37:42,057 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:37:42,058 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:37:59,287 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:37:59,290 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:38:26,140 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-18 06:38:26,184 - panta.panta - INFO - Iteration 4 increased line coverage 5.19%, branch coverage 10.57%
+2026-04-18 06:38:26,184 - panta.panta - INFO - Current line Coverage: 56.13%, branch coverage: 52.88%
+2026-04-18 06:38:26,185 - panta.unit_test_generator - INFO - Selected branch lines for current iteration: [356, 389, 391, 410, 87, 99, 103, 106, 118, 122]
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test behavior when output buffer is full during character array quoting.
+    method_context:
+      method_signature_hint: |
+        public char[] quoteAsString(String input)
+      entry_hint: |
+        public char[] quoteAsString(String input)
+    execution_flow: |
+      1. Call quoteAsString() with a string that contains enough characters to fill the output buffer.
+      2. The method attempts to write characters to the output buffer until it reaches capacity.
+      3. The branch for handling the full output buffer is taken.
+    input_focus: |
+      Provide a string input that exceeds the initial output buffer size, ensuring multiple segments are needed.
+    observable_behavior: |
+      Verify that the returned character array correctly contains all quoted characters without loss.
+
+  - design_name: |
+      Test escape handling for control characters during string quoting.
+    method_context:
+      method_signature_hint: |
+        public char[] quoteAsString(String input)
+      entry_hint: |
+        public char[] quoteAsString(String input)
+    execution_flow: |
+      1. Call quoteAsString() with a string containing various control characters.
+      2. The method processes each character and encounters control characters that require escaping.
+      3. The branch for handling standard escape sequences is taken.
+    input_focus: |
+      Use a string that includes control characters like newline, tab, and others that require escaping.
+    observable_behavior: |
+      Check that the output correctly reflects the expected escape sequences for the control characters.
+
+  - design_name: |
+      Test handling of surrogate pairs in UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        public byte[] quoteAsUTF8(String text)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string that includes surrogate pairs.
+      2. The method processes characters and encounters a surrogate pair that requires special handling.
+      3. The branch for validating the second part of the surrogate pair is taken.
+    input_focus: |
+      Provide a string that includes characters represented by surrogate pairs, ensuring both parts are present.
+    observable_behavior: |
+      Verify that the output byte array correctly encodes the surrogate pair into the expected UTF-8 format.
+
+  - design_name: |
+      Test exception handling for illegal surrogate pairs during conversion.
+    method_context:
+      method_signature_hint: |
+        private static int _convert(int p1, int p2)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string that includes an illegal surrogate pair.
+      2. The method attempts to convert the surrogate pair and encounters an illegal combination.
+      3. The branch for throwing an IllegalArgumentException is taken.
+    input_focus: |
+      Use a string that contains an invalid surrogate pair, ensuring the first part is valid but the second is not.
+    observable_behavior: |
+      Check that the method throws an IllegalArgumentException with an appropriate message indicating the issue.
+
+  - design_name: |
+      Test behavior when output buffer is full during UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        public byte[] encodeAsUTF8(String text)
+      entry_hint: |
+        public byte[] encodeAsUTF8(String text)
+    execution_flow: |
+      1. Call encodeAsUTF8() with a string that contains enough characters to fill the output buffer.
+      2. The method attempts to write bytes to the output buffer until it reaches capacity.
+      3. The branch for handling the full output buffer is taken.
+    input_focus: |
+      Provide a string input that exceeds the initial output buffer size, ensuring multiple segments are needed.
+    observable_behavior: |
+      Verify that the returned byte array correctly contains all encoded bytes without loss.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testQuoteAsStringWithEscapeCharacters()
+new_tests:
+  - test_behavior: Test behavior when output buffer is full during character array quoting.
+    test_name: testQuoteAsStringWithLongInputBuffer
+    test_code: |
+      @Test
+      public void testQuoteAsStringWithLongInputBuffer() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "This is a long string that will exceed the initial buffer size and require expansion. " +
+                         "Adding more text to ensure we exceed the buffer size.";
+          char[] result = encoder.quoteAsString(input);
+          assertNotNull(result);
+          assertEquals(input.length(), result.length);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test escape handling for control characters during string quoting.
+    test_name: testQuoteAsStringWithControlCharacters
+    test_code: |
+      @Test
+      public void testQuoteAsStringWithControlCharacters() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Line1\nLine2\tTabbed"; // Includes control characters
+          char[] result = encoder.quoteAsString(input);
+          String expected = "Line1\\nLine2\\tTabbed"; // Expected escaped string
+          assertArrayEquals(expected.toCharArray(), result);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test handling of surrogate pairs in UTF-8 encoding.
+    test_name: testQuoteAsUTF8WithSurrogatePairs
+    test_code: |
+      @Test
+      public void testQuoteAsUTF8WithSurrogatePairs() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "\uD83D\uDE00"; // Grinning face
+          byte[] result = encoder.quoteAsUTF8(input);
+          byte[] expected = new byte[] {(byte) 0xF0, (byte) 0x9F, (byte) 0x98, (byte) 0x80}; // UTF-8 encoding of the surrogate pair
+          assertArrayEquals(expected, result);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test exception handling for illegal surrogate pairs during conversion.
+    test_name: testQuoteAsUTF8WithInvalidSurrogatePair
+    test_code: |
+      @Test(expected = IllegalArgumentException.class)
+      public void testQuoteAsUTF8WithInvalidSurrogatePair() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "\uD83D"; // Incomplete surrogate pair
+          encoder.quoteAsUTF8(input);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test behavior when output buffer is full during UTF-8 encoding.
+    test_name: testEncodeAsUTF8WithLongInputBuffer
+    test_code: |
+      @Test
+      public void testEncodeAsUTF8WithLongInputBuffer() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "This is a long string that will exceed the initial buffer size and require expansion. " +
+                         "Adding more text to ensure we exceed the buffer size.";
+          byte[] result = encoder.encodeAsUTF8(input);
+          assertNotNull(result);
+          assertTrue(result.length > 0); // Ensure that we get a non-empty result
+          // Additional check to ensure no data is lost
+          assertEquals(input.length(), new String(result, java.nio.charset.StandardCharsets.UTF_8).length());
+      }
+    new_imports_code: ''
+```2026-04-18 06:38:52,434 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 9063
+2026-04-18 06:38:52,440 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:38:52,440 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:39:19,861 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsStringWithLongInputBuffer
+2026-04-18 06:39:19,864 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:39:19,864 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:39:50,908 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsStringWithControlCharacters
+2026-04-18 06:39:50,910 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:39:50,910 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:40:05,997 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 06:40:06,000 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:40:06,001 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:40:21,985 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 06:40:21,987 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:40:21,987 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:40:48,596 - panta.unit_test_generator - INFO - Generated test has passed: testEncodeAsUTF8WithLongInputBuffer
+2026-04-18 06:40:48,598 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:41:15,146 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+skipped_tests:
+- failed_test_name: |
+    testQuoteAsUTF8WithSurrogatePairs
+- failed_test_name: |
+    testQuoteAsUTF8WithInvalidSurrogatePair
+new_tests: []
+```2026-04-18 06:41:17,714 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 7791
+2026-04-18 06:41:17,717 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:41:43,924 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-18 06:41:43,969 - panta.panta - INFO - Iteration 5 cannot increase coverage.
+2026-04-18 06:41:43,970 - panta.panta - INFO - Current line Coverage: 56.13%, branch coverage: 52.88%
+2026-04-18 06:41:43,970 - panta.unit_test_generator - INFO - Selected branch lines for current iteration: [124, 155, 159, 163, 170, 186, 205, 214, 227, 232]
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test behavior when input string contains characters that need escaping.
+    method_context:
+      method_signature_hint: |
+        public char[] quoteAsString(String input)
+      entry_hint: |
+        public char[] quoteAsString(String input)
+    execution_flow: |
+      1. Call quoteAsString() with a string containing characters that require escaping.
+      2. The method processes the input and encounters characters that trigger the escape logic.
+      3. The branch for handling escape sequences is executed.
+    input_focus: |
+      Provide a string that includes characters like newline, tab, or other control characters.
+    observable_behavior: |
+      Verify that the returned character array correctly represents the input with the necessary escape sequences applied.
+
+  - design_name: |
+      Test handling of surrogate pairs in UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        public byte[] quoteAsUTF8(String text)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string that includes surrogate pairs.
+      2. The method processes the input and encounters characters that require special handling.
+      3. The branch for processing surrogate pairs is executed.
+    input_focus: |
+      Use a string that includes characters represented by surrogate pairs, such as emojis or certain CJK characters.
+    observable_behavior: |
+      Check that the resulting byte array correctly encodes the surrogate pairs into valid UTF-8 sequences.
+
+  - design_name: |
+      Test behavior when input string is empty.
+    method_context:
+      method_signature_hint: |
+        public char[] quoteAsString(String input)
+      entry_hint: |
+        public char[] quoteAsString(String input)
+    execution_flow: |
+      1. Call quoteAsString() with an empty string.
+      2. The method processes the input and reaches the end without any characters to escape.
+      3. The method completes without entering the escape handling logic.
+    input_focus: |
+      Pass an empty string as the input to the method.
+    observable_behavior: |
+      Verify that the returned character array is also empty, indicating that no processing was needed.
+
+  - design_name: |
+      Test behavior when input string exceeds buffer capacity.
+    method_context:
+      method_signature_hint: |
+        public char[] quoteAsString(String input)
+      entry_hint: |
+        public char[] quoteAsString(String input)
+    execution_flow: |
+      1. Call quoteAsString() with a long string that exceeds the initial buffer size.
+      2. The method processes the input and triggers the buffer expansion logic.
+      3. The branch for handling buffer resizing is executed.
+    input_focus: |
+      Provide a long string that is guaranteed to exceed the initial buffer capacity.
+    observable_behavior: |
+      Check that the returned character array contains all characters from the input string and that the buffer resizing logic functions correctly.
+
+  - design_name: |
+      Test behavior when input string contains ASCII characters only.
+    method_context:
+      method_signature_hint: |
+        public byte[] encodeAsUTF8(String text)
+      entry_hint: |
+        public byte[] encodeAsUTF8(String text)
+    execution_flow: |
+      1. Call encodeAsUTF8() with a string containing only ASCII characters.
+      2. The method processes the input and recognizes that no special encoding is needed.
+      3. The branch for handling ASCII characters is executed.
+    input_focus: |
+      Use a string composed entirely of ASCII characters, such as "Hello, World!".
+    observable_behavior: |
+      Verify that the resulting byte array matches the ASCII byte representation of the input string.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testQuoteAsStringWithEscapeCharacters()
+new_tests:
+  - test_behavior: Test behavior when input string contains characters that need escaping.
+    test_name: testQuoteAsStringWithControlCharacters
+    test_code: |
+      @Test
+      public void testQuoteAsStringWithControlCharacters() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Line1\nLine2\tTabbed"; // Includes control characters
+          char[] result = encoder.quoteAsString(input);
+          String expected = "Line1\\nLine2\\tTabbed"; // Expected escaped string
+          assertArrayEquals(expected.toCharArray(), result);
+      }
+    new_imports_code: ''
+  
+  - test_behavior: Test handling of surrogate pairs in UTF-8 encoding.
+    test_name: testQuoteAsUTF8WithSurrogatePairs
+    test_code: |
+      @Test
+      public void testQuoteAsUTF8WithSurrogatePairs() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Surrogate pair: \uD83D\uDE00"; // 😀
+          byte[] result = encoder.quoteAsUTF8(input);
+          byte[] expected = new byte[] {(byte) 0xF0, (byte) 0x9F, (byte) 0x98, (byte) 0x80}; // UTF-8 encoding of the surrogate pair
+          assertArrayEquals(expected, result);
+      }
+    new_imports_code: ''
+  
+  - test_behavior: Test behavior when input string is empty.
+    test_name: testQuoteAsStringWithEmptyInput
+    test_code: |
+      @Test
+      public void testQuoteAsStringWithEmptyInput() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "";
+          char[] result = encoder.quoteAsString(input);
+          assertArrayEquals(new char[]{}, result); // Expecting an empty array
+      }
+    new_imports_code: ''
+  
+  - test_behavior: Test behavior when input string exceeds buffer capacity.
+    test_name: testQuoteAsStringWithLongInput
+    test_code: |
+      @Test
+      public void testQuoteAsStringWithLongInput() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "This is a long string that will exceed the initial buffer size and require expansion. " +
+                         "Adding more text to ensure we exceed the buffer size.";
+          char[] result = encoder.quoteAsString(input);
+          assertNotNull(result);
+          assertEquals(input.length(), result.length); // Ensure all characters are present
+      }
+    new_imports_code: ''
+  
+  - test_behavior: Test behavior when input string contains ASCII characters only.
+    test_name: testEncodeAsUTF8WithASCIICharacters
+    test_code: |
+      @Test
+      public void testEncodeAsUTF8WithASCIICharacters() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Hello, World!";
+          byte[] result = encoder.encodeAsUTF8(input);
+          byte[] expected = input.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+          assertArrayEquals(expected, result); // Expecting ASCII byte representation
+      }
+    new_imports_code: ''
+```2026-04-18 06:42:08,429 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 9273
+2026-04-18 06:42:08,439 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:42:08,439 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:42:23,672 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 06:42:23,674 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:42:23,674 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:42:38,367 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 06:42:38,370 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:42:38,370 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:43:05,334 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsStringWithEmptyInput
+2026-04-18 06:43:05,336 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:43:05,337 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:43:20,364 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 06:43:20,366 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:43:20,367 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:43:47,512 - panta.unit_test_generator - INFO - Generated test has passed: testEncodeAsUTF8WithASCIICharacters
+2026-04-18 06:43:47,513 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:44:15,068 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+skipped_tests:
+- failed_test_name: |
+    testQuoteAsStringWithControlCharacters
+- failed_test_name: |
+    testQuoteAsUTF8WithSurrogatePairs
+- failed_test_name: |
+    testQuoteAsStringWithLongInput
+new_tests:
+- test_behavior: |
+    Repair a test that quotes a long input string and checks the result length
+  test_name: |
+    testQuoteAsStringWithLongInputAndBufferExpansion
+  test_code: |
+    @Test
+    public void testQuoteAsStringWithLongInputAndBufferExpansion() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "This is a long string that will exceed the initial buffer size and require expansion. " +
+                       "Adding more text to ensure we exceed the buffer size.";
+        char[] result = encoder.quoteAsString(input);
+        assertNotNull(result);
+        assertEquals(input.length(), result.length); // Ensure all characters are present
+    }
+  new_imports_code: |
+    // No new imports required
+```2026-04-18 06:44:20,250 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8328
+2026-04-18 06:44:20,253 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:44:20,254 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:44:47,449 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsStringWithLongInputAndBufferExpansion
+
+2026-04-18 06:44:47,450 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:45:14,069 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-18 06:45:14,094 - panta.panta - INFO - Iteration 6 increased line coverage 0.0%, branch coverage 0.97%
+2026-04-18 06:45:14,094 - panta.panta - INFO - Current line Coverage: 56.13%, branch coverage: 53.85%
+2026-04-18 06:45:14,094 - panta.unit_test_generator - INFO - Selected branch lines for current iteration: [234, 241, 249, 253, 258, 266, 283, 299, 312, 317]
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test buffer expansion when output exceeds current capacity.
+    method_context:
+      method_signature_hint: |
+        private byte[] quoteAsUTF8(String text)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a long string that exceeds the initial buffer size.
+      2. During processing, the output buffer's capacity is checked and expanded as needed.
+      3. The method continues processing the input string after the buffer expansion.
+    input_focus: |
+      Provide a long string input that contains a mix of ASCII and special characters to trigger buffer expansion.
+    observable_behavior: |
+      Verify that the method completes without errors and that the output byte array contains the correct UTF-8 encoded representation of the input.
+
+  - design_name: |
+      Test handling of surrogate pairs in UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        private int _convert(int p1, int p2)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string that includes a valid surrogate pair.
+      2. The method reaches _convert(...) to process the surrogate pair.
+      3. The conversion completes successfully, producing the correct UTF-8 output.
+    input_focus: |
+      Use a string that includes a valid surrogate pair, such as a character represented by two UTF-16 code units.
+    observable_behavior: |
+      Check that the resulting byte array correctly encodes the surrogate pair as a single UTF-8 character.
+
+  - design_name: |
+      Test illegal surrogate pair handling.
+    method_context:
+      method_signature_hint: |
+        private int _convert(int p1, int p2)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string that includes an invalid surrogate pair.
+      2. The method reaches _convert(...) where the illegal combination is detected.
+      3. An IllegalArgumentException is thrown due to the invalid surrogate pair.
+    input_focus: |
+      Provide a string that contains an invalid surrogate pair, such as a high surrogate followed by a low surrogate that does not match.
+    observable_behavior: |
+      Verify that the method throws an IllegalArgumentException indicating the illegal surrogate pair.
+
+  - design_name: |
+      Test behavior when input string is empty.
+    method_context:
+      method_signature_hint: |
+        public byte[] quoteAsUTF8(String text)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with an empty string.
+      2. The method processes the input and recognizes it as empty.
+      3. The method returns an empty byte array without errors.
+    input_focus: |
+      Pass an empty string as the input to the quoteAsUTF8() method.
+    observable_behavior: |
+      Check that the returned byte array is empty, confirming that the method handles empty input gracefully.
+
+  - design_name: |
+      Test handling of control characters in input.
+    method_context:
+      method_signature_hint: |
+        public char[] quoteAsString(String input)
+      entry_hint: |
+        public char[] quoteAsString(String input)
+    execution_flow: |
+      1. Call quoteAsString() with a string that includes control characters.
+      2. The method processes the input and encounters control characters that require escaping.
+      3. The method correctly escapes the control characters in the output.
+    input_focus: |
+      Provide a string that contains various control characters, such as newline and tab.
+    observable_behavior: |
+      Verify that the output character array includes the appropriate escape sequences for the control characters present in the input.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public byte[] quoteAsUTF8(String text)
+new_tests:
+  - test_behavior: Test buffer expansion when output exceeds current capacity.
+    test_name: testQuoteAsUTF8WithLongInputAndBufferExpansion
+    test_code: |
+      @Test
+      public void testQuoteAsUTF8WithLongInputAndBufferExpansion() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "This is a long string that will exceed the initial buffer size and require expansion. " +
+                         "Adding more text to ensure we exceed the buffer size.";
+          byte[] result = encoder.quoteAsUTF8(input);
+          assertNotNull(result);
+          assertTrue(result.length > 0); // Ensure that we get a non-empty result
+          // Additional check to ensure no data is lost
+          assertEquals(input.length(), new String(result, java.nio.charset.StandardCharsets.UTF_8).length());
+      }
+    new_imports_code: ''
+  
+  - test_behavior: Test handling of surrogate pairs in UTF-8 encoding.
+    test_name: testQuoteAsUTF8WithValidSurrogatePair
+    test_code: |
+      @Test
+      public void testQuoteAsUTF8WithValidSurrogatePair() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "\uD83D\uDE00"; // Grinning face
+          byte[] result = encoder.quoteAsUTF8(input);
+          byte[] expected = new byte[] {(byte) 0xF0, (byte) 0x9F, (byte) 0x98, (byte) 0x80}; // UTF-8 encoding of the surrogate pair
+          assertArrayEquals(expected, result);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test illegal surrogate pair handling.
+    test_name: testQuoteAsUTF8WithInvalidSurrogatePair
+    test_code: |
+      @Test(expected = IllegalArgumentException.class)
+      public void testQuoteAsUTF8WithInvalidSurrogatePair() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "\uD83D"; // Incomplete surrogate pair
+          encoder.quoteAsUTF8(input);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test behavior when input string is empty.
+    test_name: testQuoteAsUTF8WithEmptyInput
+    test_code: |
+      @Test
+      public void testQuoteAsUTF8WithEmptyInput() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "";
+          byte[] result = encoder.quoteAsUTF8(input);
+          assertArrayEquals(new byte[]{}, result); // Expecting an empty array
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test handling of control characters in input.
+    test_name: testQuoteAsStringWithControlCharacters
+    test_code: |
+      @Test
+      public void testQuoteAsStringWithControlCharacters() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Line1\nLine2\tTabbed"; // Includes control characters
+          char[] result = encoder.quoteAsString(input);
+          String expected = "Line1\\nLine2\\tTabbed"; // Expected escaped string
+          assertArrayEquals(expected.toCharArray(), result);
+      }
+    new_imports_code: ''
+```2026-04-18 06:45:39,594 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 9598
+2026-04-18 06:45:39,604 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:45:39,604 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:46:06,008 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsUTF8WithLongInputAndBufferExpansion
+2026-04-18 06:46:06,010 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:46:06,010 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:46:21,055 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 06:46:21,058 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:46:21,058 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:46:35,932 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 06:46:35,934 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:46:35,934 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:47:02,891 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsUTF8WithEmptyInput
+2026-04-18 06:47:02,892 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:47:02,893 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:47:17,990 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 06:47:17,992 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:47:45,082 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+skipped_tests:
+- failed_test_name: |
+    testQuoteAsUTF8WithValidSurrogatePair
+- failed_test_name: |
+    testQuoteAsUTF8WithInvalidSurrogatePair
+- failed_test_name: |
+    testQuoteAsStringWithControlCharacters
+new_tests: []
+```2026-04-18 06:47:48,144 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8453
+2026-04-18 06:47:48,146 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:48:15,338 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-18 06:48:15,362 - panta.panta - INFO - Iteration 7 cannot increase coverage.
+2026-04-18 06:48:15,362 - panta.panta - INFO - Current line Coverage: 56.13%, branch coverage: 53.85%
+2026-04-18 06:48:15,363 - panta.unit_test_generator - INFO - Selected branch lines for current iteration: [321, 323, 330, 334, 338, 342, 348, 356, 389, 391]
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test handling of surrogate pairs in UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        private int _convert(int p1, int p2)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string containing a valid surrogate pair.
+      2. During encoding, _convert(...) is reached to process the surrogate pair.
+      3. The method should correctly convert the surrogate pair into a valid UTF-8 byte sequence.
+    input_focus: |
+      Provide a string that includes a valid surrogate pair (e.g., "\uD83D\uDE00" for a grinning face emoji).
+    observable_behavior: |
+      Verify that the resulting byte array correctly represents the UTF-8 encoding of the surrogate pair.
+
+  - design_name: |
+      Test illegal surrogate pair handling in UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        private int _convert(int p1, int p2)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string containing an invalid surrogate pair.
+      2. During encoding, _convert(...) is reached and an illegal combination is detected.
+      3. The method should throw an IllegalArgumentException due to the invalid surrogate pair.
+    input_focus: |
+      Provide a string that includes an invalid surrogate pair (e.g., "\uD83D" without a valid second part).
+    observable_behavior: |
+      Check that an IllegalArgumentException is thrown with an appropriate message.
+
+  - design_name: |
+      Test output buffer expansion during UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        public byte[] encodeAsUTF8(String text)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a long string that exceeds the initial buffer size.
+      2. During encoding, the output buffer should expand as needed.
+      3. The method should successfully encode the entire string without errors.
+    input_focus: |
+      Provide a long string that includes a mix of ASCII and non-ASCII characters to trigger buffer expansion.
+    observable_behavior: |
+      Verify that the resulting byte array contains the correct UTF-8 encoding for the entire input string.
+
+  - design_name: |
+      Test escape sequence handling for control characters.
+    method_context:
+      method_signature_hint: |
+        public char[] quoteAsString(String input)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string containing control characters (e.g., newline, tab).
+      2. During encoding, quoteAsString(...) is reached and escape sequences are processed.
+      3. The method should correctly encode the control characters as escape sequences.
+    input_focus: |
+      Provide a string that includes control characters like "\n" and "\t".
+    observable_behavior: |
+      Check that the resulting byte array reflects the correct escape sequences for the control characters.
+
+  - design_name: |
+      Test handling of non-ASCII characters during UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        public byte[] encodeAsUTF8(String text)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string containing various non-ASCII characters.
+      2. During encoding, the method should handle each character appropriately.
+      3. The method should produce a valid UTF-8 byte array for the non-ASCII characters.
+    input_focus: |
+      Provide a string that includes a variety of non-ASCII characters (e.g., accented letters, symbols).
+    observable_behavior: |
+      Verify that the resulting byte array correctly represents the UTF-8 encoding of all non-ASCII characters.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public byte[] quoteAsUTF8(String text)
+new_tests:
+  - test_behavior: Test handling of valid surrogate pairs in UTF-8 encoding.
+    test_name: testQuoteAsUTF8WithValidSurrogatePair
+    test_code: |
+      @Test
+      public void testQuoteAsUTF8WithValidSurrogatePair() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "\uD83D\uDE00"; // Grinning face
+          byte[] result = encoder.quoteAsUTF8(input);
+          byte[] expected = new byte[] {(byte) 0xF0, (byte) 0x9F, (byte) 0x98, (byte) 0x80}; // UTF-8 encoding of the surrogate pair
+          assertArrayEquals(expected, result);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test illegal surrogate pair handling in UTF-8 encoding.
+    test_name: testQuoteAsUTF8WithInvalidSurrogatePair
+    test_code: |
+      @Test(expected = IllegalArgumentException.class)
+      public void testQuoteAsUTF8WithInvalidSurrogatePair() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "\uD83D"; // Incomplete surrogate pair
+          encoder.quoteAsUTF8(input);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test output buffer expansion during UTF-8 encoding.
+    test_name: testEncodeAsUTF8WithLongInputBufferExpansion
+    test_code: |
+      @Test
+      public void testEncodeAsUTF8WithLongInputBufferExpansion() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "This is a long string that will exceed the initial buffer size and require expansion. " +
+                         "Adding more text to ensure we exceed the buffer size.";
+          byte[] result = encoder.encodeAsUTF8(input);
+          assertNotNull(result);
+          assertTrue(result.length > 0); // Ensure that we get a non-empty result
+          // Additional check to ensure no data is lost
+          assertEquals(input.length(), new String(result, java.nio.charset.StandardCharsets.UTF_8).length());
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test escape sequence handling for control characters.
+    test_name: testQuoteAsStringWithControlCharacters
+    test_code: |
+      @Test
+      public void testQuoteAsStringWithControlCharacters() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Line1\nLine2\tTabbed"; // Includes control characters
+          char[] result = encoder.quoteAsString(input);
+          String expected = "Line1\\nLine2\\tTabbed"; // Expected escaped string
+          assertArrayEquals(expected.toCharArray(), result);
+      }
+    new_imports_code: ''
+
+  - test_behavior: Test handling of non-ASCII characters during UTF-8 encoding.
+    test_name: testEncodeAsUTF8WithNonASCIICharacters
+    test_code: |
+      @Test
+      public void testEncodeAsUTF8WithNonASCIICharacters() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Café 😊"; // Includes non-ASCII characters
+          byte[] result = encoder.encodeAsUTF8(input);
+          byte[] expected = input.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+          assertArrayEquals(expected, result); // Expecting correct UTF-8 encoding
+      }
+    new_imports_code: ''
+```2026-04-18 06:48:42,235 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 9868
+2026-04-18 06:48:42,244 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:48:42,245 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:48:57,496 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 06:48:57,498 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:48:57,498 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:49:12,105 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 06:49:12,107 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:49:12,107 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:49:37,955 - panta.unit_test_generator - INFO - Generated test has passed: testEncodeAsUTF8WithLongInputBufferExpansion
+2026-04-18 06:49:37,958 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:49:37,959 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:49:52,511 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 06:49:52,513 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:49:52,515 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:50:19,047 - panta.unit_test_generator - INFO - Generated test has passed: testEncodeAsUTF8WithNonASCIICharacters
+2026-04-18 06:50:19,048 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:50:45,846 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+skipped_tests:
+- failed_test_name: |
+    testQuoteAsUTF8WithValidSurrogatePair
+- failed_test_name: |
+    testQuoteAsUTF8WithInvalidSurrogatePair
+- failed_test_name: |
+    testQuoteAsStringWithControlCharacters
+new_tests: []
+```2026-04-18 06:50:49,479 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8683
+2026-04-18 06:50:49,484 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:51:16,129 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-18 06:51:16,174 - panta.panta - INFO - Iteration 8 increased line coverage 3.78%, branch coverage 4.8%
+2026-04-18 06:51:16,175 - panta.panta - INFO - Current line Coverage: 59.91%, branch coverage: 58.65%
+2026-04-18 06:51:16,175 - panta.unit_test_generator - INFO - Selected branch lines for current iteration: [410, 87, 103, 106, 118, 122, 124, 155, 159, 163]
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test handling of null text buffer initialization.
+    method_context:
+      method_signature_hint: |
+        private char[] quoteAsString(String input)
+      entry_hint: |
+        public char[] quoteAsString(String input)
+    execution_flow: |
+      1. Call quoteAsString() with a valid input string.
+      2. Inside quoteAsString(), check if the text buffer is null.
+      3. The branch for initializing the text buffer is taken.
+    input_focus: |
+      Provide a non-empty string to quote, ensuring the text buffer starts as null.
+    observable_behavior: |
+      Verify that the text buffer is properly initialized and that the output is correctly quoted.
+
+  - design_name: |
+      Test escape handling for characters requiring numeric escape.
+    method_context:
+      method_signature_hint: |
+        private char[] quoteAsString(String input)
+      entry_hint: |
+        public char[] quoteAsString(String input)
+    execution_flow: |
+      1. Call quoteAsString() with a string containing a character that requires numeric escaping.
+      2. Inside quoteAsString(), the branch for handling numeric escape is taken.
+      3. The character is processed and added to the output.
+    input_focus: |
+      Use a string that includes a control character (e.g., a character with a Unicode value below 0x20).
+    observable_behavior: |
+      Check that the output contains the correct numeric escape sequence for the control character.
+
+  - design_name: |
+      Test handling of surrogate pairs in UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        private byte[] quoteAsUTF8(String text)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string containing a valid surrogate pair.
+      2. Inside quoteAsUTF8(), the branch for handling surrogate pairs is taken.
+      3. The surrogate pair is processed and encoded correctly.
+    input_focus: |
+      Provide a string that includes a valid surrogate pair (e.g., characters in the range U+D800 to U+DFFF).
+    observable_behavior: |
+      Verify that the resulting byte array correctly represents the UTF-8 encoding of the surrogate pair.
+
+  - design_name: |
+      Test illegal surrogate pair handling.
+    method_context:
+      method_signature_hint: |
+        private static int _convert(int p1, int p2)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string that includes an invalid surrogate pair.
+      2. Inside _convert(), the branch for detecting an illegal surrogate pair is taken.
+      3. An exception is thrown due to the illegal combination.
+    input_focus: |
+      Use a string that contains an invalid surrogate pair (e.g., a high surrogate followed by a non-matching low surrogate).
+    observable_behavior: |
+      Check that an IllegalArgumentException is thrown with the appropriate message indicating the illegal combination.
+
+  - design_name: |
+      Test escaping for characters that require named escape sequences.
+    method_context:
+      method_signature_hint: |
+        private char[] quoteAsString(String input)
+      entry_hint: |
+        public char[] quoteAsString(String input)
+    execution_flow: |
+      1. Call quoteAsString() with a string containing characters that require named escapes.
+      2. Inside quoteAsString(), the branch for handling named escapes is taken.
+      3. The named escape sequences are processed and added to the output.
+    input_focus: |
+      Provide a string that includes characters like '\n' or '\t' that require named escapes.
+    observable_behavior: |
+      Verify that the output contains the correct named escape sequences for the characters.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testQuoteAsStringWithEscapeCharacters()
+new_tests:
+  - test_behavior: Test handling of null text buffer initialization.
+    test_name: testQuoteAsStringWithNullTextBufferInitialization
+    test_code: |
+      @Test
+      public void testQuoteAsStringWithNullTextBufferInitialization() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Test input";
+          char[] result = encoder.quoteAsString(input);
+          assertNotNull(result);
+          assertArrayEquals("\"Test input\"".toCharArray(), result); // Expecting quoted output
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test escape handling for characters requiring numeric escape.
+    test_name: testQuoteAsStringWithControlCharacterEscape
+    test_code: |
+      @Test
+      public void testQuoteAsStringWithControlCharacterEscape() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Control character: \u0001"; // Control character
+          char[] result = encoder.quoteAsString(input);
+          String expected = "Control character: \\u0001"; // Expecting numeric escape
+          assertArrayEquals(expected.toCharArray(), result);
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test handling of surrogate pairs in UTF-8 encoding.
+    test_name: testQuoteAsUTF8WithValidSurrogatePair
+    test_code: |
+      @Test
+      public void testQuoteAsUTF8WithValidSurrogatePair() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "\uD83D\uDE00"; // Grinning face
+          byte[] result = encoder.quoteAsUTF8(input);
+          byte[] expected = new byte[] {(byte) 0xF0, (byte) 0x9F, (byte) 0x98, (byte) 0x80}; // UTF-8 encoding of the surrogate pair
+          assertArrayEquals(expected, result);
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test illegal surrogate pair handling.
+    test_name: testQuoteAsUTF8WithInvalidSurrogatePair
+    test_code: |
+      @Test(expected = IllegalArgumentException.class)
+      public void testQuoteAsUTF8WithInvalidSurrogatePair() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "\uD83D"; // Incomplete surrogate pair
+          encoder.quoteAsUTF8(input);
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test escaping for characters that require named escape sequences.
+    test_name: testQuoteAsStringWithNamedEscape
+    test_code: |
+      @Test
+      public void testQuoteAsStringWithNamedEscape() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "This is a test with a newline\nand a tab\tcharacter.";
+          char[] result = encoder.quoteAsString(input);
+          String expected = "This is a test with a newline\\nand a tab\\tcharacter.";
+          assertArrayEquals(expected.toCharArray(), result);
+      }
+    new_imports_code: ""
+```2026-04-18 06:51:41,534 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 9887
+2026-04-18 06:51:41,540 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:51:41,540 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:51:59,767 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:51:59,769 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:51:59,769 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:52:27,107 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsStringWithControlCharacterEscape
+2026-04-18 06:52:27,109 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:52:27,109 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:52:42,345 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 06:52:42,346 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:52:42,346 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:52:56,809 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 06:52:56,811 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:52:56,812 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:53:22,989 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsStringWithNamedEscape
+2026-04-18 06:53:22,990 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:53:48,599 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+skipped_tests:
+- failed_test_name: |
+    testQuoteAsUTF8WithValidSurrogatePair
+- failed_test_name: |
+    testQuoteAsUTF8WithInvalidSurrogatePair
+new_tests: []
+```2026-04-18 06:53:51,581 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8656
+
+
+```yaml
+language: Java
+new_tests:
+- test_behavior: |
+    Fix a test that used the wrong expected value for a runtime assertion
+  test_name: |
+    testQuoteAsStringWithNullTextBufferInitialization
+  test_code: |
+    @Test
+    public void testQuoteAsStringWithNullTextBufferInitialization() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "Test input";
+        char[] result = encoder.quoteAsString(input);
+        assertNotNull(result);
+        assertArrayEquals("\"Test input\"".toCharArray(), result); // Expecting quoted output
+    }
+  new_imports_code: |
+    // No new imports required
+```2026-04-18 06:53:55,446 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 7637
+2026-04-18 06:53:55,449 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:53:55,449 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:54:12,632 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+new_tests:
+- test_behavior: |
+    Fix a test that used the wrong expected value for a runtime assertion
+  test_name: |
+    testQuoteAsStringWithNullTextBufferInitialization
+  test_code: |
+    @Test
+    public void testQuoteAsStringWithNullTextBufferInitialization() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "Test input";
+        char[] result = encoder.quoteAsString(input);
+        assertNotNull(result);
+        assertArrayEquals("\"Test input\"".toCharArray(), result); // Expecting quoted output
+    }
+  new_imports_code: |
+    // No new imports required
+```2026-04-18 06:54:16,805 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 7642
+2026-04-18 06:54:16,810 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:54:16,810 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:54:34,944 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+
+
+```yaml
+language: Java
+new_tests:
+- test_behavior: |
+    Fix a test that used the wrong expected value for a runtime assertion
+  test_name: |
+    testQuoteAsStringWithNullTextBufferInitialization
+  test_code: |
+    @Test
+    public void testQuoteAsStringWithNullTextBufferInitialization() {
+        JsonStringEncoder encoder = new JsonStringEncoder();
+        String input = "Test input";
+        char[] result = encoder.quoteAsString(input);
+        assertNotNull(result);
+        assertArrayEquals("\"Test input\"".toCharArray(), result); // Expecting quoted output
+    }
+  new_imports_code: |
+    // No new imports required
+```2026-04-18 06:54:39,102 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 7642
+2026-04-18 06:54:39,105 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:54:39,105 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:54:56,823 - panta.unit_test_generator - INFO - Test generated failed due to runtime error.
+2026-04-18 06:54:56,826 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:55:24,105 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-18 06:55:24,145 - panta.panta - INFO - Iteration 9 increased line coverage 1.88%, branch coverage 0.97%
+2026-04-18 06:55:24,146 - panta.panta - INFO - Current line Coverage: 61.79%, branch coverage: 59.62%
+2026-04-18 06:55:24,146 - panta.unit_test_generator - INFO - Selected branch lines for current iteration: [170, 186, 205, 214, 227, 232, 234, 241, 249, 253]
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test behavior when escaping characters with special codes.
+    method_context:
+      method_signature_hint: |
+        public char[] quoteAsString(String input)
+      entry_hint: |
+        public char[] quoteAsString(String input)
+    execution_flow: |
+      1. Call quoteAsString() with a string containing characters that require escaping.
+      2. The method processes the input and encounters characters that need to be escaped.
+      3. The branch for handling escape codes is executed.
+    input_focus: |
+      Provide a string that includes characters like newline, tab, or other control characters.
+    observable_behavior: |
+      Verify that the returned character array correctly represents the input with the appropriate escape sequences.
+
+  - design_name: |
+      Test UTF-8 encoding for characters requiring multiple bytes.
+    method_context:
+      method_signature_hint: |
+        public byte[] quoteAsUTF8(String text)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string containing characters that require multi-byte UTF-8 encoding.
+      2. The method processes the input and encounters characters that need to be encoded as multiple bytes.
+      3. The branch for handling 2-byte or more complex UTF-8 encoding is executed.
+    input_focus: |
+      Use a string that includes characters outside the ASCII range, such as accented letters or symbols.
+    observable_behavior: |
+      Check that the returned byte array correctly encodes the input string in UTF-8 format.
+
+  - design_name: |
+      Test handling of illegal surrogate pairs during UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        private static int _convert(int p1, int p2)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string that includes invalid surrogate pairs.
+      2. The method attempts to convert the surrogate pairs and reaches the illegal handling branch.
+      3. An exception is thrown due to the illegal surrogate pair.
+    input_focus: |
+      Provide a string that includes characters that form an invalid surrogate pair.
+    observable_behavior: |
+      Verify that an IllegalArgumentException is thrown with the appropriate message indicating the illegal combination.
+
+  - design_name: |
+      Test behavior when the output buffer is full during UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        public byte[] encodeAsUTF8(String text)
+      entry_hint: |
+        public byte[] encodeAsUTF8(String text)
+    execution_flow: |
+      1. Call encodeAsUTF8() with a long string that will fill the output buffer.
+      2. The method processes the input and reaches the point where the output buffer needs to be expanded.
+      3. The branch for handling buffer overflow is executed.
+    input_focus: |
+      Use a long string that exceeds the initial buffer size, ensuring multiple segments are needed.
+    observable_behavior: |
+      Check that the returned byte array correctly represents the entire input string without data loss.
+
+  - design_name: |
+      Test behavior when the input string contains characters that require numeric escapes.
+    method_context:
+      method_signature_hint: |
+        public char[] quoteAsString(String input)
+      entry_hint: |
+        public char[] quoteAsString(String input)
+    execution_flow: |
+      1. Call quoteAsString() with a string containing characters that require numeric escape sequences.
+      2. The method processes the input and encounters characters that need to be escaped numerically.
+      3. The branch for handling numeric escapes is executed.
+    input_focus: |
+      Provide a string that includes control characters like ASCII values 0-31.
+    observable_behavior: |
+      Verify that the returned character array correctly represents the input with numeric escape sequences.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testQuoteAsStringWithEscapeCharacters()
+new_tests:
+  - test_behavior: Test behavior when escaping characters with special codes.
+    test_name: testQuoteAsStringWithControlCharacters
+    test_code: |
+      @Test
+      public void testQuoteAsStringWithControlCharacters() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Control character: \u0001"; // Control character
+          char[] result = encoder.quoteAsString(input);
+          String expected = "Control character: \\u0001"; // Expecting numeric escape
+          assertArrayEquals(expected.toCharArray(), result);
+      }
+    new_imports_code: ''
+    
+  - test_behavior: Test UTF-8 encoding for characters requiring multiple bytes.
+    test_name: testQuoteAsUTF8WithMultiByteCharacters
+    test_code: |
+      @Test
+      public void testQuoteAsUTF8WithMultiByteCharacters() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Café 😊"; // Includes multi-byte characters
+          byte[] result = encoder.quoteAsUTF8(input);
+          byte[] expected = input.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+          assertArrayEquals(expected, result); // Expecting correct UTF-8 encoding
+      }
+    new_imports_code: ''
+    
+  - test_behavior: Test handling of illegal surrogate pairs during UTF-8 encoding.
+    test_name: testQuoteAsUTF8WithInvalidSurrogatePair
+    test_code: |
+      @Test(expected = IllegalArgumentException.class)
+      public void testQuoteAsUTF8WithInvalidSurrogatePair() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "\uD83D"; // Incomplete surrogate pair
+          encoder.quoteAsUTF8(input);
+      }
+    new_imports_code: ''
+    
+  - test_behavior: Test behavior when the output buffer is full during UTF-8 encoding.
+    test_name: testEncodeAsUTF8WithLongInputBuffer
+    test_code: |
+      @Test
+      public void testEncodeAsUTF8WithLongInputBuffer() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "This is a long string that will exceed the initial buffer size and require expansion. " +
+                         "Adding more text to ensure we exceed the buffer size.";
+          byte[] result = encoder.encodeAsUTF8(input);
+          assertNotNull(result);
+          assertTrue(result.length > 0); // Ensure that we get a non-empty result
+          // Additional check to ensure no data is lost
+          assertEquals(input.length(), new String(result, java.nio.charset.StandardCharsets.UTF_8).length());
+      }
+    new_imports_code: ''
+    
+  - test_behavior: Test behavior when the input string contains characters that require numeric escapes.
+    test_name: testQuoteAsStringWithNumericEscapes
+    test_code: |
+      @Test
+      public void testQuoteAsStringWithNumericEscapes() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Control character: \u0001"; // Control character
+          char[] result = encoder.quoteAsString(input);
+          String expected = "Control character: \\u0001"; // Expecting numeric escape
+          assertArrayEquals(expected.toCharArray(), result);
+      }
+    new_imports_code: ''
+```2026-04-18 06:55:50,491 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 10096
+2026-04-18 06:55:50,501 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:55:50,502 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:56:05,932 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 06:56:05,935 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:56:05,936 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:56:21,074 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 06:56:21,077 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:56:21,078 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:56:36,395 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 06:56:36,398 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:56:36,398 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:56:50,844 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 06:56:50,847 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:56:50,847 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:57:16,811 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsStringWithNumericEscapes
+2026-04-18 06:57:16,812 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:57:43,558 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+skipped_tests:
+- failed_test_name: |
+    testQuoteAsStringWithControlCharacters
+- failed_test_name: |
+    testQuoteAsUTF8WithMultiByteCharacters
+- failed_test_name: |
+    testQuoteAsUTF8WithInvalidSurrogatePair
+- failed_test_name: |
+    testEncodeAsUTF8WithLongInputBuffer
+new_tests: []
+```2026-04-18 06:57:46,994 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 9172
+2026-04-18 06:57:46,999 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:58:13,464 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-18 06:58:13,511 - panta.panta - INFO - Iteration 10 cannot increase coverage.
+2026-04-18 06:58:13,511 - panta.panta - INFO - Current line Coverage: 61.79%, branch coverage: 59.62%
+2026-04-18 06:58:13,512 - panta.unit_test_generator - INFO - Selected branch lines for current iteration: [258, 266, 283, 299, 312, 321, 323, 330, 338, 342]
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test output buffer expansion when escaping characters.
+    method_context:
+      method_signature_hint: |
+        public char[] quoteAsString(String input)
+      entry_hint: |
+        public char[] quoteAsString(String input)
+    execution_flow: |
+      1. Call quoteAsString() with a string that contains characters requiring escaping and a length that exceeds the initial output buffer size.
+      2. The method attempts to write to the output buffer and triggers the expansion logic.
+      3. The branch checking if outputPtr exceeds outputBuffer length is taken.
+    input_focus: |
+      Provide a string with multiple characters that require escaping, ensuring the total length exceeds the initial buffer capacity.
+    observable_behavior: |
+      Verify that the returned character array correctly represents the escaped string and that the buffer expansion occurs without errors.
+
+  - design_name: |
+      Test UTF-8 encoding buffer expansion for multi-byte characters.
+    method_context:
+      method_signature_hint: |
+        public byte[] quoteAsUTF8(String text)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string containing multi-byte characters that exceed the initial byte buffer size.
+      2. The method processes the input and checks if outputPtr exceeds outputEnd.
+      3. The branch for expanding the output buffer is triggered.
+    input_focus: |
+      Use a string that includes characters requiring more than one byte for UTF-8 encoding, ensuring the total length exceeds the initial buffer capacity.
+    observable_behavior: |
+      Check that the returned byte array correctly encodes the input string in UTF-8 and that the buffer expansion logic functions as expected.
+
+  - design_name: |
+      Test handling of surrogate pairs in UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        public byte[] encodeAsUTF8(String text)
+      entry_hint: |
+        public byte[] encodeAsUTF8(String text)
+    execution_flow: |
+      1. Call encodeAsUTF8() with a string that includes a valid surrogate pair.
+      2. The method processes the input and checks for surrogate pair conditions.
+      3. The branch for handling the conversion of surrogate pairs is taken.
+    input_focus: |
+      Provide a string that includes a valid surrogate pair, ensuring it is correctly formatted.
+    observable_behavior: |
+      Verify that the output byte array correctly represents the UTF-8 encoding of the surrogate pair and that no exceptions are thrown.
+
+  - design_name: |
+      Test illegal surrogate pair handling in UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        private static int _convert(int p1, int p2)
+      entry_hint: |
+        public byte[] encodeAsUTF8(String text)
+    execution_flow: |
+      1. Call encodeAsUTF8() with a string that includes an invalid surrogate pair.
+      2. The method processes the input and checks for illegal surrogate pair conditions.
+      3. The branch that throws an IllegalArgumentException for illegal combinations is taken.
+    input_focus: |
+      Use a string that contains an invalid surrogate pair, ensuring it triggers the illegal handling logic.
+    observable_behavior: |
+      Check that an IllegalArgumentException is thrown with the appropriate message indicating the illegal surrogate pair.
+
+  - design_name: |
+      Test output buffer expansion when encoding ASCII characters.
+    method_context:
+      method_signature_hint: |
+        public byte[] encodeAsUTF8(String text)
+      entry_hint: |
+        public byte[] encodeAsUTF8(String text)
+    execution_flow: |
+      1. Call encodeAsUTF8() with a string of ASCII characters that exceeds the initial byte buffer size.
+      2. The method processes the input and checks if outputPtr exceeds outputEnd.
+      3. The branch for expanding the output buffer is triggered.
+    input_focus: |
+      Provide a string of ASCII characters that exceeds the initial buffer capacity.
+    observable_behavior: |
+      Verify that the output byte array correctly encodes the ASCII string and that the buffer expansion logic functions as expected.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testQuoteAsStringWithEscapeCharacters()
+new_tests:
+  - test_behavior: Test output buffer expansion when escaping characters.
+    test_name: testQuoteAsStringWithEscapingAndBufferExpansion
+    test_code: |
+      @Test
+      public void testQuoteAsStringWithEscapingAndBufferExpansion() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "This is a test with a newline\nand a tab\tcharacter that exceeds the initial buffer size.";
+          char[] result = encoder.quoteAsString(input);
+          String expected = "This is a test with a newline\\nand a tab\\tcharacter that exceeds the initial buffer size.";
+          assertArrayEquals(expected.toCharArray(), result);
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test UTF-8 encoding buffer expansion for multi-byte characters.
+    test_name: testQuoteAsUTF8WithMultiByteCharactersAndBufferExpansion
+    test_code: |
+      @Test
+      public void testQuoteAsUTF8WithMultiByteCharactersAndBufferExpansion() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "This is a long string with multi-byte characters: こんにちは, that will exceed the initial buffer size.";
+          byte[] result = encoder.quoteAsUTF8(input);
+          byte[] expected = input.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+          assertArrayEquals(expected, result);
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test handling of surrogate pairs in UTF-8 encoding.
+    test_name: testEncodeAsUTF8WithValidSurrogatePair
+    test_code: |
+      @Test
+      public void testEncodeAsUTF8WithValidSurrogatePair() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "\uD83D\uDE00"; // Grinning face
+          byte[] result = encoder.encodeAsUTF8(input);
+          byte[] expected = new byte[] {(byte) 0xF0, (byte) 0x9F, (byte) 0x98, (byte) 0x80}; // UTF-8 encoding of the surrogate pair
+          assertArrayEquals(expected, result);
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test illegal surrogate pair handling in UTF-8 encoding.
+    test_name: testEncodeAsUTF8WithInvalidSurrogatePair
+    test_code: |
+      @Test(expected = IllegalArgumentException.class)
+      public void testEncodeAsUTF8WithInvalidSurrogatePair() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "\uD83D"; // Incomplete surrogate pair
+          encoder.encodeAsUTF8(input);
+      }
+    new_imports_code: ""
+
+  - test_behavior: Test output buffer expansion when encoding ASCII characters.
+    test_name: testEncodeAsUTF8WithASCIICharactersAndBufferExpansion
+    test_code: |
+      @Test
+      public void testEncodeAsUTF8WithASCIICharactersAndBufferExpansion() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "This is a long ASCII string that will exceed the initial buffer size.";
+          byte[] result = encoder.encodeAsUTF8(input);
+          byte[] expected = input.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+          assertArrayEquals(expected, result);
+      }
+    new_imports_code: ""
+```2026-04-18 06:58:40,497 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 10276
+2026-04-18 06:58:40,508 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:58:40,508 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:59:07,657 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsStringWithEscapingAndBufferExpansion
+2026-04-18 06:59:07,659 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:59:07,660 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 06:59:34,101 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsUTF8WithMultiByteCharactersAndBufferExpansion
+2026-04-18 06:59:34,102 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 06:59:34,103 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 07:00:01,203 - panta.unit_test_generator - INFO - Generated test has passed: testEncodeAsUTF8WithValidSurrogatePair
+2026-04-18 07:00:01,205 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 07:00:01,205 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 07:00:16,402 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 07:00:16,405 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 07:00:16,406 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 07:00:43,819 - panta.unit_test_generator - INFO - Generated test has passed: testEncodeAsUTF8WithASCIICharactersAndBufferExpansion
+2026-04-18 07:00:43,820 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 07:01:10,623 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+skipped_tests:
+- failed_test_name: |
+    testEncodeAsUTF8WithInvalidSurrogatePair
+new_tests: []
+```2026-04-18 07:01:12,915 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 8910
+2026-04-18 07:01:12,917 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 07:01:39,377 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-18 07:01:39,423 - panta.panta - INFO - Iteration 11 cannot increase coverage.
+2026-04-18 07:01:39,423 - panta.panta - INFO - Current line Coverage: 61.79%, branch coverage: 59.62%
+2026-04-18 07:01:39,423 - panta.unit_test_generator - INFO - Selected branch lines for current iteration: [348, 356, 389, 391, 410, 87, 103, 106, 122, 124]
+
+
+```yaml
+test_designs:
+  - design_name: |
+      Test behavior when output buffer reaches capacity during UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        private byte[] encodeAsUTF8(String text)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string that contains characters requiring UTF-8 encoding.
+      2. During encoding, encodeAsUTF8(...) is reached and the output buffer's capacity is tested.
+      3. The branch where the output buffer is full is taken, triggering a segment finish.
+    input_focus: |
+      Provide a string that is long enough to exceed the initial output buffer size during UTF-8 encoding.
+    observable_behavior: |
+      Verify that the resulting byte array is correctly formed and that no data is lost during buffer expansion.
+
+  - design_name: |
+      Test escaping behavior for control characters in quoted strings.
+    method_context:
+      method_signature_hint: |
+        private int _appendNamed(int esc, char[] qbuf)
+      entry_hint: |
+        public char[] quoteAsString(String input)
+    execution_flow: |
+      1. Call quoteAsString() with a string that includes control characters.
+      2. During quoting, _appendNamed(...) is reached when an escape sequence is needed.
+      3. The branch for control character escaping is executed.
+    input_focus: |
+      Use a string that contains various control characters (e.g., newline, tab) to trigger the escape logic.
+    observable_behavior: |
+      Check that the returned character array correctly represents the input string with appropriate escape sequences.
+
+  - design_name: |
+      Test handling of surrogate pairs during UTF-8 encoding.
+    method_context:
+      method_signature_hint: |
+        private static int _convert(int p1, int p2)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string containing valid surrogate pairs.
+      2. During encoding, _convert(...) is reached to handle the surrogate pair.
+      3. The branch for valid surrogate pair conversion is executed.
+    input_focus: |
+      Provide a string that includes a valid surrogate pair to ensure proper encoding.
+    observable_behavior: |
+      Verify that the resulting byte array correctly encodes the surrogate pair as expected in UTF-8.
+
+  - design_name: |
+      Test exception handling for illegal surrogate pairs.
+    method_context:
+      method_signature_hint: |
+        private static int _convert(int p1, int p2)
+      entry_hint: |
+        public byte[] quoteAsUTF8(String text)
+    execution_flow: |
+      1. Call quoteAsUTF8() with a string that contains an invalid surrogate pair.
+      2. During encoding, _convert(...) is reached and the illegal pair is detected.
+      3. The branch for throwing an exception is executed.
+    input_focus: |
+      Use a string that includes an invalid surrogate pair to trigger the exception.
+    observable_behavior: |
+      Check that an IllegalArgumentException is thrown with the appropriate message indicating the illegal surrogate pair.
+```
+
+```yaml
+language: java
+existing_test_function_signature: public void testQuoteAsUTF8WithValidSurrogatePair()
+new_tests:
+  - test_behavior: Test behavior when output buffer reaches capacity during UTF-8 encoding.
+    test_name: testQuoteAsUTF8WithLongInputBufferExpansion
+    test_code: |
+      @Test
+      public void testQuoteAsUTF8WithLongInputBufferExpansion() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "This is a long string that will exceed the initial buffer size and require expansion. " +
+                         "Adding more text to ensure we exceed the buffer size.";
+          byte[] result = encoder.quoteAsUTF8(input);
+          assertNotNull(result);
+          assertTrue(result.length > 0); // Ensure that we get a non-empty result
+          // Additional check to ensure no data is lost
+          assertEquals(input.length(), new String(result, java.nio.charset.StandardCharsets.UTF_8).length());
+      }
+  - test_behavior: Test escaping behavior for control characters in quoted strings.
+    test_name: testQuoteAsStringWithControlCharacterEscape
+    test_code: |
+      @Test
+      public void testQuoteAsStringWithControlCharacterEscape() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "Control character: \u0001"; // Control character
+          char[] result = encoder.quoteAsString(input);
+          String expected = "Control character: \\u0001"; // Expecting numeric escape
+          assertArrayEquals(expected.toCharArray(), result);
+      }
+  - test_behavior: Test handling of surrogate pairs during UTF-8 encoding.
+    test_name: testQuoteAsUTF8WithValidSurrogatePair
+    test_code: |
+      @Test
+      public void testQuoteAsUTF8WithValidSurrogatePair() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "\uD83D\uDE00"; // Grinning face
+          byte[] result = encoder.quoteAsUTF8(input);
+          byte[] expected = new byte[] {(byte) 0xF0, (byte) 0x9F, (byte) 0x98, (byte) 0x80}; // UTF-8 encoding of the surrogate pair
+          assertArrayEquals(expected, result);
+      }
+  - test_behavior: Test exception handling for illegal surrogate pairs.
+    test_name: testQuoteAsUTF8WithInvalidSurrogatePair
+    test_code: |
+      @Test(expected = IllegalArgumentException.class)
+      public void testQuoteAsUTF8WithInvalidSurrogatePair() {
+          JsonStringEncoder encoder = new JsonStringEncoder();
+          String input = "\uD83D"; // Incomplete surrogate pair
+          encoder.quoteAsUTF8(input);
+      }
+```2026-04-18 07:02:02,176 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 10293
+2026-04-18 07:02:02,184 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 07:02:02,184 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 07:02:28,856 - panta.unit_test_generator - INFO - Generated test has passed: testQuoteAsUTF8WithLongInputBufferExpansion
+2026-04-18 07:02:28,858 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 07:02:28,859 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 07:02:44,552 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 07:02:44,555 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 07:02:44,556 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 07:02:59,857 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 07:02:59,860 - panta.unit_test_generator - INFO - Test added to the test file: defects4j-subjects-notests/JacksonCore-26f/src/test/java/com/fasterxml/jackson/core/io/TestJsonStringEncoder.java
+2026-04-18 07:02:59,860 - panta.unit_test_generator - INFO - Run test with the command: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 07:03:14,986 - panta.unit_test_generator - INFO - Test generated with compilation error.
+2026-04-18 07:03:14,987 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 07:03:41,621 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+
+
+```yaml
+language: Java
+skipped_tests:
+- failed_test_name: |
+    testQuoteAsStringWithControlCharacterEscape
+- failed_test_name: |
+    testQuoteAsUTF8WithValidSurrogatePair
+- failed_test_name: |
+    testQuoteAsUTF8WithInvalidSurrogatePair
+new_tests: []
+```2026-04-18 07:03:45,603 - panta.unit_test_generator - INFO - Total token count for LLM gpt-4o-mini-2024-07-18: 9501
+2026-04-18 07:03:45,607 - panta.unit_test_generator - INFO - generate baseline coverage report: "mvn clean package -Dtest=TestJsonStringEncoder"
+2026-04-18 07:04:12,106 - panta.coverage.coverage - INFO - Checking if coverage report exists at: defects4j-subjects-notests/JacksonCore-26f/target/jacoco/jacoco.csv
+2026-04-18 07:04:12,154 - panta.panta - INFO - Iteration 12 cannot increase coverage.
+2026-04-18 07:04:12,154 - panta.panta - ERROR - Reached maximum iteration limit without improving coverage. Current Coverage: (61.79%, 59.62%)
+2026-04-18 07:04:12,174 - panta.panta - INFO - Report generated successfully at: ../../result-files/control_gpt-4o-mini/
+
+
